@@ -1,4 +1,4 @@
-## Quickstart: Build a basic C–S–H model in 5 minutes
+# Quickstart: Build a basic C–S–H model in 5 minutes
 
 This section is intentionally minimal. Students will:
 	1.	Download a ready-made code package.
@@ -8,7 +8,7 @@ This section is intentionally minimal. Students will:
 	5.	Visualize the structure in VESTA or OVITO.
 
 
-# 1) Download the pyCSH code
+## 1) Download the pyCSH code
 	•	Download the zip from the course link I will provide in class (or clone the repo).
 	•	Unzip and enter the folder (e.g. csh_basic/).
 
@@ -23,7 +23,7 @@ python -m pip install -r requirements.txt    # only if provided
 
 ⸻
 
-# 2) Edit only input.py
+## 2) Edit only input.py
 
 Open **input.py** in your text editor. In windows the default is **Notepad**, and it is enough. But if you are going to work on simulations, we recommend something more sophisticated as **vim** or **visual studio**. You will only change a few parameters (I will dictate the exact options later). The file looks like:
 
