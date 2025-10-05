@@ -12,7 +12,7 @@ This section is intentionally minimal. Students will:
 	•	Download the zip from the course link I will provide in class (or clone the repo).
 	•	Unzip and enter the folder (e.g. csh_basic/).
 
-Optional (recommended): create a python virtual environment:
+Optional (recommended): create a python virtual environment. A Python environment is basically a self-contained workspace where you keep your Python interpreter plus the exact set of libraries you need for a project. Think of it as a sandbox: it isolates your project’s Python version and packages from everything else installed on your computer. You avoid breaking your system Python. Installing libraries globally (pip install … without an environment) can mess up system tools. When you’re done with a project, you can just delete the environment folder and it’s gone—no leftover libraries.
 
 ```
 python3 -m venv .venv
