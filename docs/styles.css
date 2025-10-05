@@ -34,3 +34,4 @@ a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 .site-footer { text-align: center; color: var(--muted); padding: 2rem 1rem 3rem; }
 code { background: #0b1023; padding: 0.15rem 0.35rem; border-radius: 6px; }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
