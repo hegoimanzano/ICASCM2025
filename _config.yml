@@ -1,0 +1,12 @@
+title: "Atomistic Simulation of C-S-H (Course Manual)"
+author: "Hegoi Manzano"
+logo: ""
+execute:
+  execute_notebooks: "off"
+only_build_toc_files: true
+latex:
+  latex_engine: xelatex
+sphinx:
+  config:
+    html_theme_options:
+      navigation_depth: 3
