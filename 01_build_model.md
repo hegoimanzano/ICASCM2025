@@ -7,25 +7,25 @@ This section is intentionally minimal. Students will:
 	4.	See outputs (plots + structure files).
 	5.	Visualize the structure in VESTA or OVITO.
 
-⸻
 
-1) Download the code
+# 1) Download the pyCSH code
 	•	Download the zip from the course link I will provide in class (or clone the repo).
 	•	Unzip and enter the folder (e.g. csh_basic/).
 
-Optional (recommended): create a small virtual environment:
+Optional (recommended): create a python virtual environment:
 
+```
 python3 -m venv .venv
 source .venv/bin/activate     # Windows: .venv\Scripts\activate
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt    # only if provided
-
+```
 
 ⸻
 
-2) Edit only input.py
+# 2) Edit only input.py
 
-Open input.py in your editor. You will only change a few parameters (I will dictate the exact options later). The file looks like:
+Open **input.py** in your text editor. In windows the default is **Notepad**, and it is enough. But if you are going to work on simulations, we recommend something more sophisticated as **vim** or **visual studio**. You will only change a few parameters (I will dictate the exact options later). The file looks like:
 
 # input.py  — YOU ONLY EDIT THIS FILE
 
