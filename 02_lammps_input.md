@@ -4,83 +4,26 @@ The LAMMPS **input file** contains, together with the **data file** that we buil
 
 The options in LAMMPS are vast. The [LAMMPS Manual](https://docs.lammps.org/) might be overwhelmig for begginers, but it contains all the necessary information to build an **input file**. A LAMMPS **input file** is basically a script that tells the MD engine exactly how to build, run, and analyze a molecular simulation. It is written in a line-by-line command language, not in Python or C++, but in its own syntax. You can think of it as having four layers:
 
-**1. Header / Global Settings ** These commands define the units, atom style, boundary conditions, and load your starting structure.
+**1. Header / Global Settings** These commands define the units, atom style, boundary conditions, and load your starting structure.
+
+**2. Force Field Definition** Here you specify interatomic potentials and their parameters.
+- pair_style + pair_coeff → how nonbonded atoms interact. 
+- bond_style, angle_style, dihedral_style → for bonded terms.
+- kspace_style → long-range electrostatics.
+
+**3. Simulation Control** This is the heart of the input. It defines time integration, thermostats/barostats, neighbor lists, and trajectory dumps. There are different commands grouped in large families:
+- fix = continuous operations applied at every step of the simulation (e.g., integrators like fix nvt, thermostats, SHAKE constraints, MSD calculators, walls, restraints).
+- dump = how to write trajectory snapshots and how often
+- thermo and thermo_style → control which thermodynamics quantities and other paramaters appears in log output file and how oftern
+
+**4. Analysis** LAMMPS has compute and variable as analysis tools, and fix ave/time to average over time. (computes, variables, averages)
+- compute → generates per-atom or global quantities (MSD, stress, RDF, density profiles).
+- variable → algebra with computed quantities.
+- fix ave/time / fix ave/chunk → averages, profiles, histograms.
+
+**5. Execution** Finally, you tell LAMMPS to run → length of the simulation (number of timesteps).
 
 
-2. Force Field Definition
-
-Here you specify interatomic potentials and their parameters.
-
-pair_style      lj/cut/coul/long 10.0 10.0
-kspace_style    pppm 1.0e-4
-bond_style      harmonic
-angle_style     harmonic
-
-	•	pair_style + pair_coeff → how nonbonded atoms interact.
-	•	bond_style, angle_style, dihedral_style → for bonded terms.
-	•	kspace_style → long-range electrostatics.
-
-⸻
-
-3. Simulation Control
-
-This is the heart of the input. It defines time integration, thermostats/barostats, neighbor lists, and trajectory dumps.
-
-timestep        1.0              # fs
-neighbor        2.0 bin
-neigh_modify    every 1 delay 5
-
-fix             nvt all nvt temp 300.0 300.0 100.0
-dump            traj all custom 1000 traj.lammpstrj id type x y z
-
-	•	fix = continuous operations applied every step (e.g., integrators like fix nvt, thermostats, SHAKE constraints, MSD calculators, walls, restraints).
-	•	dump = how to write trajectory snapshots.
-
-⸻
-
-4. Analysis (computes, variables, averages)
-
-LAMMPS has compute and variable as analysis tools, and fix ave/time to average over time.
-
-compute         msd_all all msd
-variable        D equal c_msd_all[4]/(6*step*dt*1.0e-3)*1.0e-8
-fix             msdout all ave/time 100 10 1000 c_msd_all[*] v_D file msd.dat
-
-	•	compute → generates per-atom or global quantities (MSD, stress, RDF, density profiles).
-	•	variable → algebra with computed quantities.
-	•	fix ave/time / fix ave/chunk → averages, profiles, histograms.
-
-⸻
-
-5. Execution
-
-Finally, you tell LAMMPS to run:
-
-thermo          1000
-thermo_style    custom step temp etotal press
-run             50000
-
-	•	thermo and thermo_style → control what appears in log output.
-	•	run → length of the simulation (number of timesteps).
-
-⸻
-
-🔹 Summary of the “grammar”
-	•	Keywords like units, pair_style, fix, compute → define modules of LAMMPS.
-	•	Fixes = persistent operations applied each step.
-	•	Computes = one-time or continuous measurements.
-	•	Variables = store and manipulate numbers/arrays.
-	•	Dumps = write trajectory snapshots.
-	•	Run = actually advance MD.
-
-⸻
-
-👉 In short:
-A LAMMPS input file is a recipe: it starts by defining your system and potential, then prescribes how to integrate the dynamics, and finally tells LAMMPS what to measure and what to save.
-
-⸻
-
-Would you like me to prepare a schematic “template input file” with comments for each section, so you can give it to your students as a reference skeleton?
 
 ```{code-block} none
 # ---------- SETTINGS / SYSTEM ----------
