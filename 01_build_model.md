@@ -1,4 +1,4 @@
-# Quickstart: Build a basic C–S–H model in 5 minutes
+# Build a basic C–S–H model with pyCSH
 
 This section is intentionally minimal. Students will:
 	1.	Download a ready-made code package.
@@ -8,8 +8,8 @@ This section is intentionally minimal. Students will:
 	5.	Visualize the structure in VESTA or OVITO.
 
 
-## 1) Download the pyCSH code
-- Download the zip from the course link I will provide in class (or clone the repo).
+### 1. Download the pyCSH code
+- Download the zip file from the course link I will provide in class (or clone the repo).
 - Unzip and enter the folder (e.g. csh_basic/).
 
 > Optional (recommended): create a python virtual environment. A Python environment is basically a self-contained workspace where you keep your Python interpreter plus the exact set of libraries you need for a project. Think of it as a sandbox: it isolates your project’s Python version and packages from everything else installed on your computer. You avoid breaking your system Python. Installing libraries globally (pip install … without an environment) can mess up system tools. When you’re done with a project, you can just delete the environment folder and it’s gone—no leftover libraries.
@@ -21,12 +21,10 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt    # only if provided
 ```
 
-## 2) Edit only input.py
+### 2. Edit the input.py
+Open **input.py** in your text editor. In windows the default is **Notepad**, int Mac **Textedit** and they are enough, but if you are going to work on simulations, we recommend something more sophisticated as **vim** or **visual studio**. You will only change a few parameters (I will dictate the exact options later). The file looks like:
 
-Open **input.py** in your text editor. In windows the default is **Notepad**, and it is enough. But if you are going to work on simulations, we recommend something more sophisticated as **vim** or **visual studio**. You will only change a few parameters (I will dictate the exact options later). The file looks like:
-
-
-## 3) Run
+### 3) Run
 
 In a terminal inside the folder:
 
@@ -48,7 +46,7 @@ You should see terminal messages ending with something like:
 [OK] plots saved in: plots/
 ```
 
-## 4) What the outputs are (and how to read them)
+### 4) What the outputs are (and how to read them)
 
 Structure files
 - csh_basic.data — LAMMPS data file (topology + box).
@@ -68,7 +66,7 @@ Plots (inside plots/)
 - (If a short MD is bundled) msd_water.png — MSD of water oxygens with a rough D estimate.
 
 
-## 5) Visualize the model
+### 5) Visualize the model
 
 VESTA (for CIF)
 - Open VESTA → File → Open… → select csh_basic.cif.
