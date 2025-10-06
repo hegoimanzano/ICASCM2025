@@ -3,7 +3,7 @@ author: "Hegoi Manzano"
 language: en
 
 execute:
-  execute_notebooks: "off"
+  execute_notebooks: "off"   # safe for CI
 
 only_build_toc_files: true
 
@@ -17,26 +17,15 @@ parse:
 
 sphinx:
   config:
-    html_theme: pydata_sphinx_theme
+    html_theme: furo
     html_title: "Atomistic Simulation of C–S–H"
-    html_theme_options:
-      navigation_depth: 4
-      show_nav_level: 2
-      show_prev_next: true
-      collapse_navigation: false
-      header_links_before_dropdown: 6
-      navbar_end:
-        - theme-switcher
-        - navbar-icon-links
-      icon_links:
-        - name: GitHub
-          url: https://github.com/<user>/<repo>
-          icon: fa-brands fa-github
-          type: fontawesome
-    # Optional logo / favicon
+    # Optional: syntax highlighting styles (Furo supports separate light/dark)
+    pygments_style: "default"
+    pygments_dark_style: "native"
+    # Optional: logo & favicon later
     # html_logo: images/logo.png
     # html_favicon: images/favicon.ico
-    # Optional custom CSS
+    # Optional: custom CSS (see next section)
     # html_static_path: ["_static"]
     # html_css_files: ["custom.css"]
 
