@@ -1,72 +1,44 @@
-# ===============================
-# Jupyter Book configuration
-# Theme: PyData Sphinx Theme
-# ===============================
-
-# Book meta
 title: "Atomistic Simulation of C–S–H — Course Manual"
 author: "Hegoi Manzano"
 language: en
 
-# Execution: safe default for GitHub Actions (no code run during build)
 execute:
   execute_notebooks: "off"
 
-# Build only what appears in the ToC
 only_build_toc_files: true
 
-# MyST parser (math and standard extensions)
 parse:
   myst_enable_extensions:
-    - dollarmath     # $$ ... $$ and $ ... $
+    - dollarmath
     - amsmath
-    - colon_fence    # ::: admonitions
+    - colon_fence
     - deflist
     - linkify
 
-# Sphinx-level configuration
 sphinx:
   config:
-    # ---- Theme ----
     html_theme: pydata_sphinx_theme
     html_title: "Atomistic Simulation of C–S–H"
     html_theme_options:
-      navigation_depth: 4        # deeper left sidebar
-      show_nav_level: 2          # open first levels
-      show_prev_next: true       # prev/next buttons at page bottom
+      navigation_depth: 4
+      show_nav_level: 2
+      show_prev_next: true
       collapse_navigation: false
       header_links_before_dropdown: 6
-      # Navbar items: theme switcher + icon links area
       navbar_end:
         - theme-switcher
         - navbar-icon-links
-      # Optional: add a GitHub icon link (uncomment and set your repo URL)
       icon_links:
-        # - name: GitHub
-        #   url: https://github.com/<user>/<repo>
-        #   icon: fa-brands fa-github
-        #   type: fontawesome
-
-    # Optional: add a logo / favicon later (put files in your repo and uncomment)
+        - name: GitHub
+          url: https://github.com/<user>/<repo>
+          icon: fa-brands fa-github
+          type: fontawesome
+    # Optional logo / favicon
     # html_logo: images/logo.png
     # html_favicon: images/favicon.ico
-
-    # Optional: custom CSS (only if you add _static/custom.css)
+    # Optional custom CSS
     # html_static_path: ["_static"]
     # html_css_files: ["custom.css"]
 
-# (Optional) repository buttons in header (works with either theme)
-# repository:
-#   url: https://github.com/<user>/<repo>
-#   branch: main
-#   path_to_book: ""
-
-# (Optional) launch buttons (Binder/Colab/Thebe); keep commented if unused
-# launch_buttons:
-#   binderhub_url: "https://mybinder.org"
-#   colab_url: "https://colab.research.google.com/"
-#   thebe: false
-
-# LaTeX engine (only needed if you later build PDF)
 latex:
   latex_engine: xelatex
