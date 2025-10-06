@@ -1,12 +1,11 @@
 # Build a basic C–S–H model with pyCSH
 
-This section is intentionally minimal. Students will:
-	1.	Download a ready-made code package.
-	2.	Edit one file: input.py.
-	3.	Run a single Python command.
-	4.	See outputs (plots + structure files).
-	5.	Visualize the structure in VESTA or OVITO.
+The first step for a high quality simulation of C-S-H (and any other material) is to build an atomic scale model as realistic as possible, this is, that comprises all the necessary features to represent the real conditions to reproduce the experimental physical properties. In our case, we will build a slit-pore C-S-H model" to study NaCl diffusion in C-S-H nanopores.
 
+The general procedure for building a slit pore in a calcium–silicate–hydrate (C–S–H) model follows the same logic as in layered silicate clays.
+- **Build the bulk structure**  A detailed description of the different model construction methods can be found in this [article](https://doi.org/10.1016/j.cemconres.2022.106784). Here we will use the [pyCSH code](https://doi.org/10.1016/j.cemconres.2024.107593), a Python code for the automated generation of realistic bulk calcium silicate hydrate (C-S-H) structures.
+- **Introduce the pore** (slit geometry) Choose a crystallographic direction perpendicular to the layers of interest. Define a “gap” by translating one part of the structure away from the other, thereby creating an empty region. Adjust the simulation box dimensions accordingly to maintain periodic boundary conditions. The pore width can be tuned by setting the separation distance between the two C–S–H surfaces.
+- **Saturate with water** Insert water molecules into the pore region using a packing algorithm (e.g., Packmol, mBuild, or custom scripts). Maintain realistic densities by filling until the desired target pore solution density is reached.
 
 ### 1. Download the pyCSH code
 - Download the zip file from the course link I will provide in class (or clone the repo).
