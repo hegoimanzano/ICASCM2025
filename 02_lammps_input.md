@@ -2,7 +2,7 @@
 
 The LAMMPS **input file** contains, together with the **data file** that we built, the necessary information to run (an analyse) your molecular dynamics simulation. We present the **input file** in several pieces to explain the different aspects of the simulation. At the end of this page you will find the complete input file to facilitate coy-paste.
 
-## Basic structure of a LAMMPS input file
+### Basic structure of a LAMMPS input file
 > If you are a experienced user, you can skip this section
 The options in LAMMPS are vast. The [LAMMPS Manual](https://docs.lammps.org/) might be overwhelmig for begginers, but it contains all the necessary information to build an **input file**. A LAMMPS **input file** is basically a script that tells the MD engine exactly how to build, run, and analyze a molecular simulation. It is written in a line-by-line command language, not in Python or C++, but in its own syntax. You can think of it as having four layers:
 
@@ -24,6 +24,23 @@ The options in LAMMPS are vast. The [LAMMPS Manual](https://docs.lammps.org/) mi
 - fix ave/time / fix ave/chunk → averages, profiles, histograms.
 
 **5. Execution** Finally, you tell LAMMPS to run → length of the simulation (number of timesteps).
+
+
+### LAMMPS input file for C-S-H simulations
+
+**1. Header / Global Settings** We are going to simulate a C-S-H box with periodic boundary conditions in x y z. There are different units systems that must be consistent with your force field and all the input parameters. Note that the all the results will also be printed in these units. The _atom_style_ wfewgrtewr
+
+```
+# ---------- SETTINGS / SYSTEM ----------
+units           real
+atom_style      full
+boundary        p p p
+
+read_data       csh_basic.data     # write the name of your data file
+
+neighbor        2.0 bin
+neigh_modify    delay 10 every 1
+```
 
 
 
