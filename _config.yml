@@ -18,7 +18,7 @@ parse:
 sphinx:
   config:
     html_theme: furo
-    html_title: "Atomistic Simulation \n of C–S–H"
+    html_title: "Atomistic Simulation        of C–S–H"
     # Optional: syntax highlighting styles (Furo supports separate light/dark)
     pygments_style: "default"
     pygments_dark_style: "native"
