@@ -25,6 +25,11 @@ The options in LAMMPS are vast. The [LAMMPS Manual](https://docs.lammps.org/) mi
 
 
 
+
+
+
+You can find more information on how to perform MD simulations in LAMMPS in the [LAMMPS tutorials](https://lammpstutorials.github.io/index.html) webpage
+
 ```{code-block} none
 # ---------- SETTINGS / SYSTEM ----------
 units           real
