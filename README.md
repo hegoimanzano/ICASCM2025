@@ -1,14 +1,6 @@
-# Jupyter Book — C-S-H Manual
+## Welcome to the hands-on course ICASCM 2025
 
-## Publish via GitHub Actions
-1) Upload all files at the **repo root**.
-2) Settings → Pages → Source = **GitHub Actions**.
-3) Push to main; Actions builds and publishes to `gh-pages`.
+This github repository contains the material and the instructions designed for the ICASCM 2025. The course is a tutorial featuring an introduction to molecular dynamics simulations of cementitious materials. It provides a first, practical overview of how atomistic simulations can be applied in this field.
 
-## Local build (optional)
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-jupyter-book build .
-open _build/html/index.html
+The curated tutorial can be found at [ICASCM 2025](https://hegoimanzano.github.io/ICASCM2025/intro.html)
+
