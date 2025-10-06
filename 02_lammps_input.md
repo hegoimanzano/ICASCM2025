@@ -2,6 +2,8 @@
 
 The LAMMPS **input file** contains, together with the **data file** that we built, the necessary information to run (an analyse) your molecular dynamics simulation. We present the **input file** in several pieces to explain the different aspects of the simulation. At the end of this page you will find the complete input file to facilitate coy-paste.
 
+## Basic structure of a LAMMPS input file
+> If you are a experienced user, you can skip this section
 The options in LAMMPS are vast. The [LAMMPS Manual](https://docs.lammps.org/) might be overwhelmig for begginers, but it contains all the necessary information to build an **input file**. A LAMMPS **input file** is basically a script that tells the MD engine exactly how to build, run, and analyze a molecular simulation. It is written in a line-by-line command language, not in Python or C++, but in its own syntax. You can think of it as having four layers:
 
 **1. Header / Global Settings** These commands define the units, atom style, boundary conditions, and load your starting structure.
