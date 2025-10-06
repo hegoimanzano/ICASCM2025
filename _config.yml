@@ -23,7 +23,7 @@ sphinx:
     pygments_style: "default"
     pygments_dark_style: "native"
     # Optional: logo & favicon later
-    # html_logo: images/logo.png
+    html_logo: images/logo.png
     # html_favicon: images/favicon.ico
     # Optional: custom CSS (see next section)
     # html_static_path: ["_static"]
