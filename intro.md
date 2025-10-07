@@ -4,7 +4,7 @@
 
 This course is designed as a hands-on tutorial that introduces the use of molecular dynamics simulations in the study of cementitious materials. It provides a practical first overview of how atomistic modeling can be applied to this field.  
 
-As a case of study, we will focus on a paradigmatic examples that has been widely studied in the cement research community: **the calcuation of ion diffusivity in C-S-H gel nanopores** (see, for example, [Manzano *et al.*, 2009](your-reference-here)). We will: 
+As a case of study, we will focus on a paradigmatic examples that has been widely studied in the cement research community: **the calculation of ion diffusivity in C-S-H gel nanopores** (see, for example, [Duque-Redondo *et al.*, 2022](https://doi.org/10.1016/j.cemconres.2022.106784)). We will: 
 
 - Construct a realistic slit-pore C–S–H model saturated with water and sodium chloride (NaCl).
 - Prepare a LAMMPS input file to run Molecular Dynamics simulations
