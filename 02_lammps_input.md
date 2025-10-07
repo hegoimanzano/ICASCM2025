@@ -29,10 +29,11 @@ LAMMPS has compute and variable as analysis tools, and fix ave/time to average o
 
 Note that LAMMPS interprets commands strictly in the order they appear in the input file. This means that the simulation environment is built step by step, and a command cannot use information that has not yet been defined. You must be carefull with the order of the commands.
 
-
+--
 ### LAMMPS input file for C-S-H simulations
 
-**1. Header / Global Settings** We are going to simulate a C-S-H box with periodic boundary conditions in x y z. There are different units systems that must be consistent with your force field and all the input parameters. Note that the all the results will also be printed in these units. The _atom_style_ defines what information is stored for each atom. The choice depends on the physics of your system and the force field you plan to use. In our case, full indicates information about _atom_id, type, coordinates, charge, molecule-ID, bonds, angles, dihedrals_. 
+**1. Header / Global Settings** We are going to simulate a C-S-H box with periodic boundary conditions in x y z. There are different units systems that must be consistent with your force field and all the input parameters. Note that the all the results will also be printed in these units. The _atom_style_ defines what information is stored for each atom. The choice depends on the physics of your system and the force field you plan to use. In our case with CSHFF, we require full, which indicates information about _atom_id, type, coordinates, charge, molecule-ID, bonds, angles, dihedrals_. 
+The _neighbor_-related options refer to how LAMMPS builds the pairwise neighbor lists to compute forces between atoms. They affect the efficiency and sometimes may induce errors, but it is safe to use the standard values. More info on [neighbors](https://docs.lammps.org/Developer_par_neigh.html)
 
 ```
 # ---------- SETTINGS / SYSTEM ----------
@@ -58,10 +59,98 @@ kspace_style    pppm 1.0e-4
 # pair_coeff    * * 0.0 3.0     # <-- PON tus parámetros reales
 ```
 
-**3. Simulation Control** 
+**3. Simulation Control** Now we start the simulation. In any MD simulations there are at least two stpes. First, an **equilibration period**, in which our system adapts to the desidered thermodynamic conditions. The equilibration time is system-specific, and depends on your initial simulation protocol, how you build your simulation box, the force field, the final thermodynamic conditions, etc. For example, AND GIVE EXAMPLEs
 
 ```
-# ---------- EQUILIBRACIÓN RÁPIDA ----------
+# ---------- FAST EQUILIBRATION ----------
+velocity        all create 300.0 4928459 rot yes mom yes
+fix             nvt all nvt temp 300.0 300.0 100.0
+thermo          1000
+thermo_style    custom step temp pe etotal press density
+run             10000
+unfix           nvt
+```
+_NOTE it is also common, altough we did not do it, to perform an energy minimization step before the equilibration to relax the initial simulation box and avoid "explosions" due to overlapping of atoms_
+
+
+```
+# ---------- PRODUCTION ----------
+reset_timestep  0
+fix             nvt all nvt temp 300.0 300.0 100.0
+thermo          1000
+run             50000
+```
+
+
+# --------- MSD & DIFUSIÓN ----------
+# compute msd produce: [1]=MSDx, [2]=MSDy, [3]=MSDz, [4]=MSDtot  (en Å^2)
+compute         msd_all mobile msd
+
+# tiempo en ps (dt en fs -> ps = fs * 1e-3)
+variable        t_ps    equal step*dt*1.0e-3
+
+# Evitar división por cero al inicio (usa max(t, tiny))
+variable        t_safe  equal max(v_t_ps,1.0e-9)
+
+# Difusiones (m^2/s): D_x = MSDx / (2 t) * (Å^2/ps -> m^2/s = 1e-8)
+variable        Dx      equal c_msd_all[1]/(2.0*v_t_safe) * 1.0e-8
+variable        Dy      equal c_msd_all[2]/(2.0*v_t_safe) * 1.0e-8
+variable        Dz      equal c_msd_all[3]/(2.0*v_t_safe) * 1.0e-8
+# D_total (3D): MSDtot / (6 t)
+variable        Dtot    equal c_msd_all[4]/(6.0*v_t_safe) * 1.0e-8
+
+# Registrar serie temporal (MSD + D)
+# Nevery Nrepeat Nfreq = 100 10 1000 -> cada 1000 pasos (1 ps) si dt=1 fs
+fix             msdout all ave/time 100 10 1000 \
+                c_msd_all[1] c_msd_all[2] c_msd_all[3] c_msd_all[4] \
+                v_Dx v_Dy v_Dz v_Dtot \
+                file msd_D.dat mode vector
+# Columnas: time_step MSDx MSDy MSDz MSDtot Dx Dy Dz Dtot  (t en *pasos*; convertir a ps con dt)
+
+# Mostrar en thermo también (resumen)
+thermo_style    custom step temp c_msd_all[1] c_msd_all[2] c_msd_all[3] c_msd_all[4] v_Dtot
+
+# --------- PERFIL DE DENSIDAD EN z ----------
+# Bin size en nm (ajusta). LAMMPS usa Å en 'real'; delta_A = dz_nm*10
+variable        dz_nm   equal 0.5
+variable        dz_A    equal v_dz_nm*10.0
+
+# Chunks a lo largo de z (desde el límite inferior de la caja)
+compute         zbin all chunk/atom bin/1d z lower ${dz_A} units box
+
+# Densidad numérica (#/Å^3). Guardamos y damos factor de conversión a nm^-3.
+# 1 Å^-3 = 1e3 nm^-3  -> multiplica por 1000 fuera o usa la versión escalada abajo
+fix             profA all ave/chunk 100 10 1000 c_zbin density/number file density_z_A3.dat ave running
+
+# (Opcional) También #/nm^3 directamente: usamos 'count' y dividimos por volumen del bin
+# Volumen del bin = Lx * Ly * dz (Å^3); multiplicador 1000/Å^3 -> nm^-3
+# No hay multiplicador directo en ave/chunk, así que generamos 'count' y post-procesa:
+fix             profC all ave/chunk 100 10 1000 c_zbin count file density_z_counts.dat ave running
+# Para convertir a nm^-3: rho_nm3 = counts / (frames * Lx * Ly * dz_A) * 1000
+# (fácil de hacer con una línea en Python o gnuplot al analizar)
+
+# ---------- PRODUCIR TRAYECTORIA LIGERA ----------
+dump            trj all custom 1000 traj.lammpstrj id type q x y z
+dump_modify     trj sort id
+
+# ---------- CORRER PRODUCCIÓN ----------
+
+
+# ---------- LIMPIEZA ----------
+unfix           msdout
+unfix           profA
+unfix           profC
+undump          trj
+
+
+
+
+
+
+
+
+```
+# ---------- FAST EQUILIBRATION ----------
 velocity        all create 300.0 4928459 rot yes mom yes
 fix             nvt all nvt temp 300.0 300.0 100.0
 thermo          1000
