@@ -3,16 +3,17 @@
 The LAMMPS **input file** contains, together with the **data file** that we built, the necessary information to run (an analyse) your molecular dynamics simulation. We present the **input file** in several pieces to explain the different aspects of the simulation. At the end of this page you will find the complete input file to facilitate coy-paste.
 
 ### Basic structure of a LAMMPS input file
-> If you are a experienced user, you can skip this section
+_If you are a experienced user, you can skip this section_
 
 The options in LAMMPS are vast. The [LAMMPS Manual](https://docs.lammps.org/) might be overwhelmig for begginers, but it contains all the necessary information to build an **input file**. A LAMMPS **input file** is basically a script that tells the MD engine exactly how to build, run, and analyze a molecular simulation. It is written in a line-by-line command language, not in Python or C++, but in its own syntax. You can think of it as having four layers:
 
 **1. Header / Global Settings** These commands define the units, atom style, boundary conditions, and load your starting structure.
 
 **2. Force Field Definition** Here you specify interatomic potentials and their parameters.
-- pair_style + pair_coeff → how nonbonded atoms interact. 
-- bond_style, angle_style, dihedral_style → for bonded terms.
-- kspace_style → long-range electrostatics.
+- pair_style + pair_coeff = how nonbonded atoms interact. 
+- bond_style, angle_style, dihedral_style = for bonded terms.
+- kspace_style = long-range electrostatics.
+- special FF like COMB, ReaxFF, or MLP have their own syntax
 
 **3. Simulation Control** This is the heart of the input. It defines time integration, thermostats/barostats, neighbor lists, and trajectory dumps. There are different commands grouped in large families:
 - fix = continuous operations applied at every step of the simulation (e.g., integrators like fix nvt, thermostats, SHAKE constraints, MSD calculators, walls, restraints).
@@ -20,18 +21,18 @@ The options in LAMMPS are vast. The [LAMMPS Manual](https://docs.lammps.org/) mi
 - thermo and thermo_style → control which thermodynamics quantities and other paramaters appears in log output file and how oftern
 
 LAMMPS has compute and variable as analysis tools, and fix ave/time to average over time. (computes, variables, averages)
-- compute → generates per-atom or global quantities (MSD, stress, RDF, density profiles).
-- variable → algebra with computed quantities.
-- fix ave/time / fix ave/chunk → averages, profiles, histograms.
+- compute = generates per-atom or global quantities (MSD, stress, RDF, density profiles).
+- variable = algebra with computed quantities.
+- fix ave/time / fix ave/chunk = averages, profiles, histograms.
 
 **4. Execution** Finally, you tell LAMMPS to run → length of the simulation (number of timesteps).
 
-Note that LAMMPS interpretates the 
+Note that LAMMPS interprets commands strictly in the order they appear in the input file. This means that the simulation environment is built step by step, and a command cannot use information that has not yet been defined. You must be carefull with the order of the commands.
 
 
 ### LAMMPS input file for C-S-H simulations
 
-**1. Header / Global Settings** We are going to simulate a C-S-H box with periodic boundary conditions in x y z. There are different units systems that must be consistent with your force field and all the input parameters. Note that the all the results will also be printed in these units. The _atom_style_ wfewgrtewr
+**1. Header / Global Settings** We are going to simulate a C-S-H box with periodic boundary conditions in x y z. There are different units systems that must be consistent with your force field and all the input parameters. Note that the all the results will also be printed in these units. The _atom_style_ defines what information is stored for each atom. The choice depends on the physics of your system and the force field you plan to use. In our case, full indicates information about _atom_id, type, coordinates, charge, molecule-ID, bonds, angles, dihedrals_. 
 
 ```
 # ---------- SETTINGS / SYSTEM ----------
