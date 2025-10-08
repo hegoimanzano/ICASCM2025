@@ -2,6 +2,7 @@ format: jb-book
 root: intro
 chapters:
   - file: 01_build_model
+  - file: 05_bond_angle
   - file: 02_lammps_input
   - file: 03_analysis
   - file: 04_conclusions
