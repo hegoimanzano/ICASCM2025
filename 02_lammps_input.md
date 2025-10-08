@@ -32,8 +32,8 @@ Note that LAMMPS interprets commands strictly in the order they appear in the in
 --
 ### LAMMPS input file for C-S-H simulations
 
-**1. Header / Global Settings** We are going to simulate a C-S-H box with periodic boundary conditions in x y z. There are different units systems that must be consistent with your force field and all the input parameters. Note that the all the results will also be printed in these units. The _atom_style_ defines what information is stored for each atom. The choice depends on the physics of your system and the force field you plan to use. In our case with CSHFF, we require full, which indicates information about _atom_id, type, coordinates, charge, molecule-ID, bonds, angles, dihedrals_. 
-The _neighbor_-related options refer to how LAMMPS builds the pairwise neighbor lists to compute forces between atoms. They affect the efficiency and sometimes may induce errors, but it is safe to use the standard values. More info on [neighbors](https://docs.lammps.org/Developer_par_neigh.html)
+**1. Header / Global Settings** We are going to simulate a C-S-H box with periodic boundary conditions in x y z. There are different units systems that must be consistent with your force field and all the input parameters. Note that the all the results will also be printed in these units. The `atom_style` defines what information is stored for each atom. The choice depends on the physics of your system and the force field you plan to use. In our case with CSHFF, we require full, which indicates information about _atom_id, type, coordinates, charge, molecule-ID, bonds, angles, dihedrals_. 
+The `neighbo`_-related options refer to how LAMMPS builds the pairwise neighbor lists to compute forces between atoms. They affect the efficiency and sometimes may induce errors, but it is safe to use the standard values. More info on [neighbors](https://docs.lammps.org/Developer_par_neigh.html)
 
 ```
 # ---------- SETTINGS / SYSTEM ----------
