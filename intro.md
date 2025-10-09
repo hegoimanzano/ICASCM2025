@@ -23,7 +23,7 @@ The aim is to illustrate two complementary approaches:
 
 To follow the tutorial, participants will need to prepare a few tools in advance:  
 
-- **Visualization programs**: We will use *Ovito*, *VESTA*, and *VMD*. These are free visualization tools, available for Windows, Linux, and macOS.  
+- **Visualization programs**: We will use *Ovito* or *VESTA*, and *VMD*. These are free visualization tools, available for Windows, Linux, and macOS.  
 
 - **Python execution environment**:  
   - On macOS and Linux, Python can be run natively or inside a virtual environment.  
