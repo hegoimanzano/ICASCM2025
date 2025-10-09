@@ -6,8 +6,8 @@ The general procedure for building a slit pore in a calcium–silicate–hydrate
 - **Build the bulk structure**  A detailed description of the different model construction methods can be found in this [article](https://doi.org/10.1016/j.cemconres.2022.106784). Here we will use the [pyCSH code](https://doi.org/10.1016/j.cemconres.2024.107593), a Python code for the automated generation of realistic bulk calcium silicate hydrate (C-S-H) structures.
 - **Introduce the pore** (slit geometry) Choose a crystallographic direction perpendicular to the layers of interest. Define a “gap” by translating one part of the structure away from the other, thereby creating an empty region. Adjust the simulation box dimensions accordingly to maintain periodic boundary conditions. The pore width can be tuned by setting the separation distance between the two C–S–H surfaces.
 - **Saturate with water** Insert water molecules into the pore region using a packing algorithm (e.g., Packmol, mBuild, or custom scripts). Maintain realistic densities by filling until the desired target pore solution density is reached.
-
-### 1. Download the pyCSH code
+---
+### Download the pyCSH code
 - Download the zip file from the course link I will provide in class (or clone the repo).
 - Unzip and enter the folder (e.g. csh_basic/).
 
@@ -19,11 +19,12 @@ source .venv/bin/activate     # Windows: .venv\Scripts\activate
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt    # only if provided
 ```
-
-### 2. Edit the input.py
+---
+### Edit the input.py
 Open **input.py** in your text editor. In windows the default is **Notepad**, int Mac **Textedit** and they are enough, but if you are going to work on simulations, we recommend something more sophisticated as **vim** or **visual studio**. You will only change a few parameters (I will dictate the exact options later). The file looks like:
 
-### 3) Run
+---
+### Run
 
 In a terminal inside the folder:
 
@@ -44,8 +45,8 @@ You should see terminal messages ending with something like:
 [OK] wrote: csh_basic.cif
 [OK] plots saved in: plots/
 ```
-
-### 4) What the outputs are (and how to read them)
+---
+### What the outputs are and how to read them
 
 Structure files
 - csh_basic.data — LAMMPS data file (topology + box).
@@ -64,8 +65,8 @@ Plots (inside plots/)
 - composition_summary.png — basic composition/stoichiometry bars (if provided).
 - (If a short MD is bundled) msd_water.png — MSD of water oxygens with a rough D estimate.
 
-
-### 5) Visualize the model
+---
+### Visualize the model
 
 VESTA (for CIF)
 - Open VESTA → File → Open… → select csh_basic.cif.
@@ -77,36 +78,8 @@ OVITO (for LAMMPS data or XYZ)
 - In the Pipeline add modifiers if you want (e.g., Slice, Color coding, Coordination analysis).
 - Use the Viewport to make quick screenshots for your report.
 
-
-## 6) What students must hand in (suggested)
+---
+## What students must hand in (suggested)
 - A screenshot from VESTA (CIF) or OVITO (DATA/XYZ) showing the C–S–H or pore.
 - The plots in plots/ with 2–3 lines interpreting each figure (what you observe and why it makes sense).
 - The input.py used (so we can reproduce your settings).
-
-## 7) Troubleshooting (two most common)
-- “Module not found”: if the code needs a small library (e.g., numpy, matplotlib), install it:
-
-```
-python -m pip install numpy matplotlib
-```
-
-- VESTA cannot open XYZ: use csh_basic.cif in VESTA (preferred). OVITO can open both XYZ and LAMMPS data.
-
-
-## 8) (Optional) Minimal automation for students
-
-A tiny helper so they only type one command:
-
-```
-python3 -m venv .venv && source .venv/bin/activate && \
-python -m pip install --upgrade pip && \
-python -m pip install -r requirements.txt && \
-python3 run.py
-```
-
-Notes for instructors (you)
-- You will provide the zip/repo URL.
-- You will provide the allowed/required keys inside input.py (we left placeholders).
-- The code will always emit csh_basic.data, csh_basic.xyz, and csh_basic.cif plus the plots/ folder so VESTA/OVITO usage is frictionless.
-
-If you want, I can generate a starter zip with run.py, a template input.py, and a minimal plots/ logic so you can share it right away; later you send me the exact list of commands/parameters and I’ll plug them into input.py’s validation.
