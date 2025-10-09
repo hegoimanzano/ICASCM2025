@@ -1,3 +1,3 @@
 # Conclusions
 
-- Built model, prepared LAMMPS input, analyzed outputs.
+¿qué podemos concluir? quitamos esta sección?
