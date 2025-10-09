@@ -2,3 +2,4 @@ format: jb-book
 root: intro
 chapters:
   - file: 01_build_model
+  - file: 02_bond_angle
