@@ -3,3 +3,6 @@ root: intro
 chapters:
   - file: 01_build_model
   - file: 02_bond_angle
+  - file: 03_lammps_input
+  - file: 04_analysis
+  - file: 05_conclusions
