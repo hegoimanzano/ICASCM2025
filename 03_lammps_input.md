@@ -2,7 +2,7 @@
 
 The LAMMPS **input file** contains, together with the **data file** that we built, the necessary information to run (an analyse) your molecular dynamics simulation. We present the **input file** in several pieces to explain the different aspects of the simulation. At the end of this page you will find the complete input file to facilitate coy-paste.
 
-### Basic structure of a LAMMPS input file
+### The structure of a LAMMPS input file
 ```{warning}
 If you are a experienced user, you can skip this section
 ```
@@ -17,23 +17,23 @@ The options in LAMMPS are vast. The [LAMMPS Manual](https://docs.lammps.org/) mi
 - kspace_style = long-range electrostatics.
 - special FF like COMB, ReaxFF, or MLP have their own syntax
 
-**3. Simulation Control** This is the heart of the input. It defines time integration, thermostats/barostats, neighbor lists, and trajectory dumps. There are different commands grouped in large families:
+**3. Simulation Control and execution** This is the heart of the input. It defines time integration, thermostats/barostats, neighbor lists, and trajectory dumps. There are different commands grouped in large families:
 - fix = continuous operations applied at every step of the simulation (e.g., integrators like fix nvt, thermostats, SHAKE constraints, MSD calculators, walls, restraints).
 - dump = how to write trajectory snapshots and how often
 - thermo and thermo_style → control which thermodynamics quantities and other paramaters appears in log output file and how oftern
 
-LAMMPS has compute and variable as analysis tools, and fix ave/time to average over time. (computes, variables, averages)
+**4. Analysis** LAMMPS has compute and variable as analysis tools, and fix ave/time to average over time. (computes, variables, averages). The analysis commands are intermixed with layer 3, and they are not strictly necessary, as analysis can be done in a postprocessing stage
 - compute = generates per-atom or global quantities (MSD, stress, RDF, density profiles).
 - variable = algebra with computed quantities.
 - fix ave/time / fix ave/chunk = averages, profiles, histograms.
 
-**4. Execution** Finally, you tell LAMMPS to run → length of the simulation (number of timesteps).
+Finally, you tell LAMMPS to run → length of the simulation (number of timesteps).
 
-Note that LAMMPS interprets commands strictly in the order they appear in the input file. This means that the simulation environment is built step by step, and a command cannot use information that has not yet been defined. You must be carefull with the order of the commands.
+Note that LAMMPS interprets commands strictly **in the order** they appear in the input file. This means that the simulation environment is built step by step, and a command cannot use information that has not yet been defined. You must be carefull with the order of the commands.
 
 ---
 
-### LAMMPS input file for C-S-H simulations
+### Basic LAMMPS input file for C-S-H simulations
 
 **1. Header / Global Settings** We are going to simulate a C-S-H box with periodic boundary conditions in x y z. There are different units systems that must be consistent with your force field and all the input parameters. Note that the all the results will also be printed in these units. The `atom_style` defines what information is stored for each atom. The choice depends on the physics of your system and the force field you plan to use. In our case with CSHFF, we require full, which indicates information about _atom_id, type, coordinates, charge, molecule-ID, bonds, angles, dihedrals_. 
 The `neighbor`-related options refer to how LAMMPS builds the pairwise neighbor lists to compute forces between atoms. They affect the efficiency and sometimes may induce errors, but it is safe to use the standard values. More info on [neighbors](https://docs.lammps.org/Developer_par_neigh.html)
@@ -62,7 +62,7 @@ kspace_style    pppm 1.0e-4
 # pair_coeff    * * 0.0 3.0     # <-- PON tus parámetros reales
 ```
 
-**3. Simulation Control** Now we start the simulation. In any MD simulations there are at least two stpes. First, an **equilibration period**, in which our system adapts to the desidered thermodynamic conditions. First we assign random `velocity` to the particles according to a Boltzmann distribution at 300 K. Then, we perform the simulation in the canonical ensemble `fix nvt`, at an initial and final temperature of 300 K, applying a thermostat every 100 steps to maintain the target temperature. We record selected `thermo` properties in the output every 1000 steps. Finally, we need to `unfix` the fix that was defined for this phase to prepare the system for the next stage.
+**3. Simulation Control and execution** Now we start the simulation. In any MD simulations there are at least two stpes. First, an **equilibration period**, in which our system adapts to the desidered thermodynamic conditions. First we assign random `velocity` to the particles according to a Boltzmann distribution at 300 K. Then, we perform the simulation in the canonical ensemble `fix nvt`, at an initial and final temperature of 300 K, applying a thermostat every 100 steps to maintain the target temperature. We record selected `thermo` properties in the output every 1000 steps. Finally, we need to `unfix` the fix that was defined for this phase to prepare the system for the next stage.
 
 ```
 # ---------- FAST EQUILIBRATION ----------
@@ -94,10 +94,16 @@ thermo          1000
 run             50000
 ```
 
+With this basic input file + the data file, you can perform your MD simulation.
+
+---
+
+### Advanced LAMMPS input file for C-S-H simulations
+In the "advanced" mode, we show how to use LAMMPS not only to perform the MD simulation, but also to analyse it _on the fly_. It is not  
 
 
 ```
-# --------- MSD & DIFUSIÓN ----------
+# --------- MSD & DIFFUSION COEFFICIENTS ----------
 # compute msd produce: [1]=MSDx, [2]=MSDy, [3]=MSDz, [4]=MSDtot  (en Å^2)
 compute         msd_all mobile msd
 
@@ -124,7 +130,9 @@ fix             msdout all ave/time 100 10 1000 \
 
 # Mostrar en thermo también (resumen)
 thermo_style    custom step temp c_msd_all[1] c_msd_all[2] c_msd_all[3] c_msd_all[4] v_Dtot
+```
 
+```
 # --------- PERFIL DE DENSIDAD EN z ----------
 # Bin size en nm (ajusta). LAMMPS usa Å en 'real'; delta_A = dz_nm*10
 variable        dz_nm   equal 0.5
