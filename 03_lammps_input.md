@@ -111,33 +111,12 @@ compute         msd_Cl Cl_atoms msd
 thermo_style    custom step temp c_msd_all[1] c_msd_all[2] c_msd_all[3] c_msd_all[4]
 ```
 
+From the slope of the msd vs time, the diffusión coefficient can be computed from the Einstein formula. You could do it in postprocessing. 
 
 
-```
-# tiempo en ps (dt en fs -> ps = fs * 1e-3)
-variable        t_ps    equal step*dt*1.0e-3
 
-# Evitar división por cero al inicio (usa max(t, tiny))
-variable        t_safe  equal max(v_t_ps,1.0e-9)
 
-# Difusiones (m^2/s): D_x = MSDx / (2 t) * (Å^2/ps -> m^2/s = 1e-8)
-variable        Dx      equal c_msd_all[1]/(2.0*v_t_safe) * 1.0e-8
-variable        Dy      equal c_msd_all[2]/(2.0*v_t_safe) * 1.0e-8
-variable        Dz      equal c_msd_all[3]/(2.0*v_t_safe) * 1.0e-8
-# D_total (3D): MSDtot / (6 t)
-variable        Dtot    equal c_msd_all[4]/(6.0*v_t_safe) * 1.0e-8
 
-# Registrar serie temporal (MSD + D)
-# Nevery Nrepeat Nfreq = 100 10 1000 -> cada 1000 pasos (1 ps) si dt=1 fs
-fix             msdout all ave/time 100 10 1000 \
-                c_msd_all[1] c_msd_all[2] c_msd_all[3] c_msd_all[4] \
-                v_Dx v_Dy v_Dz v_Dtot \
-                file msd_D.dat mode vector
-# Columnas: time_step MSDx MSDy MSDz MSDtot Dx Dy Dz Dtot  (t en *pasos*; convertir a ps con dt)
-
-# Mostrar en thermo también (resumen)
-thermo_style    custom step temp c_msd_all[1] c_msd_all[2] c_msd_all[3] c_msd_all[4] v_Dtot
-```
 
 ```
 # --------- PERFIL DE DENSIDAD EN z ----------
