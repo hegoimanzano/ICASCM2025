@@ -62,7 +62,7 @@ kspace_style    pppm 1.0e-4
 # pair_coeff    * * 0.0 3.0     # <-- PON tus parámetros reales
 ```
 
-**3. Simulation Control** Now we start the simulation. In any MD simulations there are at least two stpes. First, an **equilibration period**, in which our system adapts to the desidered thermodynamic conditions. 
+**3. Simulation Control** Now we start the simulation. In any MD simulations there are at least two stpes. First, an **equilibration period**, in which our system adapts to the desidered thermodynamic conditions. First we assign random `velocity` to the particles according to a Boltzmann distribution at 300 K. Then, we perform the simulation in the canonical ensemble `fix nvt`, at an initial and final temperature of 300 K, applying a thermostat every 100 steps to maintain the target temperature. We record selected `thermo` properties in the output every 1000 steps. Finally, we need to `unfix` the fix that was defined for this phase to prepare the system for the next stage.
 
 ```
 # ---------- FAST EQUILIBRATION ----------
@@ -73,6 +73,7 @@ thermo_style    custom step temp pe etotal press density
 run             10000
 unfix           nvt
 ```
+
 ```{tip}
 It is also common, altough we did not do it, to perform an energy minimization step before the equilibration to relax the initial simulation box and avoid "explosions" due to overlapping of atoms
 ```
@@ -83,13 +84,17 @@ It is also common, altough we did not do it, to perform an energy minimization s
 The energy can be misleading: if the initial configuration is very far from equeilibrium, the first energy values will often be very high, and the subsequent rapid decrease may create the false impression of convergence.
 ```
 
+Second, we enter the **production phase**. In this stage, thermodynamic quantities are collected, and snapshots of the trajectory are stored in order to compute the properties of interest. The production run must be sufficiently long to ensure that the observables under study have converged. The required length strongly depends on the property we wish to calculate. For instance, if the goal is to obtain an infrared spectrum, relatively short trajectories are sufficient, since molecular vibrations take place on the timescale of a few picoseconds. If instead we are interested in the coordination of water molecules around a cation, the simulation must extend to the nanosecond or even tens of nanoseconds, because that is the timescale for water molecules to exchange between the first and second solvation shells. In this course, due to time limitations, we will restrict ourselves to production runs of about 10 picoseconds, which is sufficient for demonstration purposes. However, keep in mind that for a **reliable calculation of the mean square displacement, appropriate simulations would need to reach 100–200 nanoseconds or more**.
+
 ```
 # ---------- PRODUCTION ----------
 reset_timestep  0
-fix             nvt all nvt temp 300.0 300.0 100.0
+fix             nvt all nvt temp 300.0 300.0 100.0 
 thermo          1000
 run             50000
 ```
+
+
 
 ```
 # --------- MSD & DIFUSIÓN ----------
