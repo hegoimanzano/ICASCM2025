@@ -99,7 +99,7 @@ With this basic input file + the data file, you can perform your MD simulation.
 ---
 
 ### Advanced LAMMPS input file for C-S-H simulations
-In the "advanced" mode, we show how to use LAMMPS not only to perform the MD simulation, but also to analyse it _on the fly_. It is not  
+In the "advanced" mode, we show how to use LAMMPS not only to perform the MD simulation, but also to analyse it _on the fly_. It is not neccesary to 
 
 
 ```
