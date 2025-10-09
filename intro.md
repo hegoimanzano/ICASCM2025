@@ -32,8 +32,3 @@ To follow the tutorial, participants will need to prepare a few tools in advance
 - **Basic file and path handling**: A minimal understanding of how to navigate file paths and execute Python scripts will be necessary.  
 
 > **Note**: No access to a supercomputer is required, since the tutorial is based on a **basic but representative example** designed to be executable on a personal computer.  
-
-
-
-
-
