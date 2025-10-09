@@ -3,7 +3,7 @@
 The LAMMPS **input file** contains, together with the **data file** that we built, the necessary information to run (an analyse) your molecular dynamics simulation. We present the **input file** in several pieces to explain the different aspects of the simulation. At the end of this page you will find the complete input file to facilitate coy-paste.
 
 ### The structure of a LAMMPS input file
-```{warning}
+```{note}
 If you are a experienced user, you can skip this section
 ```
 
@@ -99,14 +99,21 @@ With this basic input file + the data file, you can perform your MD simulation.
 ---
 
 ### Advanced LAMMPS input file for C-S-H simulations
-In the "advanced" mode, we show how to use LAMMPS not only to perform the MD simulation, but also to analyse it _on the fly_. It is not neccesary to 
+In the "advanced" mode, we show how to use LAMMPS not only to perform the MD simulation, but also to analyse it **_on the fly_**. The input will not work by just copy-pasting, and some editing will be necessary.
 
+Doing the analysis on the fly saves time optimising the simulation pipelines and makes allows automatization of the procedure. In this example, we will include an automatic analysis of Cl diffusion. The `compute msd` produces a with the components 1=MSDx, 2=MSDy, 3=MSDz, 4=MSDtot. Note that we have a `type_Cl` group of atoms. This group must be defined after reading the data file, and before the `compute msd`. The values from the compute can be printed in the ouput calling them in a custom `thermo_style`
 
 ```
 # --------- MSD & DIFFUSION COEFFICIENTS ----------
 # compute msd produce: [1]=MSDx, [2]=MSDy, [3]=MSDz, [4]=MSDtot  (en Å^2)
-compute         msd_all mobile msd
+group           Cl_atoms type Cl
+compute         msd_Cl Cl_atoms msd
+thermo_style    custom step temp c_msd_all[1] c_msd_all[2] c_msd_all[3] c_msd_all[4]
+```
 
+
+
+```
 # tiempo en ps (dt en fs -> ps = fs * 1e-3)
 variable        t_ps    equal step*dt*1.0e-3
 
