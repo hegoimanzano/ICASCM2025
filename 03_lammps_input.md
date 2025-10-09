@@ -71,7 +71,9 @@ run             10000
 unfix           nvt
 ```
 _NOTE: it is also common, altough we did not do it, to perform an energy minimization step before the equilibration to relax the initial simulation box and avoid "explosions" due to overlapping of atoms_
+
 **How long should an equilibration phase last?** The simple answer is that it should last as long as necessary, and the exact duration is system-specific, and depends on your initial simulation protocol, how you build your simulation box, the force field, the final thermodynamic conditions, etc. It is essential to  to confirm that equilibrium has truly been reached by monitoring the energy, density of the system, the mobility of the atoms, or structural properties. 
+
 _NOTE: The energy can be misleading: if the initial configuration is very far from equeilibrium, the first energy values will often be very high, and the subsequent rapid decrease may create the false impression of convergence._
 
 ```
