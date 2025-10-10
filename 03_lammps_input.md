@@ -100,29 +100,30 @@ With this basic input file + the data file, you can perform your MD simulation.
 
 ### Advanced LAMMPS input file for C-S-H simulations
 In the "advanced" mode, we show how to use LAMMPS not only to perform the MD simulation, but also to analyse it **_on the fly_**. The input will not work by just copy-pasting, and some editing will be necessary.
+Doing the analysis on the fly saves time optimising the simulation pipelines and makes allows automatization of the procedure. 
 
-Doing the analysis on the fly saves time optimising the simulation pipelines and makes allows automatization of the procedure. In this example, we will include an automatic analysis of Cl diffusion. The `compute msd` produces a with the components 1=MSDx, 2=MSDy, 3=MSDz, 4=MSDtot. Note that we have a `type_Cl` group of atoms. This group must be defined after reading the data file, and before the `compute msd`. The values from the compute can be printed in the ouput calling them in a custom `thermo_style`
+First, we will include an automatic analysis of **Cl diffusion**. The `compute msd` produces a with the components MSDx, MSDy, MSDz, MSDtot. Note that we have a `type_Cl` group of atoms. This group must be defined after reading the data file, and before the `compute msd`. The values from the compute can be printed in the ouput calling them in a custom `thermo_style`
 
 ```
 # --------- MSD & DIFFUSION COEFFICIENTS ----------
 # compute msd produce: [1]=MSDx, [2]=MSDy, [3]=MSDz, [4]=MSDtot  (en Å^2)
 group           Cl_atoms type Cl
-compute         msd_Cl Cl_atoms msd
-thermo_style    custom step temp c_msd_all[1] c_msd_all[2] c_msd_all[3] c_msd_all[4]
+compute         msdCl Cl_atoms msd
+thermo_style    custom step temp c_msdCl_all[1] c_msdCl_all[2] c_msdCl_all[3] c_msdCl_all[4]
 ```
 
 From the slope of the msd vs time, the diffusión coefficient can be computed from the Einstein formula. You could do it in postprocessing. 
 
+The second property will be the **density profile** of the XXX in the slit pore. The density profile represents the density of secies in perpendicular to the C-S-H surfaces, and helps us to understand adsorption and electrical double layers. 
 
+That command divides the simulation box along the z-axis into bins of width dz_A, starting from the lower boundary of the box. Each atom is then assigned to a bin according to its z-coordinate.
 
-
-
+This command generates a number density profile along the z direction, using the bins defined in c_zbin. Every 1000 steps it writes the profile into density_z_A3.dat. Because of ave running, the values represent cumulative averages over the entire simulation rather than just over short blocks.
 
 ```
 # --------- PERFIL DE DENSIDAD EN z ----------
 # Bin size en nm (ajusta). LAMMPS usa Å en 'real'; delta_A = dz_nm*10
-variable        dz_nm   equal 0.5
-variable        dz_A    equal v_dz_nm*10.0
+variable        dz_A    equal 0.5
 
 # Chunks a lo largo de z (desde el límite inferior de la caja)
 compute         zbin all chunk/atom bin/1d z lower ${dz_A} units box
@@ -131,12 +132,7 @@ compute         zbin all chunk/atom bin/1d z lower ${dz_A} units box
 # 1 Å^-3 = 1e3 nm^-3  -> multiplica por 1000 fuera o usa la versión escalada abajo
 fix             profA all ave/chunk 100 10 1000 c_zbin density/number file density_z_A3.dat ave running
 
-# (Opcional) También #/nm^3 directamente: usamos 'count' y dividimos por volumen del bin
-# Volumen del bin = Lx * Ly * dz (Å^3); multiplicador 1000/Å^3 -> nm^-3
-# No hay multiplicador directo en ave/chunk, así que generamos 'count' y post-procesa:
-fix             profC all ave/chunk 100 10 1000 c_zbin count file density_z_counts.dat ave running
-# Para convertir a nm^-3: rho_nm3 = counts / (frames * Lx * Ly * dz_A) * 1000
-# (fácil de hacer con una línea en Python o gnuplot al analizar)
+
 
 # ---------- PRODUCIR TRAYECTORIA LIGERA ----------
 dump            trj all custom 1000 traj.lammpstrj id type q x y z
