@@ -114,11 +114,7 @@ thermo_style    custom step temp c_msdCl_all[1] c_msdCl_all[2] c_msdCl_all[3] c_
 
 From the slope of the msd vs time, the diffusión coefficient can be computed from the Einstein formula. You could do it in postprocessing. 
 
-The second property will be the **density profile** of the XXX in the slit pore. The density profile represents the density of secies in perpendicular to the C-S-H surfaces, and helps us to understand adsorption and electrical double layers. 
-
-That command divides the simulation box along the z-axis into bins of width dz_A, starting from the lower boundary of the box. Each atom is then assigned to a bin according to its z-coordinate.
-
-This command generates a number density profile along the z direction, using the bins defined in c_zbin. Every 1000 steps it writes the profile into density_z_A3.dat. Because of ave running, the values represent cumulative averages over the entire simulation rather than just over short blocks.
+The second property will be the **density profile** of the XXX in the slit pore. The density profile represents the density of secies in perpendicular to the C-S-H surfaces, and helps us to understand adsorption and the formation of electrical double layers. The `compute` command divides the simulation box along the z-axis into bins of width _dz_A_ (define before), starting from the lower boundary of the box. Each Cl atom (group defined before) is then assigned to a bin according to its z-coordinate. With this command we compute the density profile at each simulation step, but any physical observable must be obtained from the time average of the property over time. We do it with the next `fix` command, which generates the average number density profile along the z direction using the bins defined in `c_zbin`. Every 10 steps is samples c_bin, it takes 20 samples, and it writes the profile into density_z_A3.dat every 10x20 = 200 steps. The _ave running_ instruction, implies that then we do cumulative averages over the entire simulation, rather than  take the short blocks generated every 200 steps.
 
 ```
 # --------- PERFIL DE DENSIDAD EN z ----------
@@ -126,27 +122,13 @@ This command generates a number density profile along the z direction, using the
 variable        dz_A    equal 0.5
 
 # Chunks a lo largo de z (desde el límite inferior de la caja)
-compute         zbin all chunk/atom bin/1d z lower ${dz_A} units box
+compute         zbin Cl_atoms chunk/atom bin/1d z lower ${dz_A} units box
 
 # Densidad numérica (#/Å^3). Guardamos y damos factor de conversión a nm^-3.
-# 1 Å^-3 = 1e3 nm^-3  -> multiplica por 1000 fuera o usa la versión escalada abajo
-fix             profA all ave/chunk 100 10 1000 c_zbin density/number file density_z_A3.dat ave running
 
-
-
-# ---------- PRODUCIR TRAYECTORIA LIGERA ----------
-dump            trj all custom 1000 traj.lammpstrj id type q x y z
-dump_modify     trj sort id
-
-# ---------- CORRER PRODUCCIÓN ----------
-
-
-# ---------- LIMPIEZA ----------
-unfix           msdout
-unfix           profA
-unfix           profC
-undump          trj
+fix             profA all ave/chunk 10 20 200 c_zbin density/number file density_z_A3.dat ave running
 ```
+
 
 
 
