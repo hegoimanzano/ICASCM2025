@@ -29,6 +29,7 @@ To follow the tutorial, participants will need to prepare a few tools in advance
   - On macOS and Linux, Python can be run natively or inside a virtual environment.  
   - On Windows, a separate installation is required. We recommend using *Visual Studio Code* (VS Code), a free editor by Microsoft that integrates smoothly with Python.  
 
-- **Basic file and path handling**: A minimal understanding of how to navigate file paths and execute Python scripts will be necessary.  
+- **Basic file and path handling**: A minimal understanding of how to navigate file paths and execute Python scripts will be necessary.
+- **Simulation code** We will use [LAMMPS](https://docs.lammps.org) (Large-scale Atomic/Molecular Massively Parallel Simulator). LAMMPS is a classical molecular dynamics simulation code focusing on materials modeling, originally developed at Sandia National Laboratories, a US Department of Energy facility. LAMMPS is open-source software distributed under the GPLv2. [Atomify](https://andeplane.github.io/atomify/)
 
 > **Note**: No access to a supercomputer is required, since the tutorial is based on a **basic but representative example** designed to be executable on a personal computer.  
