@@ -4,6 +4,7 @@ The LAMMPS **input file** contains, together with the **data file** that we buil
 
 
 :pencil2: **Novel users** You will have to follow the _Basic LAMMPS input file for C-S-H simulations_ section to understand and create in a text file the LAMMPS input file.
+
 :black_nib: **Advanced users** You will have to follow the _Basic LAMMPS input file for C-S-H simulations_ section, and add the information on the _Advanced LAMMPS input file for C-S-H simulations_ section to improve the LAMMPS input file.
 
 
