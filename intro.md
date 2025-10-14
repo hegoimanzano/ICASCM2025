@@ -23,13 +23,17 @@ The aim is to illustrate two complementary approaches:
 
 To follow the tutorial, participants will need to prepare a few tools in advance:  
 
-- **Visualization programs**: We will use *Ovito* or *VESTA*, and *VMD*. These are free visualization tools, available for Windows, Linux, and macOS.  
+- **Visualization programs**: We will use *Ovito* or *VESTA*, and *VMD*. These are free visualization tools, available for Windows, Linux, and macOS.
+  - OVITO is excellent for analyzing atomistic trajectories and creating high-quality animations.
+	- VESTA is widely used for crystallographic structures and static visualizations.
+  - VMD (Visual Molecular Dynamics) is designed for trajectory analysis of biomolecules, but we will use it for bond recognition. 
 
-- **Python execution environment**:  
-  - On macOS and Linux, Python can be run natively or inside a virtual environment.  
-  - On Windows, a separate installation is required. We recommend using *Visual Studio Code* (VS Code), a free editor by Microsoft that integrates smoothly with Python.  
+- **Python execution environment**: We will write and execute small Python scripts to postprocess simulation data. A minimal understanding of how to navigate file paths and execute Python scripts will be necessary.
+  - On macOS and Linux, Python is usually pre-installed. You can run scripts directly from the terminal, or create a virtual environment with 
+  - On Windows, Python is not installed by default. We recommend downloading it from python.org or installing through the Microsoft Store. For editing and running scripts, Visual Studio Code (VS Code) is highly recommended. It is a free code editor by Microsoft, integrates seamlessly with Python, and supports virtual environments as well.
 
-- **Basic file and path handling**: A minimal understanding of how to navigate file paths and execute Python scripts will be necessary.
-- **Simulation code** We will use [LAMMPS](https://docs.lammps.org) (Large-scale Atomic/Molecular Massively Parallel Simulator). LAMMPS is a classical molecular dynamics simulation code focusing on materials modeling, originally developed at Sandia National Laboratories, a US Department of Energy facility. LAMMPS is open-source software distributed under the GPLv2. [Atomify](https://andeplane.github.io/atomify/)
+- **Simulation code** We will use [LAMMPS](https://docs.lammps.org) (Large-scale Atomic/Molecular Massively Parallel Simulator). LAMMPS is a classical molecular dynamics simulation code focusing on materials modeling, originally developed at Sandia National Laboratories, a US Department of Energy facility. LAMMPS is open-source software distributed under the GPLv2. Usually LAMMPS will be installed and runed on HPC, but here we will use [Atomify](https://andeplane.github.io/atomify/), a lightweight graphical front-end for LAMMPS. Atomify allows you to build, run, and visualize molecular dynamics simulations in real time through an interactive interface. It is especially useful for beginners, as it removes some of the complexity of running LAMMPS from the command line.
+
+- **Postprocessing and Analysis**: Postprocessing will be done with python and [TRAVIS](travis-analyzer.de) (Trajectory Analyzer and Visualizer). TRAVIS is a free program that can process MD trajectories to compute properties such as Mean Square Displacement (MSD) and diffusion coefficients, Density and radial distribution profiles, Vibrational spectra, velocity autocorrelation functions, and more. TRAVIS is available for Windows, Linux, and macOS, and can be downloaded from . It provides an interactive workflow and complements the built-in analysis tools of LAMMPS.
 
 > **Note**: No access to a supercomputer is required, since the tutorial is based on a **basic but representative example** designed to be executable on a personal computer.  
