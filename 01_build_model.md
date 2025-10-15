@@ -84,7 +84,7 @@ Write a `.vasp` VASP data file for each of the structures.
 
 
 
-```[tip]
+```{tip}
 In windows the default is _Notepad_, in Mac _Textedit_ and in Linux _Nano_. They are enough, specially _Nano_, but if you are going to work on simulations, we recommend to use something more sophisticated as _vim_ or _visual studio_ despite teh steper learning curve.
 ```
 
