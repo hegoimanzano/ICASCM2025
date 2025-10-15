@@ -1,85 +1,112 @@
 # Build a basic C–S–H model with pyCSH
 
-The first step for a high quality simulation of C-S-H (and any other material) is to build an atomic scale model as realistic as possible, this is, that comprises all the necessary features to represent the real conditions to reproduce the experimental physical properties. In our case, we will build a slit-pore C-S-H model" to study NaCl diffusion in C-S-H nanopores.
+The first step for a high quality simulation of C-S-H (and any other material) is to build an atomic scale model as realistic as possible. In other words, a model that comprises all the necessary features to represent the real conditions to reproduce the experimental physical properties. In our case, we will build a "slit-pore C-S-H model" to study NaCl diffusion in C-S-H nanopores.
 
-The general procedure for building a slit pore in a calcium–silicate–hydrate (C–S–H) model follows the same logic as in layered silicate clays.
-- **Build the bulk structure**  A detailed description of the different model construction methods can be found in this [article](https://doi.org/10.1016/j.cemconres.2022.106784). Here we will use the [pyCSH code](https://doi.org/10.1016/j.cemconres.2024.107593), a Python code for the automated generation of realistic bulk calcium silicate hydrate (C-S-H) structures.
-- **Introduce the pore** (slit geometry) Choose a crystallographic direction perpendicular to the layers of interest. Define a “gap” by translating one part of the structure away from the other, thereby creating an empty region. Adjust the simulation box dimensions accordingly to maintain periodic boundary conditions. The pore width can be tuned by setting the separation distance between the two C–S–H surfaces.
-- **Saturate with water** Insert water molecules into the pore region using a packing algorithm (e.g., Packmol, mBuild, or custom scripts). Maintain realistic densities by filling until the desired target pore solution density is reached.
+The general procedure for building a slit pore in a calcium–silicate–hydrate (C–S–H) is:
+
+- **Build the bulk structure**  A detailed description of the different model construction methods can be found in this [review article](https://doi.org/10.1016/j.cemconres.2022.106784). Here we will use the [pyCSH code](https://doi.org/10.1016/j.cemconres.2024.107593), a Python code for the automated generation of realistic bulk calcium silicate hydrate (C-S-H) structures.
+
+- **Introduce the pore** (slit geometry) Choose a crystallographic direction perpendicular to the layers of interest. Define a “gap” by translating one part of the structure away from the other, thereby creating an empty region. The pore width can be tuned by setting the separation distance between the two C–S–H surfaces.
+
+- **Saturate with water** Insert water molecules into the pore region using a packing algorithm. Reach realistic densities by filling until the desired target pore solution density is reached or by MD relaxation.
+
+> ✏️ **Novel users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code. The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.3, a C-S-H surface of least 2.25nm^2, and a pore space of aprox 2nm filled with water and 10NaCl ion pairs.
+
+> ✒️ **Advanced users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code **_and packmol_**. The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.3, a C-S-H surface of least 2.25nm^2, and a pore space of aprox 2nm filled with water and 10NaCl ion pairs.
+
 ---
-### Download the pyCSH code
-- Download the zip file from the course link I will provide in class (or clone the repo).
-- Unzip and enter the folder (e.g. csh_basic/).
 
-> Optional (recommended): create a python virtual environment. A Python environment is basically a self-contained workspace where you keep your Python interpreter plus the exact set of libraries you need for a project. Think of it as a sandbox: it isolates your project’s Python version and packages from everything else installed on your computer. You avoid breaking your system Python. Installing libraries globally (pip install … without an environment) can mess up system tools. When you’re done with a project, you can just delete the environment folder and it’s gone—no leftover libraries.
+### Construction of C-S-H model using pyCSH.
+
+**1. Donwload pyCSH** Download the zip file from the github repository. Unzip and enter the folder (e.g. csh_basic/).
+
+**2. Edit the input.py**  Open **input.py** in your text editor. You will have to change a few parameters to build your model:
 
 ```
-python3 -m venv .venv
-source .venv/bin/activate     # Windows: .venv\Scripts\activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt    # only if provided
+The parameters that control the generated CSH models are defined in `parameters.py`, and are the following:
+
+ - `seed`: **Optional**. Default : 1123
+   Seed for the random number generator.
+   
+- `shape`: **Required**
+  Shape of the supercell of defective tobermorite 14 A. Tuple of the shape (Nx, Ny, Nz).
+  
+- `Ca_Si_ratio`: **Required**
+Target Ca/Si ratio of the CSH model.
+
+- `W_Si_ratio`: **Required**
+Target water/Si ratio of the CSH model.
+
+- `prefix`: **Optional**. Default: 'input'
+  Name of the output files.
+ 
+- `N_samples`: **Required**
+Number of structures to be generated.
+
+- `make_independent`: **Optional**. Default: False
+  Whether to ensure that none of the structures are different spatial arrangement of the same unit cells or not.
+
+- `offset_gaussian`: **Optional**. Default: False
+  If True, some preliminary calculations will be done in order to impose more strictly that the amount of Ca-OH and Si-OH are closer to the experimental values.
+
+- `width_Ca_Si`: **Optional**. Default: 0.1
+Width of the gaussian used for sampling the Ca/Si ratio of each of the unit cells that compose the total supercell.  Smaller values (e.g. 0.01) will  lead to ratios closer to the target, but might cause the code to fail.
+
+- `width_SiOH`: **Optional**. Default: 0.08
+Width of the gaussian used for sampling the Si-OH/Si ratio.
+
+- `width_CaOH`: **Optional**. Default: 0.04
+Width of the gaussian used for sampling the Ca-OH/Ca ratio.
+
+- `create`: **Required**.
+True if you want to generate new structures, False, if other modes are required. See `check` and `read_structure`.
+
+- `check`: **Optional**. Default: False
+If True, a prelimilary check for a wide range of Ca/Si ratios will be performed, in order to show the accuracy of the generated models for the selected parameters with respect to the Ca/Si ratio, water/Si ratio etc.
+
+- `read_structure`: **Optional**. Default: False
+If True, handmade brick code will be read from the end of the parameters file.
+
+	- `surface_from_bulk`: **Optional**. Default: False.
+If True, the handmade structure will be transformed to a surface  in the **z** dimension by adding upper (">Lo", ">Ro") and lower ("<Lo", "<Ro") chains.
+
+	- `surface_separation`: **Optional**. Default: False
+	  Approximate distance between the layers of CSH surfaces.
+	 
+- `write_lammps`: **Optional**. Default: True
+Write a `.data` LAMMPS data file for each of the structures. 
+
+- `write_lammps_erica`: **Optional**. Default: True
+Write a `.data` LAMMPS data file for each of the structures, with core-shell, bonds and angle information to use with EricaFF.
+
+- `write_vasp`: **Optional**. Default: True
+Write a `.vasp` VASP data file for each of the structures. 
 ```
----
-### Edit the input.py
-Open **input.py** in your text editor. In windows the default is **Notepad**, int Mac **Textedit** and they are enough, but if you are going to work on simulations, we recommend something more sophisticated as **vim** or **visual studio**. You will only change a few parameters (I will dictate the exact options later). The file looks like:
 
----
-### Run
 
-In a terminal inside the folder:
+```tip
+In windows the default is _Notepad_, in Mac _Textedit_ and in Linux _Nano_. They are enough, specially _Nano_, but if you are going to work on simulations, we recommend to use something more sophisticated as _vim_ or _visual studio_ despite teh steper learning curve.
+```
+
+
+**3. Run pyCSH** In a terminal inside the folder (or VScode) run simply 
 
 ```
 python3 run.py
 ```
 
-That’s it. The script will:
-- Read input.py.
-- Build a basic C–S–H model (or C–S–H slit-pore if selected).
-- Save structure files and produce some plots.
+That’s it. The script will read you input.py, build the required C–S–H models, save structure files, and produce some plots.
 
-You should see terminal messages ending with something like:
 
-```
-[OK] wrote: csh_basic.data
-[OK] wrote: csh_basic.xyz
-[OK] wrote: csh_basic.cif
-[OK] plots saved in: plots/
-```
----
-### What the outputs are and how to read them
+**4. What the outputs are and how to read them**
 
-Structure files
-- csh_basic.data — LAMMPS data file (topology + box).
-- Used later if we run MD.
-- OVITO can open LAMMPS data directly (File → Load… → choose LAMMPS data).
- - csh_basic.xyz — simple XYZ with all atoms.
-- OVITO can open it directly.
-- Good for quick previews.
-- csh_basic.cif — CIF crystallographic file.
-- VESTA: File → Open… → choose csh_basic.cif.
-- Preferred for VESTA (periodic cell handled nicely).
+Structure files:
+- name.data — LAMMPS data file OVITO can open LAMMPS data directly.
+- name.xyz — simple XYZ with all atoms. OVITO can open it directly. Good for quick previews.
+- name.cif — CIF crystallographic file. VESTA can open it directly. Preferred for VESTA (periodic cell handled nicely).
 
-Plots (inside plots/)
-- density_profile_z.png — number-density profiles along the pore axis z (H_2O O, Na^+, Cl^-).
-- rdf_example.png — example radial distribution function (pair(s) will be specified).
-- composition_summary.png — basic composition/stoichiometry bars (if provided).
-- (If a short MD is bundled) msd_water.png — MSD of water oxygens with a rough D estimate.
+Plots:
+- MCL.pdf, Ca/Si 
 
----
-### Visualize the model
 
-VESTA (for CIF)
-- Open VESTA → File → Open… → select csh_basic.cif.
-- Properties → Data to verify the box; Properties → Atoms to color by element.
-- Use Boundary settings to show periodic images if desired.
 
-OVITO (for LAMMPS data or XYZ)
-- Open OVITO → File → Load… → choose csh_basic.data (format: LAMMPS data) or csh_basic.xyz.
-- In the Pipeline add modifiers if you want (e.g., Slice, Color coding, Coordination analysis).
-- Use the Viewport to make quick screenshots for your report.
-
----
-## What students must hand in (suggested)
-- A screenshot from VESTA (CIF) or OVITO (DATA/XYZ) showing the C–S–H or pore.
-- The plots in plots/ with 2–3 lines interpreting each figure (what you observe and why it makes sense).
-- The input.py used (so we can reproduce your settings).
