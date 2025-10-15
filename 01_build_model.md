@@ -22,7 +22,7 @@ The general procedure for building a slit pore in a calcium–silicate–hydrate
 
 **2. Edit the input.py**  Open **input.py** in your text editor. You will have to change a few parameters to build your model:
 
-```
+
 The parameters that control the generated CSH models are defined in `parameters.py`, and are the following:
 
  - `seed`: **Optional**. Default : 1123
@@ -67,10 +67,10 @@ If True, a prelimilary check for a wide range of Ca/Si ratios will be performed,
 - `read_structure`: **Optional**. Default: False
 If True, handmade brick code will be read from the end of the parameters file.
 
-	- `surface_from_bulk`: **Optional**. Default: False.
+- `surface_from_bulk`: **Optional**. Default: False.
 If True, the handmade structure will be transformed to a surface  in the **z** dimension by adding upper (">Lo", ">Ro") and lower ("<Lo", "<Ro") chains.
 
-	- `surface_separation`: **Optional**. Default: False
+- `surface_separation`: **Optional**. Default: False
 	  Approximate distance between the layers of CSH surfaces.
 	 
 - `write_lammps`: **Optional**. Default: True
@@ -81,10 +81,10 @@ Write a `.data` LAMMPS data file for each of the structures, with core-shell, bo
 
 - `write_vasp`: **Optional**. Default: True
 Write a `.vasp` VASP data file for each of the structures. 
-```
 
 
-```tip
+
+```[tip]
 In windows the default is _Notepad_, in Mac _Textedit_ and in Linux _Nano_. They are enough, specially _Nano_, but if you are going to work on simulations, we recommend to use something more sophisticated as _vim_ or _visual studio_ despite teh steper learning curve.
 ```
 
