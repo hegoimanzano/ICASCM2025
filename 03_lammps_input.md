@@ -3,9 +3,9 @@
 The LAMMPS **input file** contains, together with the **data file** that we built, the necessary information to run (an analyse) your molecular dynamics simulation. We will have two different execises depending on the experience.
 
 
-> ✏️ **Novel users** You will have to follow the _Basic LAMMPS input file for C-S-H simulations_ section to understand and create in a text file the LAMMPS input file.
+> ✏️ **Novel users** will have to follow the [Basic LAMMPS input file for C-S-H simulations](#basic-lammps-input-file-for-c-s-h-simulations) section to understand and create in a text file the LAMMPS input file. The simulation must equilibrate the system for 0.5 ps in NPT and perform a production run in NVT for 1 ps, with clayFF force field, dumping the trayectory every 200 steps and printing the properties every 100 steps.
 
-> ✒️ **Advanced users** You will have to follow the _Basic LAMMPS input file for C-S-H simulations_ section, and add the information on the _Advanced LAMMPS input file for C-S-H simulations_ section to improve the LAMMPS input file.
+> ✒️ **Advanced users** will have to follow the [Basic LAMMPS input file for C-S-H simulations](#basic-lammps-input-file-for-c-s-h-simulations) section, and add the information on the [Advanced LAMMPS input file for C-S-H simulations](#advanced-lammps-input-file-for-c-s-h-simulations) section to improve the LAMMPS input file. The simulation must equilibrate the system for 0.5 ps in NPT and perform a production run in NVT for 1 ps, with clayFF force field, dumping the trayectory every 200 steps and printing the properties every 100 steps. The simulation must print the MSD and the density profiles of Cl, Na and water in 2 files called MSD.txt and DP.txt.
 
 
 ### The structure of a LAMMPS input file
