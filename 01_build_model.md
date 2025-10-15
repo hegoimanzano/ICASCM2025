@@ -20,8 +20,11 @@ The general procedure for building a slit pore in a calcium–silicate–hydrate
 
 **1. Donwload pyCSH** Download the zip file from the github repository. Unzip and enter the folder (e.g. csh_basic/).
 
-**2. Edit the input.py**  Open **input.py** in your text editor. You will have to change a few parameters to build your model:
+**2. Edit the input.py**  Open **input.py** in your text editor. You will have to change a few parameters to build your model.
 
+```{tip}
+In windows the default is _Notepad_, in Mac _Textedit_ and in Linux _Nano_. They are enough, specially _Nano_, but if you are going to work on simulations, we recommend to use something more sophisticated as _vim_ or _visual studio_ despite teh steper learning curve.
+```
 
 The parameters that control the generated CSH models are defined in `parameters.py`, and are the following:
 
@@ -82,10 +85,8 @@ Write a `.data` LAMMPS data file for each of the structures, with core-shell, bo
 - `write_vasp`: **Optional**. Default: True
 Write a `.vasp` VASP data file for each of the structures. 
 
-
-
-```{tip}
-In windows the default is _Notepad_, in Mac _Textedit_ and in Linux _Nano_. They are enough, specially _Nano_, but if you are going to work on simulations, we recommend to use something more sophisticated as _vim_ or _visual studio_ despite teh steper learning curve.
+```{Warning}
+Algo sobre el solapamiento
 ```
 
 
