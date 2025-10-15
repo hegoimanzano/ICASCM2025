@@ -7,38 +7,7 @@ We will analyse the performed MD simulation. The objective is to understand the 
 
 It is always desiderable to check the basic thermodynamics properties and do a visual inspection of the trayectory. There are unphysical behaviours that can be observed on one or another. For example, the silicate chains can break, forming an amorphous material that does not represent C-S-H anymore, and yet, the thermodynamic properties can ARROJAR reasonable energies, densities, etc. 
 
-Perfect — here’s a **ready-to-use Markdown page** with the three analysis steps, written cleanly for JupyterBook. You can paste it directly into your `docs/` folder as e.g. `03_analysis.md` and include it in your `_toc.yml`.  
-
----
-
-```markdown
-# Data Analysis of Molecular Dynamics Simulations
-
-In this section, we will analyze the data produced by our LAMMPS simulations.  
-The analysis will follow three main steps:  
-
-1. **Thermodynamic output**  
-2. **Trajectory visualization**  
-3. **Postprocessing with TRAVIS**
-
----
-
-## 1. Thermodynamic Output from LAMMPS
-
-LAMMPS writes thermodynamic data (energy, pressure, density, etc.) into the log file (`log.lammps`) or a user-defined file.  
-We can use this information to check whether the system has reached equilibrium.
-
-```lammps
-thermo_style custom step temp density etotal press
-thermo 1000
-```
-
-After the simulation:
-
-- Open the `log.lammps` file or redirect the thermo data to a file (e.g., `thermo_output.dat`).  
-- Plot **energy vs. time** or **density vs. time**. Stable values indicate equilibration.  
-
-Example Python script to plot the total energy:
+LAMMPS writes thermodynamic data (energy, pressure, density, etc.) into the log file (`log.lammps`) or a user-defined file.  We can use this information to check whether the system has reached equilibrium. After the simulation, open the `log.lammps`, and plot **energy vs. time**, **density vs. time**, etc. Stable values indicate equilibration, and the average will give you the value of the property. If energy or density continues to drift, the system is not equilibrated. To do these plots you can use your preferred software (_excel_, _gnuplot_, _mathematica_, _kaleidagraph_,...). We recommend **_Matplotlib_**, the python plotting package. An example Python script to plot the total energy:
 
 ```python
 import pandas as pd
@@ -52,32 +21,24 @@ plt.title("Energy vs Time")
 plt.show()
 ```
 
-**Why this matters:** Thermodynamic stability is our first check of equilibration. If energy or density continues to drift, the system is not equilibrated.
+```{caution}
+Thermodynamic properties (energy, enthalpy...), structure (RDFs, Density profiles...) and dynamic properties (viscosity, diffusion coefficients) must not be computed unless the system is at equilibrium.
+```
 
 ---
 
 ## 2. Visualizing the Trajectory
 
-Numbers alone are not enough. Even if energy looks stable, the system structure might become unphysical.  
-Visualization allows us to *see* the atomic arrangement.
-
-```lammps
-dump traj all custom 1000 traj.lammpstrj id type x y z
-```
-
-This creates a trajectory file every 1000 steps.
+Numbers alone are not enough. Even if energy looks stable, the system structure might become unphysical. For example, uncorrect typing of the force field in the input file or a wrong asigment of the atoms might lead the system towards a unrealistic structure, breaking the silicate chains and losing the layered structure. But eventually the thermodynamic properties may converge. Visualization allows us to *see* the atomic arrangement and detect problems and trends.
 
 Open the trajectory with one of the following tools:
 - **OVITO** → for dynamic inspection, slicing, and analysis.  
 - **VMD** → for detailed visualization of molecular motion.  
-- **VESTA** → for static structural inspection.
 
 Check whether:
 - The pore remains open.  
-- Water molecules remain liquid.  
-- The ions distribute realistically.  
-
-**Why this matters:** A force field may produce stable energy but an unphysical structure. Visualization helps detect such problems.
+- Water molecules remain liquid and did not break.  
+- The silicate chains and the layer structure are mantained
 
 ---
 
