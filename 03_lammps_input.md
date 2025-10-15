@@ -3,9 +3,9 @@
 The LAMMPS **input file** contains, together with the **data file** that we built, the necessary information to run (an analyse) your molecular dynamics simulation. We will have two different execises depending on the experience.
 
 
-> **Novel users** You will have to follow the _Basic LAMMPS input file for C-S-H simulations_ section to understand and create in a text file the LAMMPS input file.
+> ✏️ **Novel users** You will have to follow the _Basic LAMMPS input file for C-S-H simulations_ section to understand and create in a text file the LAMMPS input file.
 
-> **Advanced users** You will have to follow the _Basic LAMMPS input file for C-S-H simulations_ section, and add the information on the _Advanced LAMMPS input file for C-S-H simulations_ section to improve the LAMMPS input file.
+> ✒️ **Advanced users** You will have to follow the _Basic LAMMPS input file for C-S-H simulations_ section, and add the information on the _Advanced LAMMPS input file for C-S-H simulations_ section to improve the LAMMPS input file.
 
 
 ### The structure of a LAMMPS input file
