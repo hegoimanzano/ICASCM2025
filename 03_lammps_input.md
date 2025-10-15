@@ -118,7 +118,12 @@ compute         msdCl Cl_atoms msd
 thermo_style    custom step temp c_msdCl_all[1] c_msdCl_all[2] c_msdCl_all[3] c_msdCl_all[4]
 ```
 
-From the slope of the msd vs time, the diffusión coefficient can be computed from the Einstein formula. You could do it in postprocessing. 
+From the slope of the msd vs time, the diffusión coefficient can be computed from the Einstein formula. You could do it in postprocessing.
+
+$$
+D = \frac{1}{2d} \frac{\mathrm{d}}{\mathrm{d}t} \big\langle \lvert \mathbf{r}(t)-\mathbf{r}(0)\rvert^2 \big\rangle\Big|_{t\to\infty}
+= \frac{1}{2d} \frac{\mathrm{d}}{\mathrm{d}t} \big\langle \mathrm{MSD_d} \big\rangle\
+$$ 
 
 The second property will be the **density profile** of the XXX in the slit pore. The density profile represents the density of secies in perpendicular to the C-S-H surfaces, and helps us to understand adsorption and the formation of electrical double layers. The `compute` command divides the simulation box along the z-axis into bins of width _dz_A_ (define before), starting from the lower boundary of the box. Each Cl atom (group defined before) is then assigned to a bin according to its z-coordinate. With this command we compute the density profile at each simulation step, but any physical observable must be obtained from the time average of the property over time. We do it with the next `fix` command, which generates the average number density profile along the z direction using the bins defined in `c_zbin`. Every 10 steps is samples c_bin, it takes 20 samples, and it writes the profile into density_z_A3.dat every 10x20 = 200 steps. The _ave running_ instruction, implies that then we do cumulative averages over the entire simulation, rather than  take the short blocks generated every 200 steps.
 
