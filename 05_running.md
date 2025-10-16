@@ -5,9 +5,10 @@ After a simulation is finished, all files are available in a jupyter notebook th
 
 > **All users** will have to run their simulations. You can play with the Atomify options to see the real time evolution of your simulation and try to understand and evaluate if the evolution of the physical quantities is the expected one.
 
-To run the simulation on Atomify, just go to the left menu, click in `New simulation`, give a **name** to your simulation and drag and drop the input anda data files. 
-You can explore the options on the right menu, and cliking on the physical properties you will see plots of their evolution in real time. Hidding the menu you will see aditional options to control for example the brightness.
+The **left menu** controls the folders, files, and the navigation thorugh them. To run the simulation, just click in `New simulation`, give a **name** to your project, and drag and drop the input anda data files.
 
-When the simulation finishes, the lammps.log file with the simulation output pops out. There you have information about the performance + oansfajdnsfa. By clicking on the `analyze notebook` option you will be able to plot automatically the thermodynamic parameters from the log file in python. This lammps.log output file plus the trajectory file are located in a folder with the **name** you used. You can donwload them for posteior analysis.
+**During the simulation** you can explore the options on the right menu, which shows all the simulation parameters and output properties. You can change atom and bond sizes, and cliking on the physical observables and defined variables you will see plots of their evolution in real time. Hidding the menu you will see aditional options to control for example the brightness.
+
+**When the simulation finishes**, the lammps.log file with the simulation output pops out. There you have information about the properties defined by the `thermo` command in the input, as well as the simulation time and performance. By clicking on the `analyze notebook` option you will be able to plot automatically these thermodynamic properties in python. The lammps.log output file and the trajectory file are located in a folder with the **name** you used. You have to donwload them for a posteriory analysis. 
 
 
