@@ -2,9 +2,9 @@
 
 We will analyse the performed MD simulation. The objective is to understand the diffusion and the equilibrium state of Cl ions in the C-S-H slit-(nano)pore. Furthermore, it is always desiderable to check the basic thermodynamics properties and do a visual inspection of the trayectory. There are unphysical behaviours that can be observed on one or another. For example, the silicate chains can break, forming an amorphous material that does not represent C-S-H anymore, and yet, the thermodynamic properties can give reasonable energies, densities, etc. 
 
-> ✏️ **Novel users** will have to follow the instructions to plot . The simulation must equilibrate the system for 0.5 ps in NPT and perform a production run in NVT for 1 ps, with clayFF force field, dumping the trayectory every 200 steps and printing the properties every 100 steps.
+> ✏️ **Novel users** will have to follow the instructions to analyse the data. **First** you have to produce plots to justify if the simulation has converged or not. **Second** you will have to save an image with a simulation snapshot from VMD or OVITO. **Third** you will have to use TRAVIS to plot the MSD and report the obtained diffusion coefficient. **Finally** you will have to use TRAVIS to plot and save an image with the density profile.
 
-> ✒️ **Advanced users** will have to follow the [Basic LAMMPS input file for C-S-H simulations](#basic-lammps-input-file-for-c-s-h-simulations) section, and add the information on the [Advanced LAMMPS input file for C-S-H simulations](#advanced-lammps-input-file-for-c-s-h-simulations) section to improve the LAMMPS input file. The simulation must equilibrate the system for 0.5 ps in NPT and perform a production run in NVT for 1 ps, with clayFF force field, dumping the trayectory every 200 steps and printing the properties every 100 steps. The simulation must print the MSD and the density profiles of Cl, Na and water in 2 files called MSD.txt and DP.txt.
+> ✒️ **Advanced users** will have to do the same as novel users. In adittion, you will have to plot the MSD and density profile obtained directly from LAMMPS.
 
 
 ---
