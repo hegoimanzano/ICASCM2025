@@ -2,11 +2,28 @@
 
 In any molecular dynamics (MD) simulation package, a **topology** file (sometimes also called a _structure_ or _data file_) is the foundation of the entire simulation. While the input script tells the program _how to run_ the dynamics (ensembles, temperature control, run length), the topology tells it _what system_ is being simulated. This includes a complete description of all particles: their identifiers, element or species type, masses, charges, and spatial coordinates, along with the connectivity information that defines which atoms are bonded, and how angles and dihedrals are organized. Without such information, the force field cannot assign the correct interactions—bond stretching, angle bending, torsional rotations, and nonbonded forces—so the MD code would be unable to calculate energies and forces consistently. In short, the topology is the “map” that defines the system at the atomic scale.
 
-In LAMMPS, this information is usually stored in a **data file**, which is read using the `read_data` command. The structure of this file is modular and well defined:
-	•	A **header** section specifies the total number of atoms, bonds, angles, dihedrals, and impropers, as well as the dimensions of the simulation box.
-	•	A **Masses** section assigns masses to each atom type.
-	•	An **Atoms** section provides, for each atom, its ID, molecule ID (if relevant), atom type, charge, and coordinates (x, y, z). Depending on the `atom_style` chosen in the input, additional fields may appear (such as velocities, dipoles, or extra properties).
-	•	Optional **Bonds, Angles, Dihedrals, and Impropers** sections describe bonded connectivity, listing the IDs of the participating atoms and their type.
+Constructing this file correctly is often the most delicate part of preparing a simulation. In a system with >1000 atoms, it is necessary to define thousands of bonds, angles, dihedrals, etc, which is not straightforward. Lo vamos a hacer a partir de la estructura construida por pyCSH usando VMD (Visual Molecular Dynamics). VMD is a molecular visualization program for displaying, animating, and analyzing large biomolecular systems using 3D graphics and built-in scripting. VMD is particularly useful for preparing input files for molecular dynamics simulations with software such as LAMMPS.
+
+> ✏️ **Novel users** will have to build the LAMMPS data file with the full topological information using   _Estimated time XXX min_.
+
+> ✒️ **Advanced users** will have to  _Estimated time XXX min_.
+
+```{Tip}
+Hay otras opciones, más o menos complejas y flexibles. Incluso slef programing pythion + ASE. Estar familiarizado te permitira sacar mayor partido a las simulaciones
+```
+
+### LAMMPS topology file
+
+```{Note}
+Experienced LAMMPS users can skip this section
+```
+
+In LAMMPS, the topological information is usually stored in a **data file**, which is read using the `read_data` command. The structure of this file is modular and well defined:
+
+- A **header** section specifies the total number of atoms, bonds, angles, dihedrals, and impropers, as well as the dimensions of the simulation box.
+- A **Masses** section assigns masses to each atom type.
+- An **Atoms** section provides, for each atom, its ID, molecule ID (if relevant), atom type, charge, and coordinates (x, y, z). Depending on the `atom_style` chosen in the input, additional fields may appear (such as velocities, dipoles, or extra properties).
+- Optional **Bonds, Angles, Dihedrals, and Impropers** sections describe bonded connectivity, listing the IDs of the participating atoms and their type.
 
 ```lammps
 LAMMPS data file for ClayFF toy model
@@ -50,16 +67,6 @@ Angles # angle number, type, atom1 atom2 atom3
 1 1 7 8 7  # placeholder water angle (O–H–H) – just illustrative
 ```
 
-This structure ensures that when the simulation starts, LAMMPS knows exactly how the atoms are arranged, which bonded and nonbonded terms apply, and how to apply the parameters from the chosen force field. Constructing this file correctly is often the most delicate part of preparing a simulation. Lo vamos a hacer a partir de la estructura construida por pyCSH usando VMD (Visual Molecular Dynamics) is a molecular visualization program for displaying, animating, and analyzing large biomolecular systems using 3D graphics and built-in scripting. VMD is particularly useful for preparing input files for molecular dynamics simulations with software such as LAMMPS.
-
-```{Note}
-Hay otras opciones, más o menos complejas y flexibles. Incluso slef programing pythion + ASE
-```
-
-> ✏️ **Novel users** will have to build the LAMMPS data file with the full topological information using   _Estimated time XXX min_.
-
-> ✒️ **Advanced users** will have to  _Estimated time XXX min_.
-
 ### ClayFF atom types 
 
 An important example relevant to hydrated oxides and cementitious materials is the ClayFF force field. ClayFF was designed to describe clays and layered silicates but has since become the de facto standard for modeling calcium silicate hydrate (C–S–H) and related phases. Its key philosophy is simplicity: ClayFF is essentially a nonbonded force field, in which most atoms interact only through Lennard–Jones and Coulombic terms. The only exceptions are hydroxyl groups, where explicit O–H bonds and H–O–H angles are included to preserve molecular geometry. In practice, this means that framework atoms such as Si, Al, and Ca are modeled as charged point particles interacting electrostatically with oxygens and hydroxyls, without any explicit bond definition.
@@ -73,39 +80,31 @@ ClayFF defines a limited set of atom types, each with specific Lennard–Jones p
 
 Charges are fractional (e.g., O_br ≈ –1.05 e, Si ≈ +2.1 e), carefully tuned to reproduce structural and hydration properties of silicates. This minimal parametrization has several advantages: it makes ClayFF easy to extend to new systems, computationally efficient, and sufficiently flexible to describe the disordered, gel-like nature of C–S–H. Because most interactions are nonbonded, ClayFF allows bonds to break and reform in a way that mimics structural flexibility, which is crucial when studying diffusion of ions and the behavior of confined water in cementitious pores.
 
+```{Warning}
+Las cargas de ClayFF!!!
+```
 
 ### Novel users: typing step by step 
+
 **1. Loading the PDB file in VMD**
-2.1. Open VMD:
-Start the program.
-2.2. Load the PDB file:
-Go to File/New Molecule.
-In the Molecule File Browser, click Browse, select your System.pdb file, and click Load.
+Open VMD and load the structure. Go to `File/New Molecule`, click `Browse`, and select your XXXXX file.
 
 **2. Using TopoTools to create a LAMMPS data file**
-TopoTools is a VMD plugin that provides a set of commands for building and manipulating molecular structures and preparing them for molecular dynamics simulations.
-
-Open the Tk Console:
-Go to `Extensions/Tk Console`.
-
-Load TopoTools and PBCtools:
-In the Tk Console, load the packages with the following commands:
+TopoTools is a VMD plugin that provides a set of commands for building and manipulating molecular structures and preparing them for molecular dynamics simulations. Go to `Extensions/Tk Console` and load TopoTools and PBCtools typing in the Tk Console the following commands:
 
 ```
 package require topotools
 package require pbctools
 ```
 
-package require topotools loads the TopoTools package, which is used for manipulating molecular topologies and preparing data files for LAMMPS.
-package require pbctools loads the PBCtools package, which provides tools for handling periodic boundary conditions.
+The `TopoTools` package is used for manipulating molecular topologies and preparing data files for LAMMPS, and the `PBCtools` package provides tools for handling periodic boundary conditions.
 
-3.5. Define simulation box:
-Set the periodic boundary conditions (PBC) for the simulation box:
+**3. Define simulation box** Set the periodic boundary conditions (PBC) for the simulation box. The first three values are the box dimensions in the x, y, and z directions in Å, and the last three values are the angles between the box edges. Por supuesto, esto tiene que encajar con lo que haya en el archivo generado por pyCSH.
+```
 pbc set {20.8 20.8 20.8 90.0 90.0 90.0}
-pbc set {20.8 20.8 20.8 90.0 90.0 90.0} sets the periodic boundary conditions for the simulation box. The first three values are the box dimensions in the x, y, and z directions in Å, and the last three values are the angles between the box edges.
+```
 
-3.3. Generate bonds, angles, dihedrals, and impropers:
-
+**4. Generate bonds, angles, dihedrals, and impropers:**
 Use topo commands to guess the molecular topology mol bondsrecalc top recalculates the bonds for the top molecule to ensure that the bond information is correct. topo guessangles generates angle interactions in the molecular topology based on the bond structure.
 topo guessdihedrals generates dihedral interactions (torsional angles) in the molecular topology.
 topo guessimpropers generates improper dihedral interactions, which are often used to maintain planarity in certain molecular structures.
@@ -117,21 +116,16 @@ topo guessdihedrals
 topo guessimpropers
 ```
 
-3.4. Reanalyze the structure:
 Recalculate the bonds and reanalyze the molecular structure to ensure everything is correctly set up:
 ```
 mol reanalyze top
 ```
 
-mol reanalyze top reanalyzes the top molecule, updating its molecular topology information.
-
-3.6. Create the LAMMPS data file: Write the data to a LAMMPS-compatible file:
+**5. Create the LAMMPS data file:** Write the data to a LAMMPS-compatible file:
 ```
 topo writelammpsdata atoms.data full
 ```
- writes the LAMMPS data (atoms.data) file in the full format, which includes detailed information about atom types, coordinates, bonding, angles, etc.
-
-Esto te da el archivo listo para LAMMPS 
+writes the LAMMPS data (atoms.data) file in the full format, which includes detailed information about atom types, coordinates, bonding, angles, etc. Esto te da el archivo listo para LAMMPS. Puedes abrirlo con texto y ver qué hay dentro. 
 
 ### Advanced users: script based construction
 
