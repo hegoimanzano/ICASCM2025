@@ -1,19 +1,77 @@
 # Topology
 
-Explicación GENERAL de a qué se refiere topology - enlaces, angulos, atom, types, Force field. LAMMPS necesita esta info.
+In any molecular dynamics (MD) simulation package, a **topology** file (sometimes also called a _structure_ or _data file_) is the foundation of the entire simulation. While the input script tells the program _how to run_ the dynamics (ensembles, temperature control, run length), the topology tells it _what system_ is being simulated. This includes a complete description of all particles: their identifiers, element or species type, masses, charges, and spatial coordinates, along with the connectivity information that defines which atoms are bonded, and how angles and dihedrals are organized. Without such information, the force field cannot assign the correct interactions—bond stretching, angle bending, torsional rotations, and nonbonded forces—so the MD code would be unable to calculate energies and forces consistently. In short, the topology is the “map” that defines the system at the atomic scale.
 
-Lo vamos a hacer a partir de la estructura construida por pyCSH usando VMD (Visual Molecular Dynamics) is a molecular visualization program for displaying, animating, and analyzing large biomolecular systems using 3D graphics and built-in scripting. VMD is particularly useful for preparing input files for molecular dynamics simulations with software such as LAMMPS.
+In LAMMPS, this information is usually stored in a **data file**, which is read using the `read_data` command. The structure of this file is modular and well defined:
+	•	A **header** section specifies the total number of atoms, bonds, angles, dihedrals, and impropers, as well as the dimensions of the simulation box.
+	•	A **Masses** section assigns masses to each atom type.
+	•	An **Atoms** section provides, for each atom, its ID, molecule ID (if relevant), atom type, charge, and coordinates (x, y, z). Depending on the `atom_style` chosen in the input, additional fields may appear (such as velocities, dipoles, or extra properties).
+	•	Optional **Bonds, Angles, Dihedrals, and Impropers** sections describe bonded connectivity, listing the IDs of the participating atoms and their type.
+
+```lammps
+LAMMPS data file for ClayFF toy model
+8 atoms
+1 bonds
+1 angles
+
+4 atom types
+1 bond types
+1 angle types
+
+0.0 20.0 xlo xhi
+0.0 20.0 ylo yhi
+0.0 20.0 zlo zhi
+
+Masses # atom type, atom mass
+
+1 28.0855    # Si
+2 15.9994    # O
+3 1.008      # H
+4 40.078     # Ca (ejemplo de catión interlaminar)
+
+Atoms # atom-ID mol-ID type charge x y z
+
+1 1 1  2.100  10.0 10.0 10.0   # Si
+2 1 2 -1.050  11.5 10.0 10.0   # O_br
+3 1 2 -1.050   8.5 10.0 10.0   # O_br
+4 1 3 -0.950  10.0 11.0 10.0   # O_H
+5 1 4  0.425  10.0 11.9 10.0   # H (OH group)
+6 2 5  2.000  12.0 10.0 10.0   # Ca
+7 3 6 -0.950  10.0  9.0 10.0   # O_w (water)
+8 3 7  0.425  10.0  8.1 10.0   # H_w (water)
+9 3 7  0.425  10.0  8.1 10.0   # H_w (water)
+
+Bonds # bond number, type, atom1 atom2
+
+1 1 4 5   # O_H – H
+
+Angles # angle number, type, atom1 atom2 atom3
+
+1 1 7 8 7  # placeholder water angle (O–H–H) – just illustrative
+```
+
+This structure ensures that when the simulation starts, LAMMPS knows exactly how the atoms are arranged, which bonded and nonbonded terms apply, and how to apply the parameters from the chosen force field. Constructing this file correctly is often the most delicate part of preparing a simulation. Lo vamos a hacer a partir de la estructura construida por pyCSH usando VMD (Visual Molecular Dynamics) is a molecular visualization program for displaying, animating, and analyzing large biomolecular systems using 3D graphics and built-in scripting. VMD is particularly useful for preparing input files for molecular dynamics simulations with software such as LAMMPS.
 
 ```{Note}
 Hay otras opciones, más o menos complejas y flexibles. Incluso slef programing pythion + ASE
 ```
 
-> ✏️ **Novel users** will have to  _Estimated time XXX min_.
+> ✏️ **Novel users** will have to build the LAMMPS data file with the full topological information using   _Estimated time XXX min_.
 
 > ✒️ **Advanced users** will have to  _Estimated time XXX min_.
 
 ### ClayFF atom types 
 
+An important example relevant to hydrated oxides and cementitious materials is the ClayFF force field. ClayFF was designed to describe clays and layered silicates but has since become the de facto standard for modeling calcium silicate hydrate (C–S–H) and related phases. Its key philosophy is simplicity: ClayFF is essentially a nonbonded force field, in which most atoms interact only through Lennard–Jones and Coulombic terms. The only exceptions are hydroxyl groups, where explicit O–H bonds and H–O–H angles are included to preserve molecular geometry. In practice, this means that framework atoms such as Si, Al, and Ca are modeled as charged point particles interacting electrostatically with oxygens and hydroxyls, without any explicit bond definition.
+
+ClayFF defines a limited set of atom types, each with specific Lennard–Jones parameters and partial charges. Typical species include:
+	•	O_br (bridging oxygen): oxygens linking tetrahedra.
+	•	O_H (hydroxyl oxygen) and H (hydroxyl hydrogen): forming the only bonded terms.
+	•	Tetrahedral cations (Si, Al).
+	•	Octahedral cations (Mg, Fe, Ca).
+	•	Interlayer water molecules (O_w, H_w).
+
+Charges are fractional (e.g., O_br ≈ –1.05 e, Si ≈ +2.1 e), carefully tuned to reproduce structural and hydration properties of silicates. This minimal parametrization has several advantages: it makes ClayFF easy to extend to new systems, computationally efficient, and sufficiently flexible to describe the disordered, gel-like nature of C–S–H. Because most interactions are nonbonded, ClayFF allows bonds to break and reform in a way that mimics structural flexibility, which is crucial when studying diffusion of ions and the behavior of confined water in cementitious pores.
 
 
 ### Novel users: typing step by step 
