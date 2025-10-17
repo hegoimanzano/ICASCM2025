@@ -10,9 +10,9 @@ The general procedure for building a slit pore in a calcium–silicate–hydrate
 
 - **Saturate with water** Insert water molecules into the pore region using a packing algorithm. Reach realistic densities by filling until the desired target pore solution density is reached or by MD relaxation.
 
-> ✏️ **Novel users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code. The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.3, a C-S-H surface of least 2.25nm^2, and a pore space of aprox 2nm filled with water and 10NaCl ion pairs.
+> ✏️ **Novel users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code. The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.3, a C-S-H surface of least 2.25nm^2, and a pore space of aprox 2nm filled with water and 10NaCl ion pairs. The files must be written in lammps_xxxx format. _Estimated time XXX min_.
 
-> ✒️ **Advanced users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code **_and packmol_**. The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.3, a C-S-H surface of least 2.25nm^2, and a pore space of aprox 2nm filled with water and 10NaCl ion pairs.
+> ✒️ **Advanced users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code **_and packmol_**. The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.3, a C-S-H surface of least 2.25nm^2, and a pore space of aprox 2nm filled with water and 10NaCl ion pairs. The files must be written in lammps_xxxx format. _Estimated time XXX min_.
 
 ---
 
@@ -80,7 +80,7 @@ If True, handmade brick code will be read from the end of the parameters file.
 If True, the handmade structure will be transformed to a surface  in the **z** dimension by adding upper (">Lo", ">Ro") and lower ("<Lo", "<Ro") chains.
 
 - `surface_separation`: **Optional**. Default: False
-	  Approximate distance between the layers of CSH surfaces.
+Approximate distance between the layers of CSH surfaces.
 	 
 - `write_lammps`: **Optional**. Default: True
 Write a `.data` LAMMPS data file for each of the structures. 
@@ -98,22 +98,20 @@ Write a `.vasp` VASP data file for each of the structures.
 python3 run.py
 ```
 
-That’s it. The script will read you input.py, build the required C–S–H models, save structure files, and produce some plots.
-
+That’s it! The script will read you input.py, build the required C–S–H models, save structure files, and produce some plots.
 
 **4. What the outputs are and how to read them**
 
-Structure files:
-- name.data — LAMMPS data file OVITO can open LAMMPS data directly.
+- prefix.data/vasp/xyz/... — Datafiles containing the atomic postions LAMMPS data file OVITO can open LAMMPS data directly.
 - name.xyz — simple XYZ with all atoms. OVITO can open it directly. Good for quick previews.
 - name.cif — CIF crystallographic file. VESTA can open it directly. Preferred for VESTA (periodic cell handled nicely).
 
 Plots:
 - MCL.pdf, Ca/Si
 
-**Next step Novel users** Select one of the models and move to the topology section. By looking at the results elegir el mas representativo y comtinuar. 
+> ✏️ **Next step Novel users** Select one of the models and move to the topology section. By looking at the results elegir el mas representativo y comtinuar. 
 
-**Advanced users** Select one of the models by looking at the results elegir el mas representativo. Still packmol setps
+> ✒️ **Advanced users** Select one of the models by looking at the results elegir el mas representativo. Still packmol setps
 
 
 ### Packmol (advanced users)
