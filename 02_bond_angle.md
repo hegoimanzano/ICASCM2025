@@ -12,6 +12,10 @@ Hay otras opciones, más o menos complejas y flexibles. Incluso slef programing 
 
 > ✒️ **Advanced users** will have to  _Estimated time XXX min_.
 
+### ClayFF atom types 
+
+
+
 ### Novel users: typing step by step 
 **1. Loading the PDB file in VMD**
 2.1. Open VMD:
@@ -57,15 +61,17 @@ topo guessimpropers
 
 3.4. Reanalyze the structure:
 Recalculate the bonds and reanalyze the molecular structure to ensure everything is correctly set up:
+```
 mol reanalyze top
-Copy
+```
+
 mol reanalyze top reanalyzes the top molecule, updating its molecular topology information.
 
-3.6. Create the LAMMPS data file:
-Write the data to a LAMMPS-compatible file:
+3.6. Create the LAMMPS data file: Write the data to a LAMMPS-compatible file:
+```
 topo writelammpsdata atoms.data full
-Copy
-topo writelammpsdata atoms.data full writes the LAMMPS data (atoms.data) file in the full format, which includes detailed information about atom types, coordinates, bonding, angles, etc.
+```
+ writes the LAMMPS data (atoms.data) file in the full format, which includes detailed information about atom types, coordinates, bonding, angles, etc.
 
 Esto te da el archivo listo para LAMMPS 
 
