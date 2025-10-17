@@ -18,6 +18,12 @@ The general procedure for building a slit pore in a calcium–silicate–hydrate
 
 ### Construction of C-S-H model using pyCSH.
 
+PyCSH descripción y lo que puede hacer( inclyyo abrir poro y meter moleculas 
+
+```{Note}
+Advanced users do not saturate the pore after with packmol
+```
+
 **1. Donwload pyCSH** Download the zip file from the github repository. Unzip and enter the folder (e.g. csh_basic/).
 
 **2. Edit the input.py**  Open **input.py** in your text editor. You will have to change a few parameters to build your model.
@@ -85,10 +91,6 @@ Write a `.data` LAMMPS data file for each of the structures, with core-shell, bo
 - `write_vasp`: **Optional**. Default: True
 Write a `.vasp` VASP data file for each of the structures. 
 
-```{Warning}
-Algo sobre el solapamiento
-```
-
 
 **3. Run pyCSH** In a terminal inside the folder (or VScode) run simply 
 
@@ -107,7 +109,23 @@ Structure files:
 - name.cif — CIF crystallographic file. VESTA can open it directly. Preferred for VESTA (periodic cell handled nicely).
 
 Plots:
-- MCL.pdf, Ca/Si 
+- MCL.pdf, Ca/Si
+
+**Next step Novel users** Select one of the models and move to the topology section. By looking at the results elegir el mas representativo y comtinuar. 
+
+**Advanced users** Select one of the models by looking at the results elegir el mas representativo. Still packmol setps
 
 
+### Packmol (advanced users)
 
+Packmol description y por que es util por meter cosas mas complicadas pyCSH solo agua e iones
+
+EDU 
+
+```{Warning}
+boundary conditions dejar 0.5Å
+```
+
+```{tip}
+Another option is to prepare 2 systems and use LAMMPS box blabla to merge different files
+```
