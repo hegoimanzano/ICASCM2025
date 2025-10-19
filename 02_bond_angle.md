@@ -72,6 +72,17 @@ Angles # angle-ID angle-type atom1 atom2 atom3
 1 1 8 7 9  # H_w – O_w – H_w (water angle) 
 ```
 
+> [!NOTE]
+> **Atom styles and force fields**
+>
+> The structure and contents of the LAMMPS data file depend on the force field that is going to be used with. The force field determines the appropriate `atom_style`. For example, classical force fields such as CHARMM, AMBER, or ClayFF require the style `full`, which explicitly includes all bonds, angles, dihedrals, and impropers, as well as atom types, masses, charges, and coordinates. In contrast, reactive force fields like ReaxFF do not need predefined connectivity terms, since bonds are formed and broken dynamically during the simulation. In that case, the data file should use the `charge` style, which only specifies atom IDs, types, charges, masses, and coordinates, without any bond or angle lists.  
+>
+> In any case, the **data file must match the `atom_style` defined in the LAMMPS input script** — otherwise, the simulation will fail to read it correctly.  
+>
+> You can find a full description of all available atom styles and their required fields in the [LAMMPS documentation](https://docs.lammps.org/atom_style.html).
+
+
+
 ### ClayFF atom types 
 
 An important example relevant to hydrated oxides and cementitious materials is the ClayFF force field. ClayFF was designed to describe clays and layered silicates but has since become the de facto standard for modeling calcium silicate hydrate (C–S–H) and related phases. Its key philosophy is simplicity: ClayFF is essentially a nonbonded force field, in which most atoms interact only through Lennard–Jones and Coulombic terms. The only exceptions are hydroxyl and water molecules, where explicit O–H bonds and H–O–H angles are included (following the flexible SPC water model)to preserve molecular geometry. In practice, this means that framework atoms such as Si, Al, and Ca are modeled as charged point particles interacting electrostatically with oxygens and hydroxyls, without any explicit bond definition.
