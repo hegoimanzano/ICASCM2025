@@ -176,7 +176,8 @@ When using this command, Packmol reads all the packing instructions, load the mo
 During execution, Packmol prints progress information in the terminal (such as iteration steps and molecule placement).
 When it finishes, a new file — in this example `System.pdb` — will be created in the same directory. This file contains the complete packed configuration of your system. This file can be opened in VMD or another molecular visualization program to inspect the result before generating the corresponding LAMMPS data file.
 
+> [!TIP]
+> **Packing the pore region directly in LAMMPS**
+>
+> The approach shown here uses Packmol to fill the pore of a C–S–H model with water and ions by explicitly packing them around the solid block. However, it is also technically possible to read the C–S–H system in LAMMPS and then create additional atoms or molecules, such as water or ions, in a defined region using `region`, `create_atoms`, and `molecule` commands. While this method can work for simple systems or coarse distributions, Packmol is generally preferred for molecular systems because LAMMPS does not check for overlaps and does not automatically orient or pack molecules, which often leads to unrealistic configurations or large initial forces.  
 
-```{tip}
-Another option is to prepare 2 systems and use LAMMPS box blabla to merge different files
-```
