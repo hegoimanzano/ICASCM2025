@@ -25,16 +25,16 @@ Each section contains a very detailed explanation of what to do, together with t
 
 To follow the tutorial, participants will need to prepare a few tools in advance:  
 
-- **Visualization programs**: We will use *Ovito* or *VESTA*, and *VMD*. These are free visualization tools, available for Windows, Linux, and macOS.
+- **Visualization programs**: We will use *Ovito* or *VESTA*. These are free visualization tools, available for Windows, Linux, and macOS.
   - OVITO is excellent for analyzing atomistic trajectories and creating high-quality animations, focused on material science.
   - VESTA is widely used for crystallographic structures and static visualizations.
-  - VMD is designed for trajectory analysis of biomolecules, but we will use it for bond recognition. 
 
-- **Python execution environment**: We will write and execute small Python scripts to postprocess simulation data. A minimal understanding of how to navigate file paths and execute Python scripts will be necessary.
-  - On macOS and Linux, Python is usually pre-installed. You can run scripts directly from the terminal, or create a virtual environment with 
-  - On Windows, Python is not installed by default. We recommend downloading it from python.org or installing through the Microsoft Store. For editing and running scripts, Visual Studio Code (VS Code) is highly recommended. It is a free code editor by Microsoft, integrates seamlessly with Python, and supports virtual environments as well.
+- **Python execution environment**: We will use pyCSH and small Python scripts to postprocess simulation data. A minimal understanding of how to navigate file paths and execute Python scripts will be necessary. For editing and running scripts, we like Visual Studio Code (VS Code) but you can run it from your terminal or any other choice. 
 
-- **Model set up**: VMD, pyCSH, packmol (advaced) 
+- **Model set up**: We will use several codes to set up our model and simulation. VMD, pyCSH, packmol (advaced)
+  - pyCSH is a code to automatically create hundres of unique and realistic C-S-H models 
+  - VMD is a visualuzation and analysis code designed for biomolecules, but we will use it here for topology recognition.
+  - Packmol is a code to efficiently pack molecules in multiple shapes
 
 - **Simulation code** We will use [LAMMPS](https://docs.lammps.org) (Large-scale Atomic/Molecular Massively Parallel Simulator). LAMMPS is a open source classical molecular dynamics simulation code focusing on materials modeling, originally developed at Sandia National Laboratories. Usually LAMMPS will be installed and runed on HPC, but here we will use [Atomify](https://andeplane.github.io/atomify/), a lightweight graphical front-end for LAMMPS. Atomify allows you to build, run, and visualize molecular dynamics simulations in real time through an interactive interface. 
 
