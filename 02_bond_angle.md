@@ -8,21 +8,21 @@ Constructing this file correctly is often the most delicate part of preparing a 
 
 > ✒️ **Advanced users** will have to  _Estimated time XXX min_.
 
-```{Tip}
-Hay otras opciones, más o menos complejas y flexibles. Incluso slef programing pythion + ASE. Estar familiarizado te permitira sacar mayor partido a las simulaciones
+```{Note}
+There are alternative ways to generate topology files, from automated tools such as LigParGen or Moltemplate, to custom scripts using Python and ASE. Each method offers different levels of flexibility and complexity — for instance, LigParGen is mainly suited for small organic molecules, while Python-based approaches are better for larger or more specialized systems.
 ```
 
 ### LAMMPS topology file
 
 ```{Note}
-Experienced LAMMPS users can skip this section
+Experienced LAMMPS users can skip this section.
 ```
 
 In LAMMPS, the topological information is usually stored in a **data file**, which is read using the `read_data` command. The structure of this file is modular and well defined:
 
-- A **header** section specifies the total number of atoms, bonds, angles, dihedrals, and impropers, as well as the dimensions of the simulation box.
+- A **header** section specifies the total and type numbers of atoms, bonds, angles, dihedrals, and impropers, as well as the dimensions of the simulation box.
 - A **Masses** section assigns masses to each atom type.
-- An **Atoms** section provides, for each atom, its ID, molecule ID (if relevant), atom type, charge, and coordinates (x, y, z). Depending on the `atom_style` chosen in the input, additional fields may appear (such as velocities, dipoles, or extra properties).
+- An **Atoms** section provides, for each atom, its ID, molecule ID (if relevant), atom type, charge, and coordinates (x, y, z). Depending on the chosen `atom_style` in the input file, additional fields may appear (such as velocities, dipoles, or extra properties).
 - Optional **Bonds, Angles, Dihedrals, and Impropers** sections describe bonded connectivity, listing the IDs of the participating atoms and their type.
 
 ```lammps
