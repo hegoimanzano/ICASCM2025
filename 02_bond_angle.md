@@ -8,9 +8,9 @@ Constructing this file correctly is often the most delicate part of preparing a 
 
 > ✒️ **Advanced users** will have to  _Estimated time XXX min_.
 
-```{Note}
-There are alternative ways to generate topology files, from automated tools such as LigParGen or Moltemplate, to custom scripts using Python and ASE. Each method offers different levels of flexibility and complexity — for instance, LigParGen is mainly suited for small organic molecules, while Python-based approaches are better for larger or more specialized systems.
-```
+> [!NOTE] 
+>There are alternative ways to generate topology files, from automated tools such as LigParGen or Moltemplate, to custom scripts using Python and ASE. Each method offers different levels of flexibility and complexity — for instance, LigParGen is mainly suited for small organic molecules, while Python-based approaches are better for larger or more specialized systems.
+
 
 ### LAMMPS topology file
 
