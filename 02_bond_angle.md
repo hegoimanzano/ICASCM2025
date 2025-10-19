@@ -103,7 +103,7 @@ Open VMD and load your structure by going to `File → New Molecule`. In the win
 
 **2. Loading TopoTools and PBCtools to create the LAMMPS data file**
 
-TopoTools is a VMD plugin that provides a set of commands to manipulate molecular topologies and export them to formats compatible with LAMMPS. The `PBCtools` package, in turn, allows handling and visualizing periodic boundary conditions. To load both, open the `Tk Console` by clicking in `Extensions/Tk Console` and type:
+*TopoTools* is a VMD plugin that provides a set of commands to manipulate molecular topologies and export them to formats compatible with LAMMPS. The *PBCtools* package, in turn, allows handling and visualizing periodic boundary conditions. To load both, open the `Tk Console` by clicking in `Extensions/Tk Console` and type:
 ```
 package require topotools
 package require pbctools
@@ -139,6 +139,7 @@ set Si [atomselect top "name Si"]
 $Si set charge 2.10
 set O_br [atomselect top "name O_br"]
 $O_br set charge -1.05
+...
 ```
 
 **6. Writing the LAMMPS data file:**
@@ -160,12 +161,31 @@ To fix this issue while keeping your custom names, you need to manually set the 
 set Cw [atomselect top "name Cw"]
 $Cw set element Ca
 ```
-
+```
 ### Advanced users: script based construction
 
-Te permite automatizar todo incluyendo hacer multiples cosntructions blabla bla. 
-You need to write all the steps in a text file and execute from terminal parte dificil es saber navegar en tu arbold e archviso. 
+Instead of opening VMD and typing commands in the Tk Console, we can run VMD from the terminal and execute all steps automatically with a **Tcl script**. A Tcl script is just a plain-text file containing the VMD commands you would otherwise type by hand in the Tk Console. This approach is reproducible and easy to share. Once your Tcl script works for one structure, you can easily automate the generation of multiple data files — for example, for a series of C–S–H models with different Ca/Si ratios — by creating an additional shell or PowerShell script that calls the same Tcl pipeline for each PDB file. This allows you to build many systems in sequence without any manual intervention.
 
-```{Warning}
-Hay otras opciones, más o menos complejas y flexibles. Incluso slef programing pythion + ASE
+**1. Building the Tcl script**
+
+The first step in automating the process is to create a Tcl script. This script, with the extension `.tcl`, works as a command list that VMD will read and execute line by line. Each command inside corresponds to what you would normally type in the Tk Console, but grouped together enabling automation. The only difference is that now you include an additional command `mol new system.pdb` at the beginning to load the PDB structure that you want to process. Therefore, the script should:
+- **Load the structure** of the system, typically a `.pdb` file. 
+- **Load the necessary packages**, such as `topotools` and `pbctools`.  
+- **Define the simulation box dimensions**.  
+- **Assign correctly the elements** to each atom type, fixing any mislabeled atoms if needed.  
+- **Set atomic masses and charges**, as described earlier for ClayFF.  
+- **Rebuild the topology**, guessing bonds, angles, dihedrals, and impropers.  
+- **Export** the system using `topo writelammpsdata`.
+
+**2. Running VMD with a Tcl script**
+
+Once your Tcl script (for example `make_lammps_data.tcl`) is ready, the next step is to run it directly from the terminal. To do this, we should call the VMD executable in and use the option `-dispdev text` to excute the Tcl script specified after `-e`:
+
+```
+vmd -dispdev text -e make_lammps_data.tcl
+```
+This will start VMD without opening the graphical interface, automatically load the file test.pdb, apply all the steps defined in the script, and write the output file atoms.data in the current working directory.
+
+```{Tip}
+Before running this command, make sure you know where the VMD executable is located on your system. If your terminal does not recognize the command vmd, use the full path to the executable in place of vmd in the command above.
 ```
