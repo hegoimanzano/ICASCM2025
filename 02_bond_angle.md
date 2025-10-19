@@ -8,15 +8,15 @@ Constructing this file correctly is often the most delicate part of preparing a 
 
 > ✒️ **Advanced users** will have to  _Estimated time XXX min_.
 
-> [!NOTE] 
->There are alternative ways to generate topology files, from automated tools such as LigParGen or Moltemplate, to custom scripts using Python and ASE. Each method offers different levels of flexibility and complexity — for instance, LigParGen is mainly suited for small organic molecules, while Python-based approaches are better for larger or more specialized systems.
-
+```{Note}
+There are alternative ways to generate topology files, from automated tools such as LigParGen or Moltemplate, to custom scripts using Python and ASE. Each method offers different levels of flexibility and complexity — for instance, LigParGen is mainly suited for small organic molecules, while Python-based approaches are better for larger or more specialized systems.
+```
 
 ### LAMMPS topology file
 
-> [!IMPORTANT]
-> Experienced LAMMPS users can skip this section.
-
+```{Important}
+Experienced LAMMPS users can skip this section.
+```
 
 In LAMMPS, the topological information is usually stored in a **data file**, which is read using the `read_data` command. The structure of this file is modular and well defined:
 
@@ -72,15 +72,15 @@ Angles # angle-ID angle-type atom1 atom2 atom3
 1 1 8 7 9  # H_w – O_w – H_w (water angle) 
 ```
 
-> [!NOTE]
-> **Atom styles and force fields**
->
-> The structure and contents of the LAMMPS data file depend on the force field that is going to be used with. The force field determines the appropriate `atom_style`. For example, classical force fields such as CHARMM, AMBER, or ClayFF require the style `full`, which explicitly includes all bonds, angles, dihedrals, and impropers, as well as atom types, masses, charges, and coordinates. In contrast, reactive force fields like ReaxFF do not need predefined connectivity terms, since bonds are formed and broken dynamically during the simulation. In that case, the data file should use the `charge` style, which only specifies atom IDs, types, charges, masses, and coordinates, without any bond or angle lists.  
->
-> In any case, the **data file must match the `atom_style` defined in the LAMMPS input script** — otherwise, the simulation will fail to read it correctly.  
->
-> You can find a full description of all available atom styles and their required fields in the [LAMMPS documentation](https://docs.lammps.org/atom_style.html).
+```{Note}
+**Atom styles and force fields**
 
+The structure and contents of the LAMMPS data file depend on the force field that is going to be used with. The force field determines the appropriate `atom_style`. For example, classical force fields such as CHARMM, AMBER, or ClayFF require the style `full`, which explicitly includes all bonds, angles, dihedrals, and impropers, as well as atom types, masses, charges, and coordinates. In contrast, reactive force fields like ReaxFF do not need predefined connectivity terms, since bonds are formed and broken dynamically during the simulation. In that case, the data file should use the `charge` style, which only specifies atom IDs, types, charges, masses, and coordinates, without any bond or angle lists.  
+
+In any case, the **data file must match the `atom_style` defined in the LAMMPS input script** — otherwise, the simulation will fail to read it correctly.  
+
+You can find a full description of all available atom styles and their required fields in the [LAMMPS documentation](https://docs.lammps.org/atom_style.html).
+```
 
 
 ### ClayFF atom types 
@@ -97,10 +97,11 @@ ClayFF defines a limited set of atom types, each with specific Lennard–Jones p
 
 Charges are fractional (e.g., O_br ≈ –1.05 e, Si ≈ +2.1 e) and were derived from DFT calculations on simple oxides and hydroxides to reproduce structural and hydration properties of silicates. This minimal parametrization has several advantages: it makes ClayFF easy to extend to new systems, computationally efficient, and sufficiently flexible to describe the disordered, gel-like nature of C–S–H. Because most interactions are nonbonded, ClayFF allows bonds to break and reform in a way that mimics structural flexibility, which is crucial when studying diffusion of ions and the behavior of confined water in cementitious pores.
 
-> [!CAUTION]
-> Unlike crystalline minerals, disordered phases such as C–S–H do not have a fixed stoichiometry, so applying ClayFF’s standard partial charges often results in a non-neutral system. Maintaining near-electroneutrality is crucial for obtaining stable and physically meaningful simulations, so always check the total charge after building your model:
-> - If the net charge is small (|Q| < 0.1 e), it can be compensated by the Ewald solver.  
-> - For larger imbalances, add counterions (e.g., Cl⁻, OH⁻) or slightly adjust the number of hydroxyls or Ca atoms until neutrality is achieved.  
+```{Caution}
+Unlike crystalline minerals, disordered phases such as C–S–H do not have a fixed stoichiometry, so applying ClayFF’s standard partial charges often results in a non-neutral system. Maintaining near-electroneutrality is crucial for obtaining stable and physically meaningful simulations, so always check the total charge after building your model:
+ - If the net charge is small (|Q| < 0.1 e), it can be compensated by the Ewald solver.  
+ - For larger imbalances, add counterions (e.g., Cl⁻, OH⁻) or slightly adjust the number of hydroxyls or Ca atoms until neutrality is achieved.  
+```
 
 ### Novel users: step by step guide to generate the topology file in VMD
 
@@ -161,15 +162,16 @@ topo writelammpsdata atoms.data full
 This command creates the file `atoms.data` in the `full` style, which includes all atom, bond, angle, and dihedral information required by LAMMPS. You can open it in any text editor to check its structure — you should see sections such as *Masses*, *Atoms*, *Bonds*, and *Angles*. This file is now ready to be combined with the force-field parameters in your LAMMPS input script.
 
 
-> [!WARNING] 
-> **Handling mislabeled atoms in VMD**
->
-> When atom names are changed from their standard chemical symbols (for example, naming aqueous Ca as `Cw` to distinguish it from interlayer Ca), **VMD may misinterpret them as different elements**. For instance, if you rename calcium to `Cw`, VMD will treat it as carbon (C), assigning an incorrect mass (12.01 instead of 40.08) and radius, which can affect bond recognition.
-> To fix this issue while keeping your custom names, you need to manually set the correct element by typing:
-> ```
-> set Cw [atomselect top "name Cw"]
-> $Cw set element Ca
-> ```
+```{Warning} 
+**Handling mislabeled atoms in VMD**
+
+When atom names are changed from their standard chemical symbols (for example, naming aqueous Ca as `Cw` to distinguish it from interlayer Ca), **VMD may misinterpret them as different elements**. For instance, if you rename calcium to `Cw`, VMD will treat it as carbon (C), assigning an incorrect mass (12.01 instead of 40.08) and radius, which can affect bond recognition.
+To fix this issue while keeping your custom names, you need to manually set the correct element by typing:
+```
+set Cw [atomselect top "name Cw"]
+$Cw set element Ca
+```
+```
 
 ### Advanced users: script based construction
 
@@ -195,5 +197,6 @@ vmd -dispdev text -e make_lammps_data.tcl
 ```
 This will start VMD without opening the graphical interface, automatically load the file test.pdb, apply all the steps defined in the script, and write the output file atoms.data in the current working directory.
 
-> [!TIP]
-> Before running this command, make sure you know where the VMD executable is located on your system. If your terminal does not recognize the command vmd, use the full path to the executable in place of vmd in the command above.
+```{Tip}
+Before running this command, make sure you know where the VMD executable is located on your system. If your terminal does not recognize the command vmd, use the full path to the executable in place of vmd in the command above.
+```
