@@ -163,7 +163,7 @@ This command creates the file `atoms.data` in the `full` style, which includes a
 
 > [!WARNING] 
 > **Handling mislabeled atoms in VMD**
-
+>
 > When atom names are changed from their standard chemical symbols (for example, naming aqueous Ca as `Cw` to distinguish it from interlayer Ca), **VMD may misinterpret them as different elements**. For instance, if you rename calcium to `Cw`, VMD will treat it as carbon (C), assigning an incorrect mass (12.01 instead of 40.08) and radius, which can affect bond recognition.
 > To fix this issue while keeping your custom names, you need to manually set the correct element by typing:
 > ```
