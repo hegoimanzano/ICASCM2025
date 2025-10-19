@@ -116,9 +116,54 @@ Plots:
 
 ### Packmol (advanced users)
 
-Packmol description y por que es util por meter cosas mas complicadas pyCSH solo agua e iones
+### Packing molecular systems with Packmol
 
-EDU 
+Packmol is a program designed to create initial configurations for molecular dynamics simulations by packing molecules into defined regions of space according to user-specified geometric constraints. It takes as input one or more molecular structures (in PDB or XYZ format) and places them inside a simulation box or around predefined surfaces, ensuring that the molecules do not overlap and that a minimum distance between atoms is respected.
+
+pyCSH allows also to insert water molecules and certain ions within the slit pore. However, Packmol offers much greater flexibility: it allows you to pack any kind of molecule, such as solvents, organic additives, surfactants, or any other chemical compound species, into complex geometries, interfaces, or pores. This makes it extremely useful when constructing more heterogeneous systems. 
+
+**1. Installing Packmol**
+
+Before using Packmol to build our systems, we need to install it on our computers. Packmol is available on Linux, macOS and Windows, and can be downloaded it from its [official website](https://m3g.github.io/packmol/download.shtml).
+
+**2. Creating a Packmol input file**
+
+To build a system with Packmol, we first need to create a plain text file with the `.inp` extension (for example, `Packing.inp`). This file must contain all the instructions that indicate Packmol which molecules to include, how many copies of each, and where to place them in space. An example of a typical Packmol input file is shown below:
+```
+tolerance 2.0
+filetype pdb
+output Packed_System.pdb
+
+structure CSH.pdb
+number 1
+center
+fixed 10.0 10.0 10.0 0.0 0.0 0.0
+end structure
+
+structure NaCl.pdb
+number 20
+inside box 0.5 0.5 0.5 19.5 19.5 19.5
+end structure
+
+structure Water.pdb
+number 300
+inside box 0.5 0.5 0.5 19.5 19.5 19.5
+end structure
+```
+In this input file:
+- **`tolerance 2.0`** defines the minimum allowed distance (in Å) between atoms belonging to different molecules to avoid overlaps.  
+- **`filetype pdb`** indicates that all structure files are provided in PDB format.  
+- **`output Packed_System.pdb`** is the name of the resulting packed system that will be created.  
+- The **`structure ... end structure`** blocks define the molecules to be included and how they are positioned:
+  - The keyword `center` and the command `fixed 10.0 10.0 10.0 0. 0. 0.` place this structure at the center of the 20 × 20 × 20 Å box and prevent it from moving during packing.  
+  - `NaCl.pdb` defines 20 sodium chloride units, randomly placed **inside the box** but outside the solid region, respecting the 2 Å tolerance.  
+  - `Water.pdb` adds 300 water molecules, also distributed within the same box volume, filling the remaining pore space.
+
+Once Packmol finishes, it will output the file `System.pdb`, containing all components — the C–S–H block, NaCl, and water — properly packed and ready for further processing (e.g., visualization in VMD or conversion into a LAMMPS data file).
+
+
+
+ 
 
 ```{Warning}
 boundary conditions dejar 0.5Å
