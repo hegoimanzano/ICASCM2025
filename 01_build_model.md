@@ -159,7 +159,7 @@ In this input file:
   - The keyword **`structure`** loads the atomic coordinates from the corresponding `.pdb` file.
   - **`center`** tells Packmol to center the coordinates of that structure with respect to the defined box, while **`fixed 10.0 10.0 10.0 0. 0. 0.`** indicates that the (center of the) structure should be place exactly at that position (10.0 10.0 10.0) and prevents it from moving during packing. The last three zeros correspond to allowed translation tolerances (here all set to zero, meaning the structure remains completely fixed).
   - The command **`inside box 0.5 0.5 0.5 19.5 19.5 19.5`** defines a three-dimensional region — in this case, a rectangular box — inside which Packmol will randomly place the predefined number of molecules. The six numerical values correspond to the lower and upper limits of the box along the three Cartesian coordinates (x_min, y_min, z_min and x_max, y_max, z_max).
-	> [!WARNING]
+> [!WARNING] 
   	> **Periodic boundary conditions and box margins**
 	>
 	> When using periodic boundary conditions (PBC), atoms located exactly at the edges of the simulation box are periodically replicated on the opposite side. If Packmol places molecules too close to the box boundaries, this replication can cause overlaps between periodic images, leading to unrealistic atomic contacts or large forces during energy minimization.
