@@ -155,19 +155,26 @@ In this input file:
 - **`filetype pdb`** indicates that all structure files are provided in PDB format.  
 - **`output Packed_System.pdb`** is the name of the resulting packed system that will be created.  
 - The **`structure ... end structure`** blocks define the molecules to be included and how they are positioned:
-  - The keyword `center` and the command `fixed 10.0 10.0 10.0 0. 0. 0.` place this structure at the center of the 20 × 20 × 20 Å box and prevent it from moving during packing.  
-  - `NaCl.pdb` defines 20 sodium chloride units, randomly placed **inside the box** but outside the solid region, respecting the 2 Å tolerance.  
-  - `Water.pdb` adds 300 water molecules, also distributed within the same box volume, filling the remaining pore space.
+  - The keyword **`number 1`** indicates that only one copy will be inserted.
+  - The keyword **`structure`** loads the atomic coordinates from the corresponding `.pdb` file.
+  - **`center`** tells Packmol to center the coordinates of that structure with respect to the defined box, while **`fixed 10.0 10.0 10.0 0. 0. 0.`** indicates that the (center of the) structure should be place exactly at that position (10.0 10.0 10.0) and prevents it from moving during packing. The last three zeros correspond to allowed translation tolerances (here all set to zero, meaning the structure remains completely fixed).
+  - The command **`inside box 0.5 0.5 0.5 19.5 19.5 19.5`** defines a three-dimensional region — in this case, a rectangular box — inside which Packmol will randomly place the predefined number of molecules. The six numerical values correspond to the lower and upper limits of the box along the three Cartesian coordinates (x_min, y_min, z_min and x_max, y_max, z_max).
+	> [!WARNING] > **Periodic boundary conditions and box margins**
+	>
+	> When using periodic boundary conditions (PBC), atoms located exactly at the edges of the simulation box are periodically replicated on the opposite side. If Packmol places molecules too close to the box boundaries, this replication can cause overlaps between periodic images, leading to unrealistic atomic contacts or large forces during energy minimization.
+	>
+	> To prevent this, it is recommended to leave a small safety margin* between the packing region and the box limits — typically 0.5 Å on each side. This ensures that no atom lies exactly on the boundary, avoiding artificial overlaps when the system is replicated under PBC and improving the stability of the subsequent molecular dynamics simulation.
 
-Once Packmol finishes, it will output the file `System.pdb`, containing all components — the C–S–H block, NaCl, and water — properly packed and ready for further processing (e.g., visualization in VMD or conversion into a LAMMPS data file).
+**3. Running Packmol**
 
-
-
- 
-
-```{Warning}
-boundary conditions dejar 0.5Å
+Once the input file (for example `Packing.inp`) is ready and all the molecular structure files (`.pdb` files) are in the same directory, Packmol can be runned directly from the terminal. To do so, navigate to the folder containing your input file and execute:
 ```
+./packmol < Packing.inp
+```
+When using this command, Packmol reads all the packing instructions, load the molecular coordinates from the `.pbd` files, and place each molecule inside the specified regions while ensuring that no overlaps occur according to the defined tolerance.
+During execution, Packmol prints progress information in the terminal (such as iteration steps and molecule placement).
+When it finishes, a new file — in this example `System.pdb` — will be created in the same directory. This file contains the complete packed configuration of your system. This file can be opened in VMD or another molecular visualization program to inspect the result before generating the corresponding LAMMPS data file.
+
 
 ```{tip}
 Another option is to prepare 2 systems and use LAMMPS box blabla to merge different files
