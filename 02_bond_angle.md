@@ -27,12 +27,12 @@ In LAMMPS, the topological information is usually stored in a **data file**, whi
 
 ```lammps
 LAMMPS data file for ClayFF toy model
-8 atoms
-1 bonds
+9 atoms
+3 bonds
 1 angles
 
-4 atom types
-1 bond types
+7 atom types
+2 bond types
 1 angle types
 
 0.0 20.0 xlo xhi
@@ -42,11 +42,14 @@ LAMMPS data file for ClayFF toy model
 Masses # atom type, atom mass
 
 1 28.0855    # Si
-2 15.9994    # O
-3 1.008      # H
-4 40.078     # Ca (ejemplo de catión interlaminar)
+2 15.9994    # O_br
+3 15.9994    # O_H
+4 1.008      # H (OH group)
+5 40.078     # Ca
+6 15.9994    # O_w (water oxygen)
+7 1.008      # H_w (water hydrogen)
 
-Atoms # atom-ID mol-ID type charge x y z
+Atoms # atom-ID molecule-ID atom-type charge x y z
 
 1 1 1  2.100  10.0 10.0 10.0   # Si
 2 1 2 -1.050  11.5 10.0 10.0   # O_br
@@ -54,78 +57,103 @@ Atoms # atom-ID mol-ID type charge x y z
 4 1 3 -0.950  10.0 11.0 10.0   # O_H
 5 1 4  0.425  10.0 11.9 10.0   # H (OH group)
 6 2 5  2.000  12.0 10.0 10.0   # Ca
-7 3 6 -0.950  10.0  9.0 10.0   # O_w (water)
-8 3 7  0.425  10.0  8.1 10.0   # H_w (water)
-9 3 7  0.425  10.0  8.1 10.0   # H_w (water)
+7 3 6 -0.820  10.0  9.0 10.0   # O_w (water oxygen)
+8 3 7  0.410  10.0  8.1 10.0   # H_w (water hydrogen)
+9 3 7  0.410  10.0  8.1 10.0   # H_w (water hydrogen)
 
-Bonds # bond number, type, atom1 atom2
+Bonds # bond-ID bond-type atom1 atom2
 
-1 1 4 5   # O_H – H
+1 1 4 5   # O_H – H (hydroxyl bond)
+2 2 7 8   # O_w – H_w (water bond)
+3 2 7 9   # O_w – H_w (water bond)
 
-Angles # angle number, type, atom1 atom2 atom3
+Angles # angle-ID angle-type atom1 atom2 atom3
 
-1 1 7 8 7  # placeholder water angle (O–H–H) – just illustrative
+1 1 8 7 9  # H_w – O_w – H_w (water angle) 
 ```
 
 ### ClayFF atom types 
 
-An important example relevant to hydrated oxides and cementitious materials is the ClayFF force field. ClayFF was designed to describe clays and layered silicates but has since become the de facto standard for modeling calcium silicate hydrate (C–S–H) and related phases. Its key philosophy is simplicity: ClayFF is essentially a nonbonded force field, in which most atoms interact only through Lennard–Jones and Coulombic terms. The only exceptions are hydroxyl groups, where explicit O–H bonds and H–O–H angles are included to preserve molecular geometry. In practice, this means that framework atoms such as Si, Al, and Ca are modeled as charged point particles interacting electrostatically with oxygens and hydroxyls, without any explicit bond definition.
+An important example relevant to hydrated oxides and cementitious materials is the ClayFF force field. ClayFF was designed to describe clays and layered silicates but has since become the de facto standard for modeling calcium silicate hydrate (C–S–H) and related phases. Its key philosophy is simplicity: ClayFF is essentially a nonbonded force field, in which most atoms interact only through Lennard–Jones and Coulombic terms. The only exceptions are hydroxyl and water molecules, where explicit O–H bonds and H–O–H angles are included (following the flexible SPC water model)to preserve molecular geometry. In practice, this means that framework atoms such as Si, Al, and Ca are modeled as charged point particles interacting electrostatically with oxygens and hydroxyls, without any explicit bond definition.
 
 ClayFF defines a limited set of atom types, each with specific Lennard–Jones parameters and partial charges. Typical species include:
 	•	O_br (bridging oxygen): oxygens linking tetrahedra.
-	•	O_H (hydroxyl oxygen) and H (hydroxyl hydrogen): forming the only bonded terms.
-	•	Tetrahedral cations (Si, Al).
-	•	Octahedral cations (Mg, Fe, Ca).
+	•	O_H (hydroxyl oxygen) and H (hydroxyl hydrogen): forming bonded terms.
+	•	Tetrahedral cations (Si, Al_t).
+	•	Octahedral cations (Al_o, Mg, Fe, Ca).
 	•	Interlayer water molecules (O_w, H_w).
+	•	Common aqueous ions (Na⁺, Ca²⁺, Cl⁻)
 
-Charges are fractional (e.g., O_br ≈ –1.05 e, Si ≈ +2.1 e), carefully tuned to reproduce structural and hydration properties of silicates. This minimal parametrization has several advantages: it makes ClayFF easy to extend to new systems, computationally efficient, and sufficiently flexible to describe the disordered, gel-like nature of C–S–H. Because most interactions are nonbonded, ClayFF allows bonds to break and reform in a way that mimics structural flexibility, which is crucial when studying diffusion of ions and the behavior of confined water in cementitious pores.
+Charges are fractional (e.g., O_br ≈ –1.05 e, Si ≈ +2.1 e) and were derived from DFT calculations on simple oxides and hydroxides to reproduce structural and hydration properties of silicates. This minimal parametrization has several advantages: it makes ClayFF easy to extend to new systems, computationally efficient, and sufficiently flexible to describe the disordered, gel-like nature of C–S–H. Because most interactions are nonbonded, ClayFF allows bonds to break and reform in a way that mimics structural flexibility, which is crucial when studying diffusion of ions and the behavior of confined water in cementitious pores.
 
 ```{Warning}
-Las cargas de ClayFF!!!
+Unlike crystalline minerals, disordered phases such as C–S–H do not have a fixed stoichiometry, so applying ClayFF’s standard partial charges often results in a non-neutral system. Maintaining near-electroneutrality is crucial for obtaining stable and physically meaningful simulations, so always check the total charge after building your model:
+- If the net charge is small (|Q| < 0.1 e), it can be compensated by the Ewald solver.  
+- For larger imbalances, add counterions (e.g., Cl⁻, OH⁻) or slightly adjust the number of hydroxyls or Ca atoms until neutrality is achieved.  
 ```
 
-### Novel users: typing step by step 
+### Novel users: step by step guide to generate the topology file in VMD
+
+In this section, we will create a LAMMPS data file from a PDB structure genrated by pyCSH using VMD and its plugin *TopoTools*. 
 
 **1. Loading the PDB file in VMD**
-Open VMD and load the structure. Go to `File/New Molecule`, click `Browse`, and select your XXXXX file.
+Open VMD and load your structure by going to `File → New Molecule`. In the window that appears, click `Browse`, select your `.pdb` file, and then click `Load` to visualize it in the main display.
 
-**2. Using TopoTools to create a LAMMPS data file**
-TopoTools is a VMD plugin that provides a set of commands for building and manipulating molecular structures and preparing them for molecular dynamics simulations. Go to `Extensions/Tk Console` and load TopoTools and PBCtools typing in the Tk Console the following commands:
 
+**2. Loading TopoTools and PBCtools to create the LAMMPS data file**
+TopoTools is a VMD plugin that provides a set of commands to manipulate molecular topologies and export them to formats compatible with LAMMPS. The `PBCtools` package, in turn, allows handling and visualizing periodic boundary conditions. To load both, open the `Tk Console` by clicking in `Extensions/Tk Console` and type:
 ```
 package require topotools
 package require pbctools
 ```
 
-The `TopoTools` package is used for manipulating molecular topologies and preparing data files for LAMMPS, and the `PBCtools` package provides tools for handling periodic boundary conditions.
-
-**3. Define simulation box** Set the periodic boundary conditions (PBC) for the simulation box. The first three values are the box dimensions in the x, y, and z directions in Å, and the last three values are the angles between the box edges. Por supuesto, esto tiene que encajar con lo que haya en el archivo generado por pyCSH.
+**3. Defining simulation box** 
+Next, set the periodic boundary conditions (PBC) for your system. The first three numbers correspond to the box dimensions along x, y, and z (in Å), and the last three specify the angles between box edges. Make sure these values match those defined in the structure generated by pyCSH:
 ```
-pbc set {20.8 20.8 20.8 90.0 90.0 90.0}
+pbc set {20.0 20.0 20.0 90.0 90.0 90.0}
 ```
 
-**4. Generate bonds, angles, dihedrals, and impropers:**
-Use topo commands to guess the molecular topology mol bondsrecalc top recalculates the bonds for the top molecule to ensure that the bond information is correct. topo guessangles generates angle interactions in the molecular topology based on the bond structure.
-topo guessdihedrals generates dihedral interactions (torsional angles) in the molecular topology.
-topo guessimpropers generates improper dihedral interactions, which are often used to maintain planarity in certain molecular structures.
-
+**4. Generating bonds, angles, dihedrals, and impropers**
+Now use TopoTools to reconstruct the molecular topology from the atomic coordinates. The following commands recalculate bonds, then generate angle, dihedral, and improper (used to maintain planarity in certain molecular structures) terms as needed:
 ```
 mol bondsrecalc top
 topo guessangles
 topo guessdihedrals
 topo guessimpropers
 ```
-
-Recalculate the bonds and reanalyze the molecular structure to ensure everything is correctly set up:
+Once this is done, reanalyze the molecule to ensure that the topology is fully consistent by typing:
 ```
 mol reanalyze top
 ```
 
-**5. Create the LAMMPS data file:** Write the data to a LAMMPS-compatible file:
+**5. Assigning atomic charges**
+Atomic charges must be defined explicitly using the partial charges defined in ClayFF:
+```
+set Si [atomselect top "name Si"]
+$Si set charge 2.10
+set O_br [atomselect top "name O_br"]
+$O_br set charge -1.05
+```
+
+**6. Writing the LAMMPS data file:**
+
+Finally, export the topology into a LAMMPS-readable format using:
 ```
 topo writelammpsdata atoms.data full
 ```
-writes the LAMMPS data (atoms.data) file in the full format, which includes detailed information about atom types, coordinates, bonding, angles, etc. Esto te da el archivo listo para LAMMPS. Puedes abrirlo con texto y ver qué hay dentro. 
+This command creates the file `atoms.data` in the `full` style, which includes all atom, bond, angle, and dihedral information required by LAMMPS. You can open it in any text editor to check its structure — you should see sections such as *Masses*, *Atoms*, *Bonds*, and *Angles*. This file is now ready to be combined with the force-field parameters in your LAMMPS input script.
+
+
+```{Warning} 
+
+**Handling mislabeled atoms in VMD**
+
+When atom names are changed from their standard chemical symbols (for example, naming aqueous Ca as `Cw` to distinguish it from interlayer Ca), **VMD may misinterpret them as different elements**. For instance, if you rename calcium to `Cw`, VMD will treat it as carbon (C), assigning an incorrect mass (12.01 instead of 40.08) and radius, which can affect bond recognition.
+To fix this issue while keeping your custom names, you need to manually set the correct element by typing:
+```
+set Cw [atomselect top "name Cw"]
+$Cw set element Ca
+```
 
 ### Advanced users: script based construction
 
