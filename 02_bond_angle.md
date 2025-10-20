@@ -174,7 +174,7 @@ Instead of opening VMD and typing commands in the Tk Console, we can run VMD fro
 
 **1. Building the Tcl script**
 
-The first step in automating the process is to create a Tcl script. This script, with the extension `.tcl`, works as a command list that VMD will read and execute line by line. Each command inside corresponds to what you would normally type in the Tk Console, but grouped together enabling automation. The only difference is that now you include an additional command `mol new system.pdb` (where system is your structure name) at the beginning to load the PDB structure that you want to process. Therefore, the script should:
+The first step in automating the process is to create a Tcl script. This script (a text file with the extension `.tcl`) works as a command list that VMD will read and execute line by line. Each command inside corresponds to what you would normally type in the Tk Console (see section above), but grouped together. The only difference is that now you include an additional command `mol new system.pdb` (where system is your structure name) at the beginning to load the PDB structure that you want to process. Therefore, the script should:
 
 - **Load the structure** of the system, typically a `.pdb` file. 
 - **Load the necessary packages**, such as `topotools` and `pbctools`.  
@@ -183,7 +183,7 @@ The first step in automating the process is to create a Tcl script. This script,
 - **Set atomic masses and charges**, as described earlier for ClayFF.  
 - **Rebuild the topology**, guessing bonds, angles, dihedrals, and impropers.  
 - **Export** the system using `topo writelammpsdata`.
-- 
+  
 
 **2. Running VMD with a Tcl script**
 
