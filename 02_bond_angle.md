@@ -141,6 +141,7 @@ mol reanalyze top
 **5. Assigning atomic charges**
 
 Atomic charges must be defined explicitly using the partial charges defined in ClayFF:
+
 ```
 set Si [atomselect top "name Si"]
 $Si set charge 2.10
@@ -152,6 +153,7 @@ $O_br set charge -1.05
 **6. Writing the LAMMPS data file:**
 
 Finally, export the topology into a LAMMPS-readable format using:
+
 ```
 topo writelammpsdata atoms.data full
 ```
@@ -160,22 +162,23 @@ This command creates the file `atoms.data` in the `full` style, which includes a
 
 ```{Warning} 
 **Handling mislabeled atoms in VMD**
-
-When atom names are changed from their standard chemical symbols (for example, naming aqueous Ca as `Cw` to distinguish it from interlayer Ca), **VMD may misinterpret them as different elements**. For instance, if you rename calcium to `Cw`, VMD will treat it as carbon (C), assigning an incorrect mass (12.01 instead of 40.08) and radius, which can affect bond recognition.
-To fix this issue while keeping your custom names, you need to manually set the correct element by typing:
+When atom names are changed from their standard chemical symbols (for example, naming aqueous Ca as `Cw` to distinguish it from interlayer Ca), **VMD may misinterpret them as different elements**. For instance, if you rename calcium to `Cw`, VMD will treat it as carbon (C), assigning an incorrect mass (12.01 instead of 40.08) and radius, which can affect bond recognition. To fix this issue while keeping your custom names, you need to manually set the correct element by typing:
 ```
-set Cw [atomselect top "name Cw"]
+
+```
+set Cw [atomselect top "name Cw"] 
 $Cw set element Ca
 ```
-```
+
 
 ### Advanced users: script based construction
 
-Instead of opening VMD and typing commands in the Tk Console, we can run VMD from the terminal and execute all steps automatically with a **Tcl script**. A Tcl script is just a plain-text file containing the VMD commands you would otherwise type by hand in the Tk Console. This approach is reproducible and easy to share. Once your Tcl script works for one structure, you can easily automate the generation of multiple data files — for example, for a series of C–S–H models with different Ca/Si ratios — by creating an additional shell or PowerShell script that calls the same Tcl pipeline for each PDB file. This allows you to build many systems in sequence without any manual intervention.
+Instead of opening VMD and typing commands in the Tk Console, we can run VMD from the terminal and execute all steps automatically with a **Tcl script**. A Tcl script is just a plain-text file containing the VMD commands you would otherwise type by hand in the Tk Console. This approach is reproducible and easy to share. Once your Tcl script works for one structure, you can easily automate the generation of multiple data files — for example, for a series of C–S–H models with different Ca/Si ratios — by creating an additional shell script that calls the same Tcl pipeline for each PDB file. This allows you to build many systems in sequence without any manual intervention.
 
 **1. Building the Tcl script**
 
-The first step in automating the process is to create a Tcl script. This script, with the extension `.tcl`, works as a command list that VMD will read and execute line by line. Each command inside corresponds to what you would normally type in the Tk Console, but grouped together enabling automation. The only difference is that now you include an additional command `mol new system.pdb` at the beginning to load the PDB structure that you want to process. Therefore, the script should:
+The first step in automating the process is to create a Tcl script. This script, with the extension `.tcl`, works as a command list that VMD will read and execute line by line. Each command inside corresponds to what you would normally type in the Tk Console, but grouped together enabling automation. The only difference is that now you include an additional command `mol new system.pdb` (where system is your structure name) at the beginning to load the PDB structure that you want to process. Therefore, the script should:
+
 - **Load the structure** of the system, typically a `.pdb` file. 
 - **Load the necessary packages**, such as `topotools` and `pbctools`.  
 - **Define the simulation box dimensions**.  
@@ -183,6 +186,7 @@ The first step in automating the process is to create a Tcl script. This script,
 - **Set atomic masses and charges**, as described earlier for ClayFF.  
 - **Rebuild the topology**, guessing bonds, angles, dihedrals, and impropers.  
 - **Export** the system using `topo writelammpsdata`.
+- 
 
 **2. Running VMD with a Tcl script**
 
@@ -191,6 +195,7 @@ Once your Tcl script (for example `make_lammps_data.tcl`) is ready, the next ste
 ```
 vmd -dispdev text -e make_lammps_data.tcl
 ```
+
 This will start VMD without opening the graphical interface, automatically load the file test.pdb, apply all the steps defined in the script, and write the output file atoms.data in the current working directory.
 
 ```{Tip}
