@@ -6,9 +6,9 @@ The general procedure for building a slit pore in a calcium–silicate–hydrate
 
 - **Build the bulk structure**  A detailed description of the different model construction methods can be found in this [review article](https://doi.org/10.1016/j.cemconres.2022.106784). Here we will use the [pyCSH code](https://doi.org/10.1016/j.cemconres.2024.107593), a Python code for the automated generation of realistic bulk calcium silicate hydrate (C-S-H) structures.
 
-- **Introduce the pore** (slit geometry) Choose a crystallographic direction perpendicular to the layers of interest. Define a “gap” by translating one part of the structure away from the other, thereby creating an empty region. The pore width can be tuned by setting the separation distance between the two C–S–H surfaces.
+- **Introduce the pore** (slit geometry) Define a “gap” by translating one part of the structure away from the other in perpendicular to the C-S-H layers (z axis). The pore width can be tuned by setting the separation distance between the two C–S–H surfaces.
 
-- **Saturate with water** Insert water molecules into the pore region using a packing algorithm. Reach realistic densities by filling until the desired target pore solution density is reached or by MD relaxation.
+- **Saturate with water** Insert water molecules and ions into the pore region using pyCSH or a packing algorithm. Reach realistic densities by filling until the desired target pore solution density is reached or by MD relaxation.
 
 > ✏️ **Novel users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code. The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.3, a C-S-H surface of least 2.25nm^2, and a pore space of aprox 2nm filled with water and 10NaCl ion pairs. The files must be written in lammps_xxxx format. _Estimated time XXX min_.
 
@@ -21,12 +21,12 @@ The general procedure for building a slit pore in a calcium–silicate–hydrate
 PyCSH descripción y lo que puede hacer( inclyyo abrir poro y meter moleculas 
 
 ```{Note}
-Advanced users do not saturate the pore after with packmol
+Advanced users: remember not saturate the pore automatically with pyCSH. You will do it afterwards with packmol
 ```
 
 **1. Donwload pyCSH** Download the zip file from the github repository. Unzip and enter the folder (e.g. csh_basic/).
 
-**2. Edit the input.py**  Open **input.py** in your text editor. You will have to change a few parameters to build your model.
+**2. Edit the `parameters.py`**  Open `parameters.py` file in your text editor. You will have to change a few parameters to build your model according to the instructions above.
 
 ```{tip}
 In windows the default is _Notepad_, in Mac _Textedit_ and in Linux _Nano_. They are enough, specially _Nano_, but if you are going to work on simulations, we recommend to use something more sophisticated as _vim_ or _visual studio_ despite teh steper learning curve.
@@ -38,7 +38,7 @@ The parameters that control the generated CSH models are defined in `parameters.
    Seed for the random number generator.
    
 - `shape`: **Required**
-  Shape of the supercell of defective tobermorite 14 A. Tuple of the shape (Nx, Ny, Nz).
+  Shape (size) of the supercell of the C-S-H model. Tuple of the shape (Nx, Ny, Nz).
   
 - `Ca_Si_ratio`: **Required**
 Target Ca/Si ratio of the CSH model.
@@ -53,19 +53,19 @@ Target water/Si ratio of the CSH model.
 Number of structures to be generated.
 
 - `make_independent`: **Optional**. Default: False
-  Whether to ensure that none of the structures are different spatial arrangement of the same unit cells or not.
+ True implies that none of the structures are equal, or have a different spatial arrangement of the same unit cells.
 
 - `offset_gaussian`: **Optional**. Default: False
   If True, some preliminary calculations will be done in order to impose more strictly that the amount of Ca-OH and Si-OH are closer to the experimental values.
 
 - `width_Ca_Si`: **Optional**. Default: 0.1
-Width of the gaussian used for sampling the Ca/Si ratio of each of the unit cells that compose the total supercell.  Smaller values (e.g. 0.01) will  lead to ratios closer to the target, but might cause the code to fail.
+Width of the gaussian used for sampling the Ca/Si ratio of each of the unit cells that compose the total supercell. Smaller values (e.g. 0.01) will  lead to ratios closer to the target, but the code might not be able to find a solution.
 
 - `width_SiOH`: **Optional**. Default: 0.08
-Width of the gaussian used for sampling the Si-OH/Si ratio.
+Width of the gaussian used for sampling the Si-OH/Si ratio. Same as before.
 
 - `width_CaOH`: **Optional**. Default: 0.04
-Width of the gaussian used for sampling the Ca-OH/Ca ratio.
+Width of the gaussian used for sampling the Ca-OH/Ca ratio. Same as before.
 
 - `create`: **Required**.
 True if you want to generate new structures, False, if other modes are required. See `check` and `read_structure`.
@@ -76,20 +76,21 @@ If True, a prelimilary check for a wide range of Ca/Si ratios will be performed,
 - `read_structure`: **Optional**. Default: False
 If True, handmade brick code will be read from the end of the parameters file.
 
-- `surface_from_bulk`: **Optional**. Default: False.
-If True, the handmade structure will be transformed to a surface  in the **z** dimension by adding upper (">Lo", ">Ro") and lower ("<Lo", "<Ro") chains.
+- `diferentiate`: **Optional**. Default: True 
+Atoms are distinguished depending on their topological environment.
+ 
+- `write_lammps`: **Optional**. Default: False
+Write a `prefix.data` LAMMPS data file for each of the structures with 
 
-- `surface_separation`: **Optional**. Default: False
-Approximate distance between the layers of CSH surfaces.
-	 
-- `write_lammps`: **Optional**. Default: True
-Write a `.data` LAMMPS data file for each of the structures. 
-
-- `write_lammps_erica`: **Optional**. Default: True
+- `write_lammps_erica`: **Optional**. Default: False
 Write a `.data` LAMMPS data file for each of the structures, with core-shell, bonds and angle information to use with EricaFF.
 
-- `write_vasp`: **Optional**. Default: True
-Write a `.vasp` VASP data file for each of the structures. 
+- `write_vasp`: **Optional**. Default: False
+Write a `.vasp` VASP data file for each of the structures.
+
+- 'Dpore':  **Optional**. Default: 0.0.
+The expansion of the desired pore in Å. A value of 0.0 indicates no pore opening.
+
 
 
 **3. Run pyCSH** In a terminal inside the folder (or VScode) run simply 
