@@ -92,6 +92,7 @@ ClayFF defines a limited set of atom types, each with specific Lennard–Jones p
 Clays are phyllosilicates, while tobermorite-minerals and C–S–H are inosilicates, so applying ClayFF’s standard partial charges results in a non-neutral system. Maintaining electroneutrality is crucial for obtaining stable and physically meaningful simulations. You **always** need to be sure that your system is **_formally_** neutral, i.e. the summatory of the formal charges is zero. Then, the partial charges can be slightly tuned
  - If the net charge is small (|Q| < 0.1 e), it can be compensated by the Ewald solver.  
  - If the net charge is large (|Q| > 0.1 e), you need to adjust the standard charges in your model. The easiest way is to modify the charge in the silicate oxygen atoms by a tiny percentage (less than 0.05%). Ideally, the force field paramentes should be rescaled, but we can assume that such a tiny charge modification will not affect the physics
+
 **IMPORTANT**: same issue applies to any force field with partial charges when "defects" are introduced, as CSHFF, OPLS, etc.
 ```
 
