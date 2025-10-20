@@ -18,7 +18,7 @@ The general procedure for building a slit pore in a calcium–silicate–hydrate
 
 ### Construction of C-S-H model using pyCSH.
 
-PyCSH descripción y lo que puede hacer( inclyyo abrir poro y meter moleculas 
+PyCSH is a Open Access code developed orginally by UPV/EHU and EPFL teams for the automated generation of realistic bulk calcium silicate hydrate (C-S-H) structures. Specifying the desidered chemistry and system size, the code generates automatically hundreds of structures. In the version v2.0, pyCSH also generates slit pores saturated with water and ions, and makes chemical substitutions. 
 
 ```{Note}
 Advanced users: remember not saturate the pore automatically with pyCSH. You will do it afterwards with packmol
@@ -110,15 +110,20 @@ That’s it! The script will read you input.py, build the required C–S–H mod
 **4. What the outputs are and how to read them**
 
 pyCSH creates automatic plots with the characteristics of the **bulk** C-S-H. Note that the Ca/Si or w/si ratio of the simulation box with the pore opened does not make sense. The generated plots are:
-- Ca/Si.pdf: Ca/Si ratio of the generated models compared with 
-- X-OH.pdf:
-- MCL.pdf: the mean chain lenghts of the generated models compared with the experimental data
 
-A folder with 
+- distributions.pdf: The generated models have a slighlty variable chemistry around the desidered value. The distributions are shown in this file.
+- X-OH.pdf: the ratio of Ca-OH/Ca and Si-OH/Si of the generated models as a function of the Ca/Si ratio, and  compared with the experimental data
+- MCL.pdf: the mean chain lenghts of the generated models as a function of the Ca/Si ratio, and compared with the experimental data
+- water.pdf: the water content of the generated models, normalised by the silicate content, and compared with the experimental data
 
-> ✏️ **Next step Novel users** Select one of the models and move to the topology section.  
+pyCSH also generates a folder where you will find several files (# denotes structure number):
 
-> ✒️ **Advanced users** Select one of the models and move to the next section "Packing molecular systems with Packmol"
+- prefix#.log: Files contain the information about the specific model (composition, size, etc), the "fingerprint" of the model (all the blocks used in the construction and their position in the supercell) and the charge distribution (not all the blocks are neutral, but the final structure is always neutral)
+- prefix#.data/vasp/xyz...: Files containing the atomic structure in the required format
+
+> ✏️ **Next step Novel users** Check the plots and files. Select one of the models and move to the topology section.  
+
+> ✒️ **Advanced users** Check the plots and files. Select one of the models and move to the next section "Packing molecular systems with Packmol"
 
 
 ### Packing molecular systems with Packmol  (advanced users)
