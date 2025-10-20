@@ -24,7 +24,7 @@ PyCSH descripción y lo que puede hacer( inclyyo abrir poro y meter moleculas
 Advanced users: remember not saturate the pore automatically with pyCSH. You will do it afterwards with packmol
 ```
 
-**1. Donwload pyCSH** Download the zip file from the github repository. Unzip and enter the folder (e.g. csh_basic/).
+**1. Donwload pyCSH** Download the zip file from the github repository. Unzip and enter the folder in your terminal or in VScode.
 
 **2. Edit the `parameters.py`**  Open `parameters.py` file in your text editor. You will have to change a few parameters to build your model according to the instructions above.
 
@@ -34,94 +34,98 @@ In windows the default is _Notepad_, in Mac _Textedit_ and in Linux _Nano_. They
 
 The parameters that control the generated CSH models are defined in `parameters.py`, and are the following:
 
- - `seed`: **Optional**. Default : 1123
+ - `seed`: **Optional**. Default : 1123. 
    Seed for the random number generator.
    
-- `shape`: **Required**
-  Shape (size) of the supercell of the C-S-H model. Tuple of the shape (Nx, Ny, Nz).
+- `shape`: **Required**.
+  Shape (size) of the supercell of the C-S-H model. Tuple of the shape (Nx, Ny, Nz). Each block has dimmensions of 
   
-- `Ca_Si_ratio`: **Required**
+- `Ca_Si_ratio`: **Required**.
 Target Ca/Si ratio of the CSH model.
 
-- `W_Si_ratio`: **Required**
+- `W_Si_ratio`: **Required**.
 Target water/Si ratio of the CSH model.
 
-- `prefix`: **Optional**. Default: 'input'
-  Name of the output files.
+- `prefix`: **Optional**. Default: "input".
+  Name of the output files. The name must be between 
  
-- `N_samples`: **Required**
+- `N_samples`: **Required**.
 Number of structures to be generated.
 
-- `make_independent`: **Optional**. Default: False
+- `make_independent`: **Optional**. Default: False.
  True implies that none of the structures are equal, or have a different spatial arrangement of the same unit cells.
 
-- `offset_gaussian`: **Optional**. Default: False
+- `offset_gaussian`: **Optional**. Default: False.
   If True, some preliminary calculations will be done in order to impose more strictly that the amount of Ca-OH and Si-OH are closer to the experimental values.
 
-- `width_Ca_Si`: **Optional**. Default: 0.1
+- `width_Ca_Si`: **Optional**. Default: 0.1.
 Width of the gaussian used for sampling the Ca/Si ratio of each of the unit cells that compose the total supercell. Smaller values (e.g. 0.01) will  lead to ratios closer to the target, but the code might not be able to find a solution.
 
-- `width_SiOH`: **Optional**. Default: 0.08
+- `width_SiOH`: **Optional**. Default: 0.08.
 Width of the gaussian used for sampling the Si-OH/Si ratio. Same as before.
 
-- `width_CaOH`: **Optional**. Default: 0.04
+- `width_CaOH`: **Optional**. Default: 0.04.
 Width of the gaussian used for sampling the Ca-OH/Ca ratio. Same as before.
 
 - `create`: **Required**.
 True if you want to generate new structures, False, if other modes are required. See `check` and `read_structure`.
 
-- `check`: **Optional**. Default: False
+- `check`: **Optional**. Default: False.
 If True, a prelimilary check for a wide range of Ca/Si ratios will be performed, in order to show the accuracy of the generated models for the selected parameters with respect to the Ca/Si ratio, water/Si ratio etc.
 
-- `read_structure`: **Optional**. Default: False
+- `read_structure`: **Optional**. Default: False.
 If True, handmade brick code will be read from the end of the parameters file.
 
-- `diferentiate`: **Optional**. Default: True 
+- `diferentiate`: **Optional**. Default: True.
 Atoms are distinguished depending on their topological environment.
+
+- `orthogonal`: **Optional**. Default: False.
+Wheter your simulation box keeps the original shape or is converted to orthogonal
  
-- `write_lammps`: **Optional**. Default: False
+- `write_lammps`: **Optional**. Default: False.
 Write a `prefix.data` LAMMPS data file for each of the structures with 
 
-- `write_lammps_erica`: **Optional**. Default: False
+- `write_lammps_erica`: **Optional**. Default: False.
 Write a `.data` LAMMPS data file for each of the structures, with core-shell, bonds and angle information to use with EricaFF.
 
-- `write_vasp`: **Optional**. Default: False
+- `write_vasp`: **Optional**. Default: False.
 Write a `.vasp` VASP data file for each of the structures.
 
-- 'Dpore':  **Optional**. Default: 0.0.
-The expansion of the desired pore in Å. A value of 0.0 indicates no pore opening.
+- `Dpore`:  **Optional**. Default: 0.0.
+The expansion of the desired pore in Å. A value of 0.0 indicates no pore opening. The pore is always created at the center of the supercell
+
+- `shift` = **Optional**. Default: False.
+Shif the layers to ensure that the center of the supercell matches with an interlaminar space. 
 
 
 
 **3. Run pyCSH** In a terminal inside the folder (or VScode) run simply 
 
 ```
-python3 run.py
+python3 main_brick.py
 ```
 
 That’s it! The script will read you input.py, build the required C–S–H models, save structure files, and produce some plots.
 
 **4. What the outputs are and how to read them**
 
-- prefix.data/vasp/xyz/... — Datafiles containing the atomic postions LAMMPS data file OVITO can open LAMMPS data directly.
-- name.xyz — simple XYZ with all atoms. OVITO can open it directly. Good for quick previews.
-- name.cif — CIF crystallographic file. VESTA can open it directly. Preferred for VESTA (periodic cell handled nicely).
+pyCSH creates automatic plots with the characteristics of the **bulk** C-S-H. Note that the Ca/Si or w/si ratio of the simulation box with the pore opened does not make sense. The generated plots are:
+- Ca/Si.pdf: Ca/Si ratio of the generated models compared with 
+- X-OH.pdf:
+- MCL.pdf: the mean chain lenghts of the generated models compared with the experimental data
 
-Plots:
-- MCL.pdf, Ca/Si
+A folder with 
 
-> ✏️ **Next step Novel users** Select one of the models and move to the topology section. By looking at the results elegir el mas representativo y comtinuar. 
+> ✏️ **Next step Novel users** Select one of the models and move to the topology section.  
 
-> ✒️ **Advanced users** Select one of the models by looking at the results elegir el mas representativo. Still packmol setps
+> ✒️ **Advanced users** Select one of the models and move to the next section "Packing molecular systems with Packmol"
 
 
-### Packmol (advanced users)
-
-### Packing molecular systems with Packmol
+### Packing molecular systems with Packmol  (advanced users)
 
 Packmol is a program designed to create initial configurations for molecular dynamics simulations by packing molecules into defined regions of space according to user-specified geometric constraints. It takes as input one or more molecular structures (in PDB or XYZ format) and places them inside a simulation box or around predefined surfaces, ensuring that the molecules do not overlap and that a minimum distance between atoms is respected.
 
-pyCSH allows also to insert water molecules and certain ions within the slit pore. However, Packmol offers much greater flexibility: it allows you to pack any kind of molecule, such as solvents, organic additives, surfactants, or any other chemical compound species, into complex geometries, interfaces, or pores. This makes it extremely useful when constructing more heterogeneous systems. 
+pyCSH allows to insert water molecules and certain ions within the slit pore in very simple cases. However, Packmol offers much greater flexibility: it allows you to pack any kind of molecule, such as solvents, organic additives, surfactants, or any other chemical compound species, into complex geometries, interfaces, or pores. This makes it extremely useful when constructing more heterogeneous systems. 
 
 **1. Installing Packmol**
 
