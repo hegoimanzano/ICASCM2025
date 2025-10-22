@@ -133,6 +133,10 @@ topo guessdihedrals
 topo guessimpropers
 ```
 
+```{Tip}  
+ClayFF does not include any dihedral or improper terms, as molecular geometry is maintained solely through non-bonded interactions and the explicit O–H and H–O–H bonds and angles. Therefore, you can skip the commands `topo guessdihedrals` and `topo guessimpropers` to avoid creating unwanted lists in the data file and keep the topology consistent with the ClayFF model.
+```
+
 Once this is done, reanalyse the molecule to ensure that the topology is fully consistent by typing:
 ```
 mol reanalyze top
@@ -141,14 +145,8 @@ mol reanalyze top
 ```{Warning}
 **Avoiding unwanted bonds and angles in ClayFF systems.** When using TopoTools to guess bonds and angles, VMD automatically generates all possible connections based on interatomic distances. However, in ClayFF, only hydroxyl and water molecules should contain explicit bonds and angles. If you keep the default settings, VMD will create unnecessary bonds and angles such as *Ca–O_w* or *Si–O_br–Si*, which are not part of the ClayFF model. To avoid this, you can assign a radius of zero to atoms that should not form bonds before recalculating connectivity (`mol reanalyze top`). In this way, VMD will not find any neighbouring atoms within the bonding cutoff distance, and therefore no connectivity will be generated for those atoms. To do so, use the following command:
 
-    `set O_br [atomselect top "name O_br"]`
-
-    `$O_br set radius 0`
-    
-    ```
     set O_br [atomselect top "name O_br"]
     $O_br set radius 0
-    ```
 ```
 
 **5. Assigning atomic charges**
