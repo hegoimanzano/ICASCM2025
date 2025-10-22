@@ -181,31 +181,33 @@ This command creates the file `atoms.data` in the `full` style, which includes a
 
 ### Advanced users: script based construction
 
-Instead of opening VMD and typing commands in the `Tk Console`, you can run VMD directy from the terminal and execute all steps automatically with a *Tcl script*. A Tcl script is a plain-text file containing the VMD commands you would otherwise type manually in the Tk Console. This approach is fully reproducible and ideal for automating workflows. Once your Tcl script works for one structure, it can be easily reused to generate multiple data files — for example, for a series of C–S–H models with different Ca/Si ratios — by creating an additional shell script that calls the same Tcl pipeline for each `.vasp` file. This allows you to build many systems in sequence without any manual intervention.
+Instead of opening VMD and typing commands in the `Tk Console`, you can run VMD directy from the terminal and execute all steps automatically with a *Tcl script*. A Tcl script is a plain-text file containing the VMD commands you would otherwise type manually in the Tk Console. This approach is ideal for automating workflows: once your Tcl script works for one structure, it can be easily reused to generate multiple data files — for example, for a series of C–S–H models with different Ca/Si ratios — by creating an additional shell script that calls the same Tcl pipeline for each `.vasp` file. This allows you to build many systems in sequence without any manual intervention.
 
 **1. Building the Tcl script**
 
-The first step is to create a Tcl script (a text file with the extension `.tcl`) that VMD will read and execute line by line. Each command inside corresponds to what would be typed in the Tk Console (see section above), but grouped in a single automated workflow. The only difference is that now you need to include an additional command `mol new system.vasp` (where *system* is the name of your structure) at the beginning to load the structure to be processed. Therefore, the Tcl script should:
+The first step is to create a Tcl script (a text file with the extension `.tcl`) that VMD will read and execute line by line. Each command inside corresponds to what you would type in the Tk Console (see section above), but grouped into a single automated workflow. The only difference is that you must include an additional command `mol new system.vasp type POSCAR` (where *system* is the name of your structure) at the beginning to load the structure to be processed. Therefore, the Tcl script should:
 
-- **Load the structure** of the system, typically a `.pdb` file. 
+- **Load the structure** of the system, the `.vasp` file. 
 - **Load the necessary packages**, such as `topotools` and `pbctools`.  
-- **Define the simulation box dimensions**.  
-- **Assign correctly the elements** to each atom type, fixing any mislabeled atoms if needed.  
-- **Set atomic masses and charges**, as described earlier for ClayFF.  
-- **Rebuild the topology**, guessing bonds, angles, dihedrals, and impropers.  
+- **Define the simulation box dimensions**, using `pbc set`.  
+- **Assign correctly the elements** to any custom-named atoms (fix mislabelled atoms).  
+- **Set atomic masses and charges**, following the ClayFF parameters.
+- **Set radious**, assigning radius zero to atoms that must not form bonds.
+- **Rebuild the topology**, using `mol bondsrecalc` and `topo guessangles`.  
 - **Export** the system using `topo writelammpsdata`.
   
-
 **2. Running VMD with a Tcl script**
 
-Once your Tcl script (for example `make_lammps_data.tcl`) is ready, the next step is to run it directly from the terminal. To do this, we should call the VMD executable in and use the option `-dispdev text` to excute the Tcl script specified after `-e`:
-
+Once your Tcl script (e.g. `vasp2data.tcl`) is ready, the next step is to run it directly from the terminal. To do this, we should call the VMD executable in and use the option `-dispdev text` to excute the Tcl script specified after `-e`:
 ```
-vmd -dispdev text -e make_lammps_data.tcl
+vmd -dispdev text -e vasp2data.tcl
 ```
 
-This will start VMD without opening the graphical interface, automatically load the file test.pdb, apply all the steps defined in the script, and write the output file atoms.data in the current working directory.
+This starts VMD without the graphical interface, loads your `.vasp` structure with `type POSCAR`, applies all steps in the script, and writes `atoms.data` in the current working directory.
+
+This starts VMD without opening the graphical interface, automatically loads the `.vasp` file, applies all the steps in the script, and writes the output file `.data in the current working directory.
 
 ```{Tip}
-Before running this command, make sure you know where the VMD executable is located on your system. If your terminal does not recognize the command vmd, use the full path to the executable in place of vmd in the command above.
+If your terminal does not recognise the `vmd` command, use the full path to the executable (e.g. on macOS: `"/Applications/VMD 1.9.4a51.app/Contents/vmd/vmd_MACOSXX86_64" -dispdev text -e vasp2data.tcl`).  
 ```
+
