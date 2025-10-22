@@ -95,7 +95,7 @@ Write a `.vasp` VASP data file for each of the structures.
 The expansion of the desired pore in Å. A value of 0.0 indicates no pore opening. The pore is always created at the center of the supercell
 
 - `shift` = **Optional**. Default: False.
-Shif the layers to ensure that the center of the supercell matches with an interlaminar space. 
+Shif the layers to ensure that the center of the supercell matches with an interlaminar space. Basically, you need to shift your system if the number of blocz in z dimension is even. 
 
 
 
@@ -105,7 +105,7 @@ Shif the layers to ensure that the center of the supercell matches with an inter
 python3 main_brick.py
 ```
 
-That’s it! The script will read you input.py, build the required C–S–H models, save structure files, and produce some plots.
+That’s it! in few seconds you will have your structures. The script will read you input.py, build the required C–S–H models, save structure files, and produce some plots.  
 
 **4. What the outputs are and how to read them**
 
