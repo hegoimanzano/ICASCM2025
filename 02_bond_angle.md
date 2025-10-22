@@ -160,16 +160,12 @@ This command creates the file `atoms.data` in the `full` style, which includes a
 ```{Warning} 
 **Handling mislabeled atoms in VMD**
 When atom names are changed from their standard chemical symbols (e.g. renaming aqueous Ca as `Cw` to distinguish them from interlayer Ca), **VMD may misinterpret them as different elements**. For instance, if you rename calcium to `Cw`, VMD will treat it as carbon (C), assigning an incorrect mass (12.01 instead of 40.08) and radius,  which can, in turn, affect bond recognition. To fix this issue while preserving your custom atom names, you need to manually set the correct element by typing:
-    ```tcl
+
+    ```
     set Cw [atomselect top "name Cw"]
     $Cw set element Ca
     ```
 ```
-```
-set Cw [atomselect top "name Cw"] 
-$Cw set element Ca
-```
-
 
 ### Advanced users: script based construction
 
