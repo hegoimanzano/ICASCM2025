@@ -169,13 +169,10 @@ topo writelammpsdata atoms.data full
 This command creates the file `atoms.data` in the `full` style, which includes all atom, bond, angle, and dihedral information required by LAMMPS. You can open it in any text editor to check its structure — you should see sections such as *Masses*, *Atoms*, *Bonds*, and *Angles*. This file is now ready to be combined with the force-field parameters in your LAMMPS input script.
 
 ```{Warning} 
-**Handling mislabeled atoms in VMD**
-When atom names are changed from their standard chemical symbols (e.g. renaming aqueous Ca as `Cw` to distinguish them from interlayer Ca), **VMD may misinterpret them as different elements**. For instance, if you rename calcium to `Cw`, VMD will treat it as carbon (C), assigning an incorrect mass (12.01 instead of 40.08) and radius,  which can, in turn, affect bond recognition. To fix this issue while preserving your custom atom names, you need to manually set the correct element by typing:
+**Handling mislabeled atoms in VMD.** When atom names are changed from their standard chemical symbols (e.g. renaming aqueous Ca as `Cw` to distinguish them from interlayer Ca), **VMD may misinterpret them as different elements**. For instance, if you rename calcium to `Cw`, VMD will treat it as carbon (C), assigning an incorrect mass (12.01 instead of 40.08) and radius,  which can, in turn, affect bond recognition. To fix this issue while preserving your custom atom names, you need to manually set the correct element by typing:
 
-    ```
     set Cw [atomselect top "name Cw"]
     $Cw set element Ca
-    ```
 ```
 
 ### Advanced users: script based construction
