@@ -18,15 +18,15 @@ The options in LAMMPS are vast. The [LAMMPS Manual](https://docs.lammps.org/) mi
 **1. Header / Global Settings** These commands define the units, atom style, boundary conditions, and load your starting structure.
 
 **2. Force Field Definition** Here you specify interatomic potentials and their parameters.
-- pair_style + pair_coeff = how nonbonded atoms interact. 
-- bond_style, angle_style, dihedral_style = for bonded terms.
-- kspace_style = long-range electrostatics.
+- `pair_style + pair_coeff` = how nonbonded atoms interact. 
+- `bond_style`, `angle_style`, `dihedral_style` = for bonded terms.
+- `kspace_style` = long-range electrostatics.
 - special FF like COMB, ReaxFF, or MLP have their own syntax
 
 **3. Simulation Control and execution** This is the heart of the input. It defines time integration, thermostats/barostats, neighbor lists, and trajectory dumps. There are different commands grouped in large families:
-- fix = continuous operations applied at every step of the simulation (e.g., integrators like fix nvt, thermostats, SHAKE constraints, MSD calculators, walls, restraints).
-- dump = how to write trajectory snapshots and how often
-- thermo and thermo_style → control which thermodynamics quantities and other paramaters appears in log output file and how oftern
+- `fix` = continuous operations applied at every step of the simulation (e.g., integrators like fix nvt, thermostats, SHAKE constraints, MSD calculators, walls, restraints).
+- `dump` = how to write trajectory snapshots and how often
+- `thermo` and `thermo_style` = control which thermodynamics quantities and other paramaters appears in log output file and how oftern
 
 **4. Analysis** LAMMPS has compute and variable as analysis tools, and fix ave/time to average over time. (computes, variables, averages). The analysis commands are intermixed with layer 3, and they are not strictly necessary, as analysis can be done in a postprocessing stage
 - compute = generates per-atom or global quantities (MSD, stress, RDF, density profiles).
@@ -35,7 +35,10 @@ The options in LAMMPS are vast. The [LAMMPS Manual](https://docs.lammps.org/) mi
 
 Finally, you tell LAMMPS to run → length of the simulation (number of timesteps).
 
+```{Caution}
 Note that LAMMPS interprets commands strictly **in the order** they appear in the input file. This means that the simulation environment is built step by step, and a command cannot use information that has not yet been defined. You must be carefull with the order of the commands.
+```
+
 
 ---
 
@@ -57,15 +60,15 @@ neigh_modify    delay 10 every 1
 ```
 
 **2. Force Field Definition** Here you specify interatomic potentials and their parameters.
-- pair_style + pair_coeff → how nonbonded atoms interact. 
-- bond_style, angle_style, dihedral_style → for bonded terms.
-- kspace_style → long-range electrostatics.
+- pair_style + pair_coeff = how nonbonded atoms interact. 
+- bond_style, angle_style, dihedral_style = for bonded terms.
+- kspace_style = how long-range electrostatics are computed. Long range interactions are difficult to compute, since they do not decay fast with the distance. Special algorithms are needed like Ewald summation, or `pppm`(particle-particle particle-mesh)
 
 ```
-# ---- Fuerzas (EJEMPLO: AJUSTAR a tu FF) ----
-pair_style      lj/cut/coul/long 10.0 10.0
-kspace_style    pppm 1.0e-4
-# pair_coeff    * * 0.0 3.0     # <-- PON tus parámetros reales
+# ---- FORCE FIELD  ----
+pair_style      lj/cut/coul/long 10.0 10.0     #lennard-jones and coulomb settings
+kspace_style    pppm 1.0e-4                    # coulomb long range solver
+# pair_coeff    1 2 0.0 3.0                    # atom1 atom2 + your real parametes
 ```
 
 **3. Simulation Control and execution** Now we start the simulation. In any MD simulations there are at least two stpes. First, an **equilibration period**, in which our system adapts to the desidered thermodynamic conditions. First we assign random `velocity` to the particles according to a Boltzmann distribution at 300 K. Then, we perform the simulation in the canonical ensemble `fix nvt`, at an initial and final temperature of 300 K, applying a thermostat every 100 steps to maintain the target temperature. We record selected `thermo` properties in the output every 1000 steps. Finally, we need to `unfix` the fix that was defined for this phase to prepare the system for the next stage.
@@ -78,10 +81,6 @@ thermo          1000
 thermo_style    custom step temp pe etotal press density
 run             10000
 unfix           nvt
-```
-
-```{tip}
-It is also common, altough we did not do it, to perform an energy minimization step before the equilibration to relax the initial simulation box and avoid "explosions" due to overlapping of atoms
 ```
 
 **How long should an equilibration phase last?** The simple answer is that it should last as long as necessary, and the exact duration is system-specific, and depends on your initial simulation protocol, how you build your simulation box, the force field, the final thermodynamic conditions, etc. It is essential to  to confirm that equilibrium has truly been reached by monitoring the energy, density of the system, the mobility of the atoms, or structural properties. 
