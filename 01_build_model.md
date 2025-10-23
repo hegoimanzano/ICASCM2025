@@ -10,21 +10,21 @@ The general procedure for building a slit pore in a calcium–silicate–hydrate
 
 - **Saturate with water** Insert water molecules and ions into the pore region using pyCSH or a packing algorithm. Reach realistic densities by filling until the desired target pore solution density is reached or by MD relaxation.
 
-> ✏️ **Novel users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code. The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.3, a C-S-H surface of least 1.5 nm$^2$, and a pore space of aprox 2nm filled with water and 10NaCl ion pairs. The files must be written in lammps_xxxx format. _Estimated time XXX min_.
+> ✏️ **Novel users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code. The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.2, a C-S-H surface of least 1.5 nm$^2$, and a pore space of aprox 2 nm filled with water and 10 NaCl ion pairs. The files must be written in lammps_xxxx.data format. _Estimated time XXX min_.
 
-> ✒️ **Advanced users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code **_and packmol_** (do not saturate the pore space automatically!). The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.3, a C-S-H surface of least 1.5 nm$^2$, and a pore space of aprox 2 nm filled with water and 10NaCl ion pairs. The files must be written in lammps_xxxx format. _Estimated time XXX min_.
+> ✒️ **Advanced users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code **_and packmol_** (do not saturate the pore space automatically!). The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.2, a C-S-H surface of least 1.5 nm$^2$, and a pore space of aprox 2 nm filled with water and 10 NaCl ion pairs. The files must be written in lammps_xxxx.data format. _Estimated time XXX min_.
 
 ---
 
 ### Construction of C-S-H model using pyCSH.
 
-PyCSH is a Open Access code developed orginally by UPV/EHU and EPFL teams for the automated generation of realistic bulk calcium silicate hydrate (C-S-H) structures. Specifying the desidered chemistry and system size, the code generates automatically hundreds of structures. In the version v2.0, pyCSH also generates slit pores saturated with water and ions, and makes chemical substitutions. 
+PyCSH is a Open Access code developed orginally by UPV/EHU and EPFL teams for the automated generation of realistic bulk calcium silicate hydrate (C-S-H) structures. Specifying the desidered chemistry and system size, the code generates automatically hundreds of structures. 
 
 ```{Warning}
-This is a beta version of pyCSH v2.0. We have tested the specific example that you will use in this tutorial, but we do not advise to use it for scientific production until the code is public is our webpage.
+You will use today a beta version of pyCSH v2.0. We have tested the specific example that you will use in this tutorial, but we do not advise to use it for scientific production until the code is oficially released.
 ```
 
-**1. Donwload pyCSH** Download the zip file from the github repository. Unzip and enter the folder in your terminal or in VScode.
+**1. Download pyCSH** Download the zip file from the github repository. Unzip and enter the folder in your terminal or in VScode.
 
 **2. Edit the `parameters.py`**  Open `parameters.py` file in your text editor. You will have to change a few parameters to build your model according to the instructions above.
 
@@ -37,9 +37,9 @@ The parameters that control the generated CSH models are defined in `parameters.
  - `seed`: **Optional**. Default : 1123. 
    Seed for the random number generator.
    
-- `shape`: **Required**.
-  Shape (size) of the supercell of the C-S-H model. Tuple of the shape (Nx, Ny, Nz). Each block has dimmensions of 
-  
+- `size`: **Required**.
+Size of the C-S-H model supercell in terms of bricks. Tuple of the shape (Nx, Ny, Nz). 
+
 - `Ca_Si_ratio`: **Required**.
 Target Ca/Si ratio of the CSH model.
 
@@ -105,36 +105,37 @@ Shif the layers to ensure that the center of the supercell matches with an inter
 python3 main_brick.py
 ```
 
-That’s it! in few seconds you will have your structures. The script will read you input.py, build the required C–S–H models, save structure files, and produce some plots.  
+That’s it! in few seconds you will have your structures. The script will read you parameters.py, build the required C–S–H models, save structure files, and produce some plots.  
 
 **4. What the outputs are and how to read them**
 
 pyCSH creates automatic plots with the characteristics of the **bulk** C-S-H. Note that the Ca/Si or w/si ratio of the simulation box with the pore opened does not make sense. The generated plots are:
 
-- distributions.pdf: The generated models have a slighlty variable chemistry around the desidered value. The distributions are shown in this file.
-- X-OH.pdf: the ratio of Ca-OH/Ca and Si-OH/Si of the generated models as a function of the Ca/Si ratio, and  compared with the experimental data
-- MCL.pdf: the mean chain lenghts of the generated models as a function of the Ca/Si ratio, and compared with the experimental data
-- water.pdf: the water content of the generated models, normalised by the silicate content, and compared with the experimental data
+- **distributions.pdf**: The generated models have a slighlty variable chemistry around the desidered value. The distributions are shown in this file.
+- **X-OH.pdf**: the ratio of Ca-OH/Ca and Si-OH/Si of the generated models as a function of the Ca/Si ratio, and  compared with the experimental data
+- **MCL.pdf**: the mean chain lenghts of the generated models as a function of the Ca/Si ratio, and compared with the experimental data
+- **water.pdf**: the water content of the generated models, normalised by the silicate content, and compared with the experimental data
 
 pyCSH also generates a folder where you will find several files (# denotes structure number):
 
 - prefix#.log: Files contain the information about the specific model (composition, size, etc), the "fingerprint" of the model (all the blocks used in the construction and their position in the supercell) and the charge distribution (not all the blocks are neutral, but the final structure is always neutral)
 - prefix#.data/vasp/siesta...: Files containing the atomic structure in the required format
 
-> ✏️ **Next step Novel users** Check the plots and files. Open them and visualise them with OVITO. Select one of the generated models, export it from OVITO as `name.xyz`, and move to the topology section.  
+> ✏️ **Next step for Novel users** Check the plots and files. Open them and visualise them with OVITO. Select one of the generated models, export it from OVITO as `name.xyz`, and move to the topology section.  
 
-> ✒️ **Advanced users** Check the plots and files. Open them and visualise them with OVITO. Select one of the generated models, export it from OVITO as `name.xyz`, and move to the topology section. "Packing molecular systems with Packmol"
+> ✒️ **Next step for Advanced users** Check the plots and files. Open them and visualise them with OVITO. Select one of the generated models, export it from OVITO as `name.xyz`, and move to the topology section. "Packing molecular systems with Packmol"
 
 
 ### Packing molecular systems with Packmol  (advanced users)
 
-Packmol is a program designed to create initial configurations for molecular dynamics simulations by packing molecules into defined regions of space according to user-specified geometric constraints. It takes as input one or more molecular structures (in PDB or XYZ format) and places them inside a simulation box or around predefined surfaces, ensuring that the molecules do not overlap and that a minimum distance between atoms is respected.
+Packmol is a program designed to create initial configurations for molecular dynamics simulations by packing molecules into defined regions of space according to user-specified geometric constraints. It takes as input one or more molecular structures and places them inside a simulation box or around predefined surfaces, ensuring that the molecules do not overlap and that a minimum distance between atoms is respected.
 
-pyCSH allows to insert water molecules and certain ions within the slit pore in very simple cases. However, Packmol offers much greater flexibility: it allows you to pack any kind of molecule, such as solvents, organic additives, surfactants, or any other chemical compound species, into complex geometries, interfaces, or pores. This makes it extremely useful when constructing more heterogeneous systems. 
+pyCSH allows to insert water molecules and certain ions within the slit pore in very simple cases. Packmol offers much greater flexibility: it allows you to pack any kind of molecule, such as solvents, organic additives, surfactants, or any other chemical compound species, into complex geometries, interfaces, or pores. This makes it extremely useful when constructing more heterogeneous systems. 
+
 
 **1. Installing Packmol**
 
-Before using Packmol to build our systems, we need to install it on our computers. Packmol is available on Linux, macOS and Windows, and can be downloaded it from its [official website](https://m3g.github.io/packmol/download.shtml).
+Packmol is available on Linux, macOS and Windows, and can be downloaded it from its [official website](https://m3g.github.io/packmol/download.shtml).
 
 **2. Creating a Packmol input file**
 
@@ -142,8 +143,8 @@ To build a system with Packmol, we first need to create a plain text file with t
 
 ```
 tolerance 2.0
-filetype pdb
-output Packed_System.pdb
+filetype xyz
+output Packed_System.xyz
 
 structure name.xyz
 number 1
@@ -151,38 +152,49 @@ center
 fixed 10.0 10.0 10.0 0.0 0.0 0.0 # input your simulation box parameters
 end structure
 
-structure Na.pdb
-number 20
+structure Na.xyz
+number 10
+inside box 0.5 0.5 0.5 19.5 19.5 19.5 # input the pore region coordinates
+end structure
+
+structure Cl.xyz
+number 10
 inside box 0.5 0.5 0.5 19.5 19.5 19.5
 end structure
 
-structure Cl.pdb
-number 20
-inside box 0.5 0.5 0.5 19.5 19.5 19.5
-end structure
-
-structure Water.pdb
+structure Water.xyz
 number 300
 inside box 0.5 0.5 0.5 19.5 19.5 19.5
 end structure
 ```
 
 In this input file:
-- **`tolerance 2.0`** defines the minimum allowed distance (in Å) between atoms belonging to different molecules to avoid overlaps.  
-- **`filetype pdb`** indicates that all structure files are provided in PDB format.  
-- **`output Packed_System.pdb`** is the name of the resulting packed system that will be created.  
+- **`tolerance`** defines the minimum allowed distance (in Å) between atoms belonging to different molecules to avoid overlaps.  
+- **`filetype`** indicates the format of the output file, .pdb or .xyz
+- **`output`** is the name of the resulting packed system that will be created.  
 - The **`structure ... end structure`** blocks define the molecules to be included and how they are positioned:
-  - The keyword **`number 1`** indicates that only one copy will be inserted.
-  - The keyword **`structure`** loads the atomic coordinates from the corresponding `.pdb` file.
-  - **`center`** tells Packmol to center the coordinates of that structure with respect to the defined box, while **`fixed 10.0 10.0 10.0 0. 0. 0.`** indicates that the (center of the) structure should be place exactly at that position (10.0 10.0 10.0) and prevents it from moving during packing. The last three zeros correspond to allowed translation tolerances (here all set to zero, meaning the structure remains completely fixed).
-  - The command **`inside box 0.5 0.5 0.5 19.5 19.5 19.5`** defines a three-dimensional region — in this case, a rectangular box — inside which Packmol will randomly place the predefined number of molecules. The six numerical values correspond to the lower and upper limits of the box along the three Cartesian coordinates (x_min, y_min, z_min and x_max, y_max, z_max).
+  - **`number`** indicates the number of molecules/systems to be inserted.
+  - **`structure`** loads the atomic coordinates from the corresponding molecule/system defined in a separated file.
+  - **`inside box 0.5 0.5 0.5 19.5 19.5 19.5`** defines a three-dimensional region inside which Packmol will randomly place the predefined number of molecules. The six numerical values correspond to the lower and upper limits of the box along the three Cartesian coordinates (x_min, y_min, z_min and x_max, y_max, z_max).
+  - **`center`** tells Packmol to center the coordinates of that structure with respect to the defined box
+  - **`fixed`** indicates that the (center of the) structure should be place exactly at that position (10.0 10.0 10.0) and prevents it from moving during packing. The last three zeros correspond to allowed translation tolerances (here all set to zero, meaning the structure remains completely fixed).
+ 
+ Note that you need to prepare your Na.xyz, Cl.xyz and H20.xyz files independently with a xyz file format:
+ 
+```
+<number of atoms>
+comment line or blank 
+<element> <X> <Y> <Z>
+...
+...
+```
+ 
+ There are many other options available to define how molecules are packed and in the region of the space. You can check them in the packmol manual
+
  
 ```{Warning}
-When using periodic boundary conditions (PBC), atoms located exactly at the edges of the simulation box are periodically replicated on the opposite side. If Packmol places molecules too close to the box boundaries, this replication can cause overlaps between periodic images, leading to unrealistic atomic contacts or large forces during energy minimization.
-To prevent this, it is recommended to leave a small safety margin* between the packing region and the box limits — typically 0.5 Å on each side. This ensures that no atom lies exactly on the boundary, avoiding artificial overlaps when the system is replicated under PBC and improving the stability of the subsequent molecular dynamics simulation.
+When using periodic boundary conditions (PBC), atoms located exactly at the edges of the simulation box are periodically replicated on the opposite side. If Packmol places molecules too close to the box boundaries, this replication can cause overlaps between periodic images, leading to unrealistic atomic contacts or large forces during energy minimization. To prevent this, it is recommended to leave a small safety margin* between the packing region and the box limits — typically 0.5 Å on each side. This ensures that no atom lies exactly on the boundary, avoiding artificial overlaps when the system is replicated under PBC and improving the stability of the subsequent molecular dynamics simulation.
 ```
-
- Note that you need to prepare your Na.xyz, Cl.xyz and H20.xyz files independently. 
 
 **3. Running Packmol**
 
@@ -192,9 +204,7 @@ Once the input file (for example `Packing.inp`) is ready and all the molecular s
 ./packmol < Packing.inp
 ```
 
-When using this command, Packmol reads all the packing instructions, load the molecular coordinates from the `.pbd` files, and place each molecule inside the specified regions while ensuring that no overlaps occur according to the defined tolerance.
-During execution, Packmol prints progress information in the terminal (such as iteration steps and molecule placement).
-When it finishes, a new file — in this example `System.pdb` — will be created in the same directory. This file contains the complete packed configuration of your system. This file can be opened in VMD or another molecular visualization program to inspect the result before generating the corresponding LAMMPS data file.
+When using this command, Packmol reads all the packing instructions, load the molecular coordinates from the `.xyz` files, and place N copies of each molecule inside the specified regions while ensuring that no overlaps occur according to the defined tolerance. During execution, Packmol prints progress information in the terminal (such as iteration steps and molecule placement). When it finishes, a new file (in this example `Packed_System.xyz`) will be created in the same directory. This file can be opened in VMD or another molecular visualization program to inspect the result before generating the corresponding LAMMPS data file.
 
 ```{Tip}
 **Packing the pore region directly in LAMMPS**. The approach shown here uses Packmol to fill the pore of a C–S–H model with water and ions by explicitly packing them in the pore space. However, LAMMPS offers an interesting alternative for automatization. Tt allows to merge multiple systems by reading several `.data` files in sequence. This can be useful for constructing hybrid systems such as a C–S–H matrix with an empty pore, and a separate box containing pre-packed water and ions to fill the empty C-S-H pore. In this way, by keeping a single structural framework (for example, the same C–S–H slab) and replacing only the pore box `.data` file, a set of simulations with different compositions — varying water content, ion concentration, or even alternative pore chemistries — can be easily created without rebuilding the solid phase each time. The process is straightforward and implies loading one of the structures using `read_data CSH.data` and adding the new atoms from the other data file without replacing the existing ones with `read_data Pore_box.data add append shift 0 0 0`. **`shift`** can be used to move the entire *pore_box* block into the desired region (for example, inside the pore). It is essential that both data files use the same `atom_style`, units, and consistent atom-type numbering. If the second data file defines overlapping atom types (same atom-type number), they should be renumbered to avoid conflicts.
