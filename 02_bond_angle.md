@@ -166,6 +166,7 @@ $O_br set charge -1.05
 
 ```{Warning} 
 **Handling mislabeled atoms in VMD.** VMD automatically assigns the chemical element of each atom based on the first one or two characters of its name. It first checks if the first two characters correspond to a valid chemical symbol. If not, it uses only the first character. This simple rule often leads to misassignments when using custom atom names. For instance, if you rename calcium to `Cw`, VMD will treat it as carbon (C) or an oxygen atom renamed to Os will be interpreted as a osmium (Os), assigning incorrect masses and radii, which can, in turn, affect the bond recognition. To fix this issue while preserving your custom atom names, you need to manually set the correct physical properties by typing:
+
     set Os [atomselect top "name Os"]
     $Os set mass 15.9994
     $Os set radius 1.52
