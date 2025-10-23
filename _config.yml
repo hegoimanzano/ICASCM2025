@@ -24,6 +24,9 @@ sphinx:
     pygments_dark_style: "native"
     # Optional: logo & favicon later
     html_logo: images/logo.png
+    html_last_updated_fmt: "%Y"
+    html_show_copyright: true
+    copyright: "© 2025 Hegoi Manzano — Made with Sphinx and Furo"
     # html_favicon: images/favicon.ico
     # Optional: custom CSS (see next section)
     # html_static_path: ["_static"]
