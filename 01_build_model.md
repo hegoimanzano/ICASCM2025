@@ -10,9 +10,9 @@ The general procedure for building a slit pore in a calcium–silicate–hydrate
 
 - **Saturate with water** Insert water molecules and ions into the pore region using pyCSH or a packing algorithm. Reach realistic densities by filling until the desired target pore solution density is reached or by MD relaxation.
 
-> ✏️ **Novel users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code. The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.3, a C-S-H surface of least 2.25nm^2, and a pore space of aprox 2nm filled with water and 10NaCl ion pairs. The files must be written in lammps_xxxx format. _Estimated time XXX min_.
+> ✏️ **Novel users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code. The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.3, a C-S-H surface of least 1.5 nm$^2$, and a pore space of aprox 2nm filled with water and 10NaCl ion pairs. The files must be written in lammps_xxxx format. _Estimated time XXX min_.
 
-> ✒️ **Advanced users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code **_and packmol_** (do not saturate the pore space automatically!). The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.3, a C-S-H surface of least 2.25nm^2, and a pore space of aprox 2nm filled with water and 10NaCl ion pairs. The files must be written in lammps_xxxx format. _Estimated time XXX min_.
+> ✒️ **Advanced users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code **_and packmol_** (do not saturate the pore space automatically!). The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.3, a C-S-H surface of least 1.5 nm$^2$, and a pore space of aprox 2 nm filled with water and 10NaCl ion pairs. The files must be written in lammps_xxxx format. _Estimated time XXX min_.
 
 ---
 
