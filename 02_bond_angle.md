@@ -77,7 +77,8 @@ Angles # angle-ID angle-type atom1 atom2 atom3
 ```
 
 ```{Note}
-**Atom styles and force fields** The structure of a LAMMPS data file partly depends on the force field being used, as each force field requires a specific `atom_style`. For instance, classical force fields such as CHARMM, AMBER, or ClayFF use the `full` style. This format explicitly lists all topological terms — bonds, angles, dihedrals, and impropers — together with atom types, masses, charges, and coordinates. In contrast, ReaxFF does not rely on predefined connectivity and the data files should use the `charge` style, which only specifies atom IDs, types, charges, masses, and coordinates.  
+**Atom styles and force fields** The structure of a LAMMPS data file partly depends on the force field being used, as each force field requires a specific `atom_style`. For instance, classical force fields such as CHARMM, AMBER, or ClayFF use the `full` style. This format explicitly lists all topological terms (bonds, angles, dihedrals, and impropers) together with atom types, masses, charges, and coordinates. In contrast, ReaxFF does not rely on predefined connectivity and the data files should use the `charge` style, which only specifies atom IDs, types, charges, masses, and coordinates.  
+
 Regardless of the force field, the **data file must be consistent with the `atom_style` defined in the input script**, otherwise the simulation will fail to read it correctly. You can find a complete description of all available atom styles and their required fields in the [LAMMPS documentation](https://docs.lammps.org/atom_style.html).
 ```
 
@@ -87,7 +88,7 @@ Regardless of the force field, the **data file must be consistent with the `atom
 
 ClayFF defines a limited set of atom types, each with specific Lennard–Jones parameters and partial charges. pyCSH writes a detailed label for each atom type, and you need to understand their correspondence:
 
-<img src="/images/clayff_bond.png" alt="ClayFF_species" width="700" />
+<img src="images/clayff_bond.png" alt="ClayFF_species" width="700" />
 
 | ClayFF  | Description | pyCSH |
 | ------------- | ------------- |--------------| 
@@ -99,6 +100,7 @@ ClayFF defines a limited set of atom types, each with specific Lennard–Jones p
 Clays are phyllosilicates, whereas tobermorite minerals and C–S–H are inosilicates, so applying ClayFF’s standard partial charges to these systems results in a non-neutral configuration. Maintaining electroneutrality is crucial for obtaining stable and physically meaningful simulations. It is **essential** to ensure that your system is **_formally_** neutral, i.e. the sum of the formal charges equals zero. Then, the partial charges can be slightly adjusted:
  - If the net charge is small (|Q| < 0.1 e), it can be compensated by the Ewald solver.  
  - If the net charge is large (|Q| > 0.1 e), you need to adjust the standard charges in your model. The simplest approach is to modify the charge in the silicate oxygen atoms by a tiny percentage (typically < 0.05%). Ideally, the force field paramenters should be rescaled, but we can assume that such a minor charge modification will not affect the underlying physics.
+
 **IMPORTANT**: the same issue applies to any force field with partial charges when "defects" are introduced, such as CSHFF, OPLS, etc.
 ```
 
@@ -138,7 +140,26 @@ pbc set {20.0 20.0 20.0 90.0 90.0 90.0}
 
 **4. Generating bonds, angles, dihedrals, and impropers**
 
-Now use TopoTools to reconstruct the molecular topology from the atomic coordinates. The following commands recalculate bonds and then generate angle, dihedral, and improper (used to maintain planarity in certain molecular structures) terms:
+Now use TopoTools to reconstruct the molecular topology from the atomic coordinates. First, set the atomic properties.
+
+```
+set O_br [atomselect top "name O_br"]
+$O_br set radius 0
+$O_br set charge XX
+```
+
+```{Warning}
+**Avoiding unwanted bonds and angles in ClayFF systems.** When using TopoTools to guess bonds and angles, it automatically generates all possible connections based on interatomic distances. However, in ClayFF only hydroxyl and water molecules should contain explicit bonds and angles. If you keep the default settings, VMD will create unnecessary bonds and angles such as *Ca–O_w* or *Si–O_br–Si*. To avoid this, you can **assign a radius of zero to atoms that should not form bonds** before recalculating connectivity (`mol reanalyze top`). In this way, VMD will not find any neighbouring atoms within the bonding cutoff distance, and therefore no connectivity will be generated for those atoms.
+
+**Handling mislabeled atoms in VMD.** VMD automatically assigns the chemical element of each atom based on the first one or two characters of its name. It first checks if the first two characters correspond to a valid chemical symbol. If not, it uses only the first character. This simple rule often leads to misassignments when using custom atom names. For instance, if you rename calcium to `Cw`, VMD will treat it as carbon (C) or an oxygen atom renamed to Os will be interpreted as a osmium, assigning incorrect masses and radii, which can, in turn, affect the bond recognition. To fix this issue while preserving your custom atom names, you need to manually set the correct physical properties by typing:
+
+    set Os [atomselect top "name Os"]
+    $Os set mass 15.9994
+    $Os set radius 1.52
+```
+
+
+The following commands recalculate bonds and then generate angle, dihedral, and improper (used to maintain planarity in certain molecular structures) terms:
 ```
 mol bondsrecalc top
 topo guessangles
@@ -147,41 +168,23 @@ topo guessimpropers
 ```
 
 ```{Tip}  
-ClayFF does not include any dihedral or improper terms, as molecular geometry is maintained solely through non-bonded interactions and the explicit O–H and H–O–H bonds and angles. Therefore, you should avoid running the commands `topo guessdihedrals` and `topo guessimpropers` since they would create unwanted lists in the data file that are incompatible with the ClayFF model and should be removed before using the file in LAMMPS.
+ClayFF does not include any dihedral or improper terms, as molecular geometry is maintained solely through non-bonded interactions and the explicit O–H and H–O–H bonds and angles. Therefore, you should avoid running the commands `topo guessdihedrals` and `topo guessimpropers` since they would create unwanted lists in the data file.
 ```
 
-Once this is done, reanalyse the molecule to ensure that the topology is fully consistent by typing:
+Once all this is done, reanalyse the molecule to ensure that the topology is fully consistent by typing:
 ```
 mol reanalyze top
 ```
 
-```{Warning}
-**Avoiding unwanted bonds and angles in ClayFF systems.** When using TopoTools to guess bonds and angles, VMD automatically generates all possible connections based on interatomic distances. However, in ClayFF, only hydroxyl and water molecules should contain explicit bonds and angles. If you keep the default settings, VMD will create unnecessary bonds and angles such as *Ca–O_w* or *Si–O_br–Si*, which are not part of the ClayFF model. To avoid this, you can assign a radius of zero to atoms that should not form bonds before recalculating connectivity (`mol reanalyze top`). In this way, VMD will not find any neighbouring atoms within the bonding cutoff distance, and therefore no connectivity will be generated for those atoms. To do so, use the following command:
-
-    set O_br [atomselect top "name O_br"]
-    $O_br set radius 0
-```
-
-**5. Assigning atomic charges**
-
-Atomic charges must be defined explicitly using the partial charges specified by ClayFF:
-```
-set Si [atomselect top "name Si"]
-$Si set charge 2.10
-set O_br [atomselect top "name O_br"]
-$O_br set charge -1.05
-...
-```
-
 ```{Warning} 
-**Handling mislabeled atoms in VMD.** VMD automatically assigns the chemical element of each atom based on the first one or two characters of its name. It first checks if the first two characters correspond to a valid chemical symbol. If not, it uses only the first character. This simple rule often leads to misassignments when using custom atom names. For instance, if you rename calcium to `Cw`, VMD will treat it as carbon (C) or an oxygen atom renamed to Os will be interpreted as a osmium (Os), assigning incorrect masses and radii, which can, in turn, affect the bond recognition. To fix this issue while preserving your custom atom names, you need to manually set the correct physical properties by typing:
+**Handling mislabeled atoms in VMD.** VMD automatically assigns the chemical element of each atom based on the first one or two characters of its name. It first checks if the first two characters correspond to a valid chemical symbol. If not, it uses only the first character. This simple rule often leads to misassignments when using custom atom names. For instance, if you rename calcium to `Cw`, VMD will treat it as carbon (C) or an oxygen atom renamed to Os will be interpreted as a osmium, assigning incorrect masses and radii, which can, in turn, affect the bond recognition. To fix this issue while preserving your custom atom names, you need to manually set the correct physical properties by typing:
 
     set Os [atomselect top "name Os"]
     $Os set mass 15.9994
     $Os set radius 1.52
 ```
 
-**6. Writing the LAMMPS data file:**
+**5. Writing the LAMMPS data file:**
 
 Finally, export the topology into a LAMMPS-compatible format using:
 ```
