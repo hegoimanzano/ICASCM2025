@@ -91,5 +91,5 @@ Results can be exported as text files or ready-to-plot graphics.
 
 Actually, the analysis with python is easier than running TRAVIS, but you need the right expertise to understand what you need and prepare a LAMMPS input file to perform the analysis _on the fly_. If you did it correctly, you should have an MSD.txt and DP.txt datafiles with the mean square displacement and the density profile. Opend the files and make a plot with python. 
 
-For comparison, do the same analysis with TRAVIS and check if both methods are giving you the same answer. The results should be equal, with minor differences due to the TRAVIS algorithms used to smooth data. Explore if you have time other options that TRAVIS gives you, like RDFs, autocorrelation plots, etc.
+For comparison, do the same analysis with TRAVIS and check if both methods are giving you the same answer. The results should be equal, with minor differences due to the TRAVIS algorithms used to smooth data. Explore if you have time other options that TRAVIS gives you, like RDFs, autocorrelation plots, etc. Some of the properties cannot be computed with LAMMPS, and can be difficult to code. 
 
