@@ -88,12 +88,36 @@ Regardless of the force field, the **data file must be consistent with the `atom
 
 ClayFF defines a limited set of atom types, each with specific Lennard–Jones parameters and partial charges. pyCSH writes a detailed label for each atom type, and you need to understand their correspondence:
 
-<img src="images/clayff_bond.png" alt="ClayFF_species" width="700" />
+**Table S1. Nonbond Parameters for the ClayFF Force Field**
 
-| ClayFF  | Description | pyCSH |
-| ------------- | ------------- |--------------| 
-|O _br | oxygens linking tetrahedra  | Osi |
-| O_H  | hydoxil oxygen  | Oh |
+| species                                   | symbol |   | charge (e) | ε (kcal/mol)         | σ (Å)     |
+|-------------------------------------------|---------|---|-------------|----------------------|-----------|
+| SPC water hydrogen                        | h*      |   | 0.4100      | 0.1554               | 3.1655    |
+| SPC water oxygen                          | o*      |   | -0.8200     | 0.1554               | 3.1655    |
+| SPC/E water hydrogen                      | h*      |   | 0.4238      | 0.1554               | 3.1655    |
+| SPC/E water oxygen                        | o*      |   | -0.8476     | 0.1554               | 3.1655    |
+| hydroxyl hydrogen                         | ho      |   | 0.4250      | 0.1554               | 3.1655    |
+| hydroxyl oxygen                           | oh      |   | -0.9500     | 0.1554               | 3.1655    |
+| bridging oxygen                           | ob      |   | -1.0500     | 0.1554               | 3.1655    |
+| bridging oxygen with octahedral substitution | obos   |   | -1.1808     | 0.1554               | 3.1655    |
+| bridging oxygen with tetrahedral substitution | obts   |   | -1.1688     | 0.1554               | 3.1655    |
+| bridging oxygen with double substitution  | obss    |   | -1.2996     | 0.1554               | 3.1655    |
+| hydroxyl oxygen with substitution         | ohs     |   | -1.0808     | 0.1554               | 3.1655    |
+| tetrahedral silicon                       | st      |   | 2.1000      | 1.8405 × 10⁻⁶        | 3.3020    |
+| octahedral aluminum                       | ao      |   | 1.5750      | 1.3298 × 10⁻⁶        | 4.2712    |
+| tetrahedral aluminum                      | at      |   | 1.5750      | 1.8405 × 10⁻⁶        | 3.3020    |
+| octahedral magnesium                      | mgo     |   | 1.3600      | 9.0298 × 10⁻⁷        | 5.2643    |
+| hydroxide magnesium                       | mgh     |   | 1.0500      | 9.0298 × 10⁻⁷        | 5.2643    |
+| octahedral calcium                        | cao     |   | 1.3600      | 5.0298 × 10⁻⁶        | 5.5667    |
+| hydroxide calcium                         | cah     |   | 1.0500      | 5.0298 × 10⁻⁶        | 5.5667    |
+| octahedral iron                           | feo     |   | 1.5750      | 9.0298 × 10⁻⁷        | 4.9062    |
+| octahedral lithium                        | lio     |   | 0.5250      | 9.0298 × 10⁻⁷        | 4.2101    |
+| aqueous sodium ion                        | Na      |   | 1.0000      | 0.1301               | 2.3500    |
+| aqueous potassium ion                     | K       |   | 1.0000      | 0.1000               | 3.3340    |
+| aqueous cesium ion                        | Cs      |   | 1.0000      | 0.1000               | 3.8310    |
+| aqueous calcium ion                       | Ca      |   | 2.0000      | 0.1000               | 2.8270    |
+| aqueous barium ion                        | Ba      |   | 2.0000      | 0.0470               | 3.8166    |
+| aqueous chloride ion                      | Cl      |   | -1.0000     | 0.1001               | 4.4000    |
 
 
 ```{Caution}
