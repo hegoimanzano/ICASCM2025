@@ -10,9 +10,9 @@ The general procedure for building a slit pore in a calcium–silicate–hydrate
 
 - **Saturate with water** Insert water molecules and ions into the pore region using pyCSH or a packing algorithm. Reach realistic densities by filling until the desired target pore solution density is reached or by MD relaxation.
 
-> ✏️ **Novel users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code. The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.2, a C-S-H surface of least 1.5 nm$^2$, and a pore space of aprox 2 nm filled with water and 10 NaCl ion pairs. The files must be written in lammps_xxxx.data format. _Estimated time XXX min_.
+> ✏️ **Novice users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code. The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1, a C-S-H surface about 1.5 nm$^2$, 2 C-S-H layers, and a pore space of aprox 2 nm filled with water and 10 NaCl ion pairs. The files must be written in lammps.data format. _Estimated time XXX min_.
 
-> ✒️ **Advanced users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code **_and packmol_** (do not saturate the pore space automatically!). The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1.2, a C-S-H surface of least 1.5 nm$^2$, and a pore space of aprox 2 nm filled with water and 10 NaCl ion pairs. The files must be written in lammps_xxxx.data format. _Estimated time XXX min_.
+> ✒️ **Advanced users** will have to follow the the instructions to build 10 unique C-S-H models using the pyCSH code **_and packmol_** (do not saturate the pore space automatically!). The final models should be orthogonal, have a C/S ratio 1.4, a w/S ratio of 1, a C-S-H surface about 1.5 nm$^2$, 2 C-S-H layers, and a pore space of aprox 2 nm filled with water and 10 NaCl ion pairs. The files must be written in lammps.data format. _Estimated time XXX min_.
 
 ---
 
@@ -24,7 +24,7 @@ PyCSH is a Open Access code developed orginally by UPV/EHU and EPFL teams for th
 You will use today a beta version of pyCSH v2.0. We have tested the specific example that you will use in this tutorial, but we do not advise to use it for scientific production until the code is oficially released.
 ```
 
-**1. Download pyCSH** Download the zip file from the github repository. Unzip and enter the folder in your terminal or in VScode.
+**1. Download pyCSH** Download the zip file from the [github repository](https://github.com/hegoimanzano/pyCSH/tree/v1.1). Click in `Code` and `Download .zip`. Unzip and enter the folder with your terminal or with VScode.
 
 **2. Edit the `parameters.py`**  Open `parameters.py` file in your text editor. You will have to change a few parameters to build your model according to the instructions above.
 
@@ -116,14 +116,34 @@ pyCSH creates automatic plots with the characteristics of the **bulk** C-S-H. No
 - **MCL.pdf**: the mean chain lenghts of the generated models as a function of the Ca/Si ratio, and compared with the experimental data
 - **water.pdf**: the water content of the generated models, normalised by the silicate content, and compared with the experimental data
 
-pyCSH also generates a folder where you will find several files (# denotes structure number):
+pyCSH also generates a **output** folder where you will find several files (# denotes structure number):
 
-- prefix#.log: Files contain the information about the specific model (composition, size, etc), the "fingerprint" of the model (all the blocks used in the construction and their position in the supercell) and the charge distribution (not all the blocks are neutral, but the final structure is always neutral)
-- prefix#.data/vasp/siesta...: Files containing the atomic structure in the required format
+- **prefix_#.log**: Files contain the information about the specific model (composition, size, etc), the "fingerprint" of the model (all the blocks used in the construction and their position in the supercell) and the charge distribution (not all the blocks are neutral, but the final structure is always neutral)
+- **prefix_#.data/vasp/siesta...**: Files containing the atomic structure in the required format.
 
-> ✏️ **Next step for Novel users** Check the plots and files. Open them and visualise them with OVITO. Select one of the generated models, export it from OVITO as `name.xyz`, and move to the topology section.  
+Check the plots and files. Open the `.data` and visualise them with OVITO. Select one of the generated models to continue. Rename your particle types according to the table below (right menu), change colors and sizes to improve visualization (usually smaller), and create bonds (`Add modification` menu).  Export it from OVITO in `.xyz` format
 
-> ✒️ **Next step for Advanced users** Check the plots and files. Open them and visualise them with OVITO. Select one of the generated models, export it from OVITO as `name.xyz`, and move to the topology section. "Packing molecular systems with Packmol"
+| Type | Mass | pyCSH Label | radius  |   |
+|----|-------------|--------|---|---|
+| 1  | 40.08  | Ca_1  |   |   |
+| 2  | 40.08  | Ca_2  |   |   |
+| 3  | 28.10  | Si_1  |   |   |
+| 4  | 28.10  | Si_2  |   |   |
+| 5  | 15.79  | O_Ca  |   |   |
+| 6  | 15.79  | O_Si  |   |   |
+| 7  | 15.79  | O     |   |   |
+| 8  | 15.79  | Ow    |   |   |
+| 9  | 15.79  | Oh    |   |   |
+| 10 | 1.00   | Hw    |   |   |
+| 11 | 1.00   | H     |   |   |
+
+```{Tip}
+You can save `.OVITO` session states with all the parameters and modifications and load them for new atomic structures
+```
+
+> ✏️ **Next step for Novice users** Move your model to the next page "topology".  
+
+> ✒️ **Next step for Advanced users** Move to the next section "Packing molecular systems with Packmol"
 
 
 ### Packing molecular systems with Packmol  (advanced users)
@@ -131,7 +151,6 @@ pyCSH also generates a folder where you will find several files (# denotes struc
 Packmol is a program designed to create initial configurations for molecular dynamics simulations by packing molecules into defined regions of space according to user-specified geometric constraints. It takes as input one or more molecular structures and places them inside a simulation box or around predefined surfaces, ensuring that the molecules do not overlap and that a minimum distance between atoms is respected.
 
 pyCSH allows to insert water molecules and certain ions within the slit pore in very simple cases. Packmol offers much greater flexibility: it allows you to pack any kind of molecule, such as solvents, organic additives, surfactants, or any other chemical compound species, into complex geometries, interfaces, or pores. This makes it extremely useful when constructing more heterogeneous systems. 
-
 
 **1. Installing Packmol**
 
