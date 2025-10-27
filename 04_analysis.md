@@ -2,7 +2,7 @@
 
 We will analyse the performed MD simulation. The objective is to understand the diffusion and the equilibrium state of Cl ions in the C-S-H slit-(nano)pore. Furthermore, it is always desiderable to check the basic thermodynamics properties and do a visual inspection of the trayectory. There are unphysical behaviours that can be observed on one or another. For example, the silicate chains can break, forming an amorphous material that does not represent C-S-H anymore, and yet, the thermodynamic properties can give reasonable energies, densities, etc. 
 
-> ✏️ **Novel users** will have to follow the instructions to analyse the data. **First** you have to produce plots to justify if the simulation has converged or not. **Second** you will have to save an image with a simulation snapshot from VMD or OVITO. **Third** you will have to use TRAVIS to plot the MSD and report the obtained diffusion coefficient. **Finally** you will have to use TRAVIS to plot and save an image with the density profile.
+> ✏️ **Novel users** will have to follow the instructions to analyse the data. **First** you have to produce plots to justify if the simulation has converged or not. **Second** you will have to save an image with a simulation snapshot from OVITO. **Third** you will have to use TRAVIS to plot the MSD and report the obtained diffusion coefficient. **Finally** you will have to use TRAVIS to plot and save an image with the density profile.
 
 > ✒️ **Advanced users** will have to do the same as novel users. In adittion, you will have to plot the MSD and density profile obtained directly from LAMMPS.
 
@@ -13,7 +13,9 @@ Thermodynamic properties (energy, enthalpy...), structure (RDFs, Density profile
 ---
 ### Thermodynamic properties and trayectory
 
-LAMMPS writes thermodynamic data (energy, pressure, density, etc.) into the `log.lammps` file (or into a user-defined text file if requested).  We can use this information to check whether the system has reached equilibrium. After the simulation, open the `log.lammps`, and plot **energy vs. time**, **density vs. time**, etc. Stable values indicate equilibration, and the average will give you the observable value of the property. If energy or density continues to drift, the system is not equilibrated. To do these plots you can copy-paste in spreeadsheet based software (_excel_, -libreoffice_, _kaleidagraph_,...) or do a bit of scripting in advanced tools (_matlab_, _mathematica_, _R_,...). Again, we recommend python-based plotting using a combination of tools like [matplotlib](https://matplotlib.org) and [lammps-logfile](https://pypi.org/project/lammps-logfile/). After installation, you can simply run: for example:
+LAMMPS writes thermodynamic data (energy, pressure, density, etc.) into the `log.lammps` file (or into a user-defined text file if requested).  We can use this information to check whether the system has reached equilibrium. After the simulation, open the `log.lammps`, and plot **energy vs. time**, **density vs. time**, etc. Stable values indicate equilibration, and the average will give you the observable value of the property. If energy or density continues to drift, the system is not equilibrated. To do these plots you can copy-paste in spreeadsheet based software (_excel_, -libreoffice_, _kaleidagraph_,...) or do a bit of scripting in advanced tools (_matlab_, _mathematica_, _R_,...). Again, we recommend python-based plotting using a combination of tools like [matplotlib](https://matplotlib.org) and [lammps-logfile](https://pypi.org/project/lammps-logfile/), but use your preferred tool.
+
+If you decided to use python, you can simply run:
 
 ```python
 import lammps_logfile
@@ -55,13 +57,10 @@ This is just a tutorial, you don't need to go further. For real work, invest tim
 
 Numbers alone are not enough. Even if energy looks stable, the system structure might become unphysical. For example, uncorrect typing of the force field in the input file or a wrong asigment of the atoms might lead the system towards a unrealistic structure, breaking the silicate chains and losing the layered structure. But eventually the thermodynamic properties may converge. Visualization allows us to **_see_** the atomic arrangement and detect problems and trends.
 
-Open the trajectory with one of the following tools:
-- **OVITO** → for dynamic visualization and analysis, focused on materials. Drag and drop your trayectory file, or load your file from the menu bar.  
-- **VMD** → for dynamic visualization and analysis, focused on biomolecules.  QUE PODEMOS DECIR DE LO BASICO. 
+Open the trajectory with **OVITO**. Drag and drop your trayectory file, or load your file from the menu bar. Visualise your simulation, play with the available visualization options, export a snaphsot of the trayectory, and check whether:
 
-Visualise your simulation, play with the available visualization options, export a snaphsot of the trayectory, and check whether:
 - The pore remains open.  
-- Water molecules remain liquid and did not break.  
+- Water molecules did not break.  
 - The silicate chains and the layer structure are mantained
 
 ---
