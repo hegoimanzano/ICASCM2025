@@ -171,20 +171,13 @@ center
 fixed 10.0 10.0 10.0 0.0 0.0 0.0 # input your simulation box parameters
 end structure
 
-structure Na.xyz
-number 10
-inside box 0.5 0.5 0.5 19.5 19.5 19.5 # input the pore region coordinates
-end structure
-
-structure Cl.xyz
-number 10
-inside box 0.5 0.5 0.5 19.5 19.5 19.5
-end structure
-
 structure Water.xyz
 number 300
 inside box 0.5 0.5 0.5 19.5 19.5 19.5
 end structure
+
+...
+...
 ```
 
 In this input file:
