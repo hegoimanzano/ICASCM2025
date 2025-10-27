@@ -171,8 +171,8 @@ center
 fixed 10.0 10.0 10.0 0.0 0.0 0.0 # input your simulation box parameters
 end structure
 
-structure Water.xyz
-number 300
+structure Na.xyz
+number 10
 inside box 0.5 0.5 0.5 19.5 19.5 19.5
 end structure
 
@@ -185,7 +185,7 @@ In this input file:
 - **`filetype`** indicates the format of the output file, .pdb or .xyz
 - **`output`** is the name of the resulting packed system that will be created.  
 - The **`structure ... end structure`** blocks define the molecules to be included and how they are positioned:
-  - **`number`** indicates the number of molecules/systems to be inserted.
+  - **`number`** indicates the number of molecules/systems to be inserted (you need to do the calculations to match the expected density (water =1g/cc))
   - **`structure`** loads the atomic coordinates from the corresponding molecule/system defined in a separated file.
   - **`inside box 0.5 0.5 0.5 19.5 19.5 19.5`** defines a three-dimensional region inside which Packmol will randomly place the predefined number of molecules. The six numerical values correspond to the lower and upper limits of the box along the three Cartesian coordinates (x_min, y_min, z_min and x_max, y_max, z_max).
   - **`center`** tells Packmol to center the coordinates of that structure with respect to the defined box
