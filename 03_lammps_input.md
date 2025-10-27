@@ -65,16 +65,32 @@ neigh_modify    delay 10 every 1
 - kspace_style = how long-range electrostatics are computed. Long range interactions are difficult to compute, since they do not decay fast with the distance. Special algorithms are needed like Ewald summation, or `pppm`(particle-particle particle-mesh)
 
 ```
-# ---- FORCE FIELD  ----
-pair_style      lj/cut/coul/long 10.0 10.0     #lennard-jones and coulomb settings
-kspace_style    pppm 1.0e-4                    # coulomb long range solver
-# pair_coeff    1 2 0.0 3.0                    # atom1 atom2 + your real parametes
+# ---- Non bonded interactions  ----
+pair_style      lj/cut/coul/long 10.0 10.0     #lennard-jones and coulomb cut offs
+kspace_style    pppm 1.0e-4                    # coulomb long range solver and accuracy
+pair_coeff    1 1 0.1554164124 3.1655200879    # atom1 atom2 + the ClayFF parametes of the atoms ($\epsilon$ and $\sigma$ in table S1)
+pair_coeff    2 2 0.0000000000 0.0000000000    # atom1 atom2 + the ClayFF parametes of the atoms ($\epsilon$ and $\sigma$ in table S1)
+...
+...
+
+# ------ Bonded interactions  -------
+bond_style      harmonic
+angle_style     harmonic
+
+bond_coeff      1  450.0  1.0        # SPC model: Ow–Hw bond 
+angle_coeff     1  55.0  109.47      # SPC model: Hw–Ow–Hw angle
+
 ```
 
-**3. Simulation Control and execution** Now we start the simulation. In any MD simulations there are at least two stpes. First, an **equilibration period**, in which our system adapts to the desidered thermodynamic conditions. First we assign random `velocity` to the particles according to a Boltzmann distribution at 300 K. Then, we perform the simulation in the canonical ensemble `fix nvt`, at an initial and final temperature of 300 K, applying a thermostat every 100 steps to maintain the target temperature. We record selected `thermo` properties in the output every 1000 steps. Finally, we need to `unfix` the fix that was defined for this phase to prepare the system for the next stage.
+Note that we define only the interactions between equal atoms (Ow-Ow, Hw-Hw). The cross terms (Ow-Hw) are computed automatically from arithmetic [mixing rules](https://en.wikipedia.org/wiki/Combining_rules)
+
+
+**3. Simulation Control and execution** Now we start the simulation. In any MD simulations there are at least two stpes. First, an **equilibration period**, in which our system adapts to the desidered thermodynamic conditions. First we do an energy `minimize` to relax the atomic positions. Second, we assign random `velocity` to the particles according to a Boltzmann distribution at 300 K. Then, we perform a MD equilibration in the canonical ensemble `fix nvt`, at an initial and final temperature of 300 K, applying a thermostat every 100 steps to maintain the target temperature. We record selected `thermo` properties in the output every 1000 steps. Finally, we need to `unfix` the fix that was defined for this phase to prepare the system for the next stage.
 
 ```
 # ---------- FAST EQUILIBRATION ----------
+minimize        1.0e-6 1.0e-8 5000 10000
+min_style       cg
 velocity        all create 300.0 4928459 rot yes mom yes
 fix             nvt all nvt temp 300.0 300.0 100.0
 thermo          1000
@@ -89,7 +105,7 @@ unfix           nvt
 The energy can be misleading: if the initial configuration is very far from equeilibrium, the first energy values will often be very high, and the subsequent rapid decrease may create the false impression of convergence.
 ```
 
-Second, we enter the **production phase**. In this stage, thermodynamic quantities are collected, and snapshots of the trajectory are stored in order to compute the properties of interest. The production run must be sufficiently long to ensure that the observables under study have converged. The required length strongly depends on the property we wish to calculate. For instance, if the goal is to obtain an infrared spectrum, relatively short trajectories are sufficient, since molecular vibrations take place on the timescale of a few picoseconds. If instead we are interested in the coordination of water molecules around a cation, the simulation must extend to the nanosecond or even tens of nanoseconds, because that is the timescale for water molecules to exchange between the first and second solvation shells. In this course, due to time limitations, we will restrict ourselves to production runs of about 10 picoseconds, which is sufficient for demonstration purposes. However, keep in mind that for a **reliable calculation of the mean square displacement, appropriate simulations would need to reach 100–200 nanoseconds or more**.
+Second, we enter the **production phase**. In this stage, thermodynamic quantities are collected, and snapshots of the trajectory are stored in order to compute the properties of interest. The production run must be sufficiently long to ensure that the observables under study have converged. The required length strongly depends on the property we wish to calculate. For instance, if the goal is to obtain an infrared spectrum, relatively short trajectories are sufficient, since molecular vibrations take place on the timescale of a few picoseconds. If instead we are interested in diffusivity, the simulation must extend to the hundreds of nanoseconds, because that is the timescale for water molecules to diffuse ($D_{\text{H₂O}} = 2.3 \text{nm}^2/\text{ns}$). In this course, due to time limitations, we will restrict ourselves to production runs of about 10 picoseconds, which is sufficient for demonstration purposes. However, keep in mind that for a **reliable calculation of the mean square displacement, appropriate simulations would need to reach 100 nanoseconds or more**.
 
 ```
 # ---------- PRODUCTION ----------
