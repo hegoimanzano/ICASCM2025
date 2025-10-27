@@ -115,7 +115,7 @@ thermo          1000
 run             50000
 ```
 
-With this basic input file + the data file, you can perform your MD simulation.
+With this basic input file + the data file, you can perform your MD simulation (next page!).
 
 ---
 
