@@ -11,16 +11,31 @@ neigh_modify    delay 10 every 1
 # ---- Non bonded interactions  ----
 pair_style      lj/cut/coul/long 10.0 10.0     #lennard-jones and coulomb cut offs
 kspace_style    pppm 1.0e-4                    # coulomb long range solver and accuracy
+
 pair_coeff    1 1 0.1554164124 3.1655200879    # atom1 atom2 + the ClayFF parametes of the atoms ($\epsilon$ and $\sigma$ in table S1)
 pair_coeff    2 2 0.0000000000 0.0000000000    # atom1 atom2 + the ClayFF parametes of the atoms ($\epsilon$ and $\sigma$ in table S1)
-...
-...
+
+pair_coeff    1 0.0000018402 3.3019566252 # si1
+pair_coeff    2 0.0000018402 3.3019566252 # si2
+
+pair_coeff    6 0.0000050301 5.5666638636 # Ca1
+pair_coeff    7 0.0000050219 5.5624343529 # Ca2
+pair_coeff    10 0.1554164124 3.1655200879 # Osi
+pair_coeff    13 0.1554164124 3.1655200879 # Oca
+pair_coeff    13 0.1554164124 3.1655200879 # O
+pair_coeff    15 0.1554164124 3.1655200879 # Oh
+pair_coeff    16 0.1554164124 3.1655200879 # Ow
+pair_coeff    17 0.0000000000 0.0000000000 # H
+pair_coeff    18 0.0000000000 0.0000000000 # Hw
+pair_coeff    19 0.1300999871 2.3500126639 # Na 
+pair_coeff    27 0.1000998933 4.3999709805 # Cl 
 
 # ------ Bonded interactions  -------
 bond_style      harmonic
 angle_style     harmonic
 
 bond_coeff      1  450.0  1.0        # SPC model: Ow–Hw bond 
+bond_coeff      2  450.0  1.0        # SPC model: Ow–Hw bond 
 angle_coeff     1  55.0  109.47      # SPC model: Hw–Ow–Hw angle
 
 # ---------- FAST EQUILIBRATION ----------
