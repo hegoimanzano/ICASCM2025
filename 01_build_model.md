@@ -21,7 +21,7 @@ The general procedure for building a slit pore in a calcium–silicate–hydrate
 PyCSH is a Open Access code developed orginally by UPV/EHU and EPFL teams for the automated generation of realistic bulk calcium silicate hydrate (C-S-H) structures. Specifying the desidered chemistry and system size, the code generates automatically hundreds of structures. 
 
 ```{Warning}
-You will use today a beta version of pyCSH v2.0. We have tested the specific example that you will use in this tutorial, but we do not advise to use it for scientific production until the code is oficially released.
+You will use today a beta version of pyCSH v2.0 still under development. We have tested the specific examples that you will use in this tutorial, but we do not advise to use it for scientific production until the code is oficially released (tentative date January 2026)
 ```
 
 **1. Download pyCSH** Download the zip file from the [github repository](https://github.com/hegoimanzano/pyCSH/tree/v1.1). Click in `Code` and `Download .zip`. Unzip and enter the folder with your terminal or with VScode.
@@ -47,7 +47,7 @@ Target Ca/Si ratio of the CSH model.
 Target water/Si ratio of the CSH model.
 
 - `prefix`: **Optional**. Default: "input".
-  Name of the output files. The name must be between 
+  Name of the output files. 
  
 - `N_samples`: **Required**.
 Number of structures to be generated.
@@ -74,19 +74,19 @@ True if you want to generate new structures, False, if other modes are required.
 If True, a prelimilary check for a wide range of Ca/Si ratios will be performed, in order to show the accuracy of the generated models for the selected parameters with respect to the Ca/Si ratio, water/Si ratio etc.
 
 - `read_structure`: **Optional**. Default: False.
-If True, handmade brick code will be read from the end of the parameters file.
+If True, handmade brick code will be used to create a model. The brick code should be placed at the end of the parameters file. This otion is useful to reproduce models.
 
 - `diferentiate`: **Optional**. Default: True.
-Atoms are distinguished depending on their topological environment.
+Atoms are distinguished depending on their topological environment. If False, just the chemical symbol is included. If True, the different species are labelled.
 
 - `orthogonal`: **Optional**. Default: False.
-Wheter your simulation box keeps the original shape or is converted to orthogonal
+Wheter your simulation box keeps the original trigonal shape or is converted to orthogonal (convenient for simulation purposes)
  
 - `write_lammps`: **Optional**. Default: False.
-Write a `prefix.data` LAMMPS data file for each of the structures with 
+Write a `.data` LAMMPS data file for each of the structures with 
 
 - `write_lammps_erica`: **Optional**. Default: False.
-Write a `.data` LAMMPS data file for each of the structures, with core-shell, bonds and angle information to use with EricaFF.
+Write a `.data` LAMMPS data file for each of the structures, with core-shell, bonds and angle information to use with EricaFF. 
 
 - `write_vasp`: **Optional**. Default: False.
 Write a `.vasp` VASP data file for each of the structures.
@@ -95,7 +95,19 @@ Write a `.vasp` VASP data file for each of the structures.
 The expansion of the desired pore in Å. A value of 0.0 indicates no pore opening. The pore is always created at the center of the supercell
 
 - `shift` = **Optional**. Default: False.
-Shif the layers to ensure that the center of the supercell matches with an interlaminar space. Basically, you need to shift your system if the number of blocz in z dimension is even. 
+Shif the layers to ensure that the center of the supercell matches with the center of a pore. Basically, you need to shift your system if the number of blocks in z dimension is even, not shift if it is odd.
+
+- `guest_ions` =  **Optional**. False
+Controls if guest ions are introduced in the model, substituting Ca. If True, the guest ions are controlled by the next line. If false, the next line is not readed.
+
+- `substitute` = np.array([["Ca1", "Zn", 5, 0.848],["Ca2", "Mn", 5, 0.848]], dtype = object)
+An array that shows the sustituted Ca, the sustituting element, the %, and the charge asigned to the new element.
+
+- `saturation` =  **Optional**. False
+Controls if the pore opened is saturated with water or not. If True, the amount of water is controlled by the next line. 
+
+- `grid` = np.array([5, 5, 10, "Cl", 1, "Na", 1], dtype = object)
+
 
 
 
