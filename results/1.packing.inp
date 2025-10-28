@@ -1,0 +1,38 @@
+# All the atoms from different molecules will be separated at least 2.0
+# Angstroms at the solution.
+
+tolerance 2.0
+nloop 10000
+
+# The file type of input and output files is xyz
+
+filetype xyz
+
+# The name of the output file
+
+output 1.CSHmodel_filled.xyz
+
+# 5 NaCl molecules will be put in a box saturated with water (1.0 g/cm3)
+# defined by the minimum coordinates x, y and z = 0. 0. 0. and maximum
+# coordinates 13.470400 12.419042 47.987367
+
+structure CSH_1.4-1.0-20.xyz
+number 1
+center
+fixed 6.7352 6.209521 23.9936835 0.0 0.0 0.0 
+end structure
+
+structure Na.xyz
+number 5
+inside box 0.5 0.5 13.5 12.97 11.92 33.5
+end structure
+
+structure Cl.xyz
+number 5
+inside box 0.5 0.5 13.5 12.97 11.92 33.5
+end structure
+
+structure water.xyz
+number 112
+inside box 0.5 0.5 13.5 12.97 11.92 33.5
+end structure
