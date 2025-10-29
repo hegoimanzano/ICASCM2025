@@ -55,23 +55,23 @@ units           real
 atom_style      full
 boundary        p p p
 
-read_data       csh_basic.data     # write the name of your data file
+read_data       CSHmodel_final.data     # write the name of your data file
 
 neighbor        2.0 bin
 neigh_modify    delay 10 every 1
 ```
 
 **2. Force Field Definition** Here you specify interatomic potentials and their parameters.
-- pair_style + pair_coeff = how nonbonded atoms interact. 
-- bond_style, angle_style, dihedral_style = for bonded terms.
-- kspace_style = how long-range electrostatics are computed. Long range interactions are difficult to compute, since they do not decay fast with the distance. Special algorithms are needed like Ewald summation, or `pppm`(particle-particle particle-mesh)
+- `pair_style` + `pair_coeff` = how nonbonded atoms interact. You have to input the parameters are given in **Topology** page, table S1, in the correct order
+- `bond_style`, `angle_style` = for bonded terms. You have to input the parameters are given in **Topology** page, table S1, in the correct order
+- `kspace_style` = how long-range electrostatics are computed. Long range interactions are difficult to compute, since they do not decay fast with the distance. Special algorithms are needed like Ewald summation, or `pppm`(particle-particle particle-mesh)
 
 ```
 # ---- Non bonded interactions  ----
 pair_style      lj/cut/coul/long 10.0 10.0     #lennard-jones and coulomb cut offs
 kspace_style    pppm 1.0e-4                    # coulomb long range solver and accuracy
-pair_coeff    1 1 0.1554164124 3.1655200879    # atom1 atom2 + the ClayFF parametes of the atoms ($\epsilon$ and $\sigma$ in table S1)
-pair_coeff    2 2 0.0000000000 0.0000000000    # atom1 atom2 + the ClayFF parametes of the atoms ($\epsilon$ and $\sigma$ in table S1)
+pair_coeff    1 1 0.1554164124 3.1655200879    # atom1 + the ClayFF parametes of the atoms ($\epsilon$ and $\sigma$ in table S1). Check which is your atom 1 in the data file!
+pair_coeff    2 2 0.0000000000 0.0000000000    # atom2 + the ClayFF parametes of the atoms ($\epsilon$ and $\sigma$ in table S1).  Check which is your atom 2 in the data file!
 ...
 ...
 
