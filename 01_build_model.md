@@ -53,6 +53,7 @@ Target water/Si ratio of the CSH model.
 Number of structures to be generated.
 
 
+
 - `make_independent`: **Optional**. Default: False.
  True implies that none of the structures are equal, or have a different spatial arrangement of the same unit cells.
 
@@ -69,11 +70,13 @@ Width of the gaussian used for sampling the Si-OH/Si ratio. Same as before.
 Width of the gaussian used for sampling the Ca-OH/Ca ratio. Same as before.
 
 
+
 - `create`: **Required**.
 True if you want to generate new structures, False, if other modes are required. See `check` and `read_structure`.
 
 - `check`: **Optional**. Default: False.
 If True, a prelimilary check for a wide range of Ca/Si ratios will be performed, in order to show the accuracy of the generated models for the selected parameters with respect to the Ca/Si ratio, water/Si ratio etc.
+
 
 
 - `orthogonal`: **Optional**. Default: False.
@@ -89,6 +92,7 @@ The expansion of the desired pore in Å. A value of 0.0 indicates no pore openin
 Shif the layers to ensure that the center of the supercell matches with the center of a pore. Basically, you need to shift your system if the number of blocks in z dimension is even, not shift if it is odd.
 
 
+
 - `guest_ions` =  **Optional**. False
 Controls if guest ions are introduced in the model, substituting Ca. If True, the guest ions are controlled by the next line. If false, the next line is not readed.
 
@@ -100,6 +104,7 @@ Controls if the pore opened is saturated with water or not. If True, the amount 
 
 - `grid` = np.array([5, 5, 10, "Cl", 1, "Na", 1], dtype = object)
 Water is introduced in a grid of positions. The first 3 numbers of the array determine how many water molecules are introduced in x y and z respectively. Then, the requested number of Cl and Na ions are introduced by replacing water molecules in the grid
+
 
  
 - `write_lammps`: **Optional**. Default: False.
@@ -113,6 +118,7 @@ Write a `.vasp` VASP data file for each of the structures.
 
 - `write_siesta`: **Optional**. Default: False.
 Write a `.siesta` SIESTA data file for each of the structures.
+
 
 
 - `read_structure`: **Optional**. Default: False.
@@ -145,21 +151,24 @@ pyCSH also generates a **output** folder where you will find several files (# de
 
 Check the plots and files. Open the `.data` and visualise them with OVITO. Select one of the generated models to continue. Rename your particle types according to the table below (right menu), change colors and sizes to improve visualization (usually smaller), and create bonds (`Add modification` menu).  Export it from OVITO as `CSHmodel_filled.xyz` in xyz format.
 
-| Type | Mass | pyCSH Label | radius  |   |
-|----|-------------|--------|---|---|
-| 1  | 40.08  | Ca1  |   |   |
-| 2  | 40.08  | Ca2  |   |   |
-| 3  | 28.10  | Si1  |   |   |
-| 4  | 28.10  | Si2  |   |   |
-| 5  | 15.79  | Oca  |   |   |
-| 6  | 15.79  | Osi  |   |   |
-| 7  | 15.79  | O     |   |   |
-| 8  | 15.79  | Ow    |   |   |
-| 9  | 15.79  | Oh    |   |   |
-| 10 | 1.00   | Hw    |   |   |
-| 11 | 1.00   | H     |   |   |
-| 12 | 1.00   | Cl    |   |   |
-| 13 | 1.00   | Na     |   |   |
+
+| Type | pyCSH Label | ClayFF Label | Mass (u) | Radius (Å) |
+|------|-------------|--------------|----------|------------|
+| 1    | Ca1         | cao          | 40.078   | 2.31       |
+| 2    | Ca2         | cah          | 40.078   | 2.31       |
+| 3    | Si1         | st           | 28.085   | 2.10       |
+| 4    | Si2         | st           | 28.085   | 2.10       |
+| 5    | Oca         | obos         | 15.999   | 1.52       |
+| 6    | Osi         | ob           | 15.999   | 1.52       |
+| 7    | O           | obos         | 15.999   | 1.52       |
+| 8    | Ow          | o*           | 15.999   | 1.52       |
+| 9    | Oh          | oh           | 15.999   | 1.52       |
+| 10   | Hw          | h*           | 1.008    | 1.20       |
+| 11   | H           | ho           | 1.008    | 1.20       |
+| 12   | Cl          | Cl           | 35.450   | 1.75       |
+| 13   | Na          | Na           | 22.990   | 2.27       |
+
+
 
 ```{Tip}
 To avoid typing the same for each model you want to visualise, you can do it for one, and save `.OVITO` session states with all the parameters and modifications. Load the session state before a new model, and all the ooptions will automatically load for the new atomic structures
