@@ -105,6 +105,14 @@ $$
 
 This approach is valid, if the charge is modified by a tiny percentaje (less than 0.005%). This way, the impact in the coulombic interactions is negligible, and the force field is expected to perform as the original.   
 
+**Table S2. Bonded Parameters for the ClayFF Force Field (reduced)**
+
+| bond / angle                   | ClayFF label | pyCSH label   | k (kcal/mol)   | d(Å) / angle (º) |
+|-------------------------------------------|---------|---|-------------|----------|
+| water bond             | o*-h*      | Ow-Hw      | 450.0              | 1.0  |
+| hydroxyl bond            | oh-ho      | Oh-H      | 450.0               | 1.0    |
+|water angle              | h*-o*-h*      | Hw-Ow-Hw       | 55.0               | 109.47|
+
 
 ### Novice users: step-by-step guide to generate the topology file in VMD
 
