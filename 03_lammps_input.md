@@ -3,9 +3,9 @@
 The LAMMPS **input file** contains, together with the **data file** that we built, the necessary information to run (an analyse) your molecular dynamics simulation. We will have two different execises depending on the experience.
 
 
-> ✏️ **Novel users** will have to follow the [Basic LAMMPS input file for C-S-H simulations](#basic-lammps-input-file-for-c-s-h-simulations) section to understand and create in a text file the LAMMPS input file. The simulation must equilibrate the system for 0.5 ps in NPT and perform a production run in NVT for 1 ps, with clayFF force field, dumping the trayectory every 200 steps and printing the properties every 100 steps.
+> ✏️ **Novel users** will have to follow the [Basic LAMMPS input file for C-S-H simulations](#basic-lammps-input-file-for-c-s-h-simulations) section to understand and create in a text file the LAMMPS input file. The simulation must equilibrate the system for 0.2 ns in NPT and perform a production run in NVT for 0.1 ns, with clayFF force field, dumping the trayectory every 1000 steps and printing the properties every 1000 steps.
 
-> ✒️ **Advanced users** will have to follow the [Basic LAMMPS input file for C-S-H simulations](#basic-lammps-input-file-for-c-s-h-simulations) section, and add the information on the [Advanced LAMMPS input file for C-S-H simulations](#advanced-lammps-input-file-for-c-s-h-simulations) section to improve the LAMMPS input file. The simulation must equilibrate the system for 0.5 ps in NPT and perform a production run in NVT for 1 ps, with clayFF force field, dumping the trayectory every 200 steps and printing the properties every 100 steps. The simulation must print the MSD and the density profiles of Cl, Na and water in 2 files called MSD.txt and DP.txt.
+> ✒️ **Advanced users** will have to follow the [Basic LAMMPS input file for C-S-H simulations](#basic-lammps-input-file-for-c-s-h-simulations) section, and add the information on the [Advanced LAMMPS input file for C-S-H simulations](#advanced-lammps-input-file-for-c-s-h-simulations) section to improve the LAMMPS input file. The simulation must equilibrate the system for 0.2 ns in NPT and perform a production run in NVT for 0.1 ns, with clayFF force field, dumping the trayectory every 1000 steps and printing the properties every 1000 steps. The simulation must print the MSD and the density profiles of Cl and water.
 
 
 ### The structure of a LAMMPS input file
@@ -91,17 +91,17 @@ Note that we define only the interactions between equal atoms (Ow-Ow, Hw-Hw). Th
 
 ```
 # ---------- FAST EQUILIBRATION ----------
-minimize        1.0e-6 1.0e-8 5000 10000
 min_style       cg
+minimize        1.0e-6 1.0e-8 5000 10000
 
-velocity        all create 300.0 4928459 rot yes mom yes
-fix             nvt all nvt temp 300.0 300.0 100.0
+velocity        all create 298.0 4928459 rot yes mom yes
+fix             npt all npt temp 298.0 298.0 100.0 aniso 1 1 1000
 thermo          1000
-thermo_style    custom step time temp pe ke etotal enthalpy press density pxx pyy pzz
+thermo_style    custom step time temp pe ke etotal press density lx ly lz
 
 timestep        1
-run             10000
-unfix           nvt
+run             200000
+unfix           npt
 ```
 
 **How long should an equilibration phase last?** The simple answer is that it should last as long as necessary, and the exact duration is system-specific, and depends on your initial simulation protocol, how you build your simulation box, the force field, the final thermodynamic conditions, etc. It is essential to  to confirm that equilibrium has truly been reached by monitoring the energy, density of the system, the mobility of the atoms, or structural properties. 
@@ -114,11 +114,11 @@ Second, we enter the **production phase**. In this stage, thermodynamic quantiti
 
 ```
 # ---------- PRODUCTION ----------
-reset_timestep  0
-fix             nvt all nvt temp 300.0 300.0 100.0
+fix             nvt all nvt temp 298.0 298.0 100.0
 dump            trj all custom 1000 traj.lammpstrj id type q x y z vx vy vz
+thermo_style    custom step temp  time temp etotal 
 thermo          1000
-run             50000
+run             100000
 ```
 
 With this basic input file + the data file, you can perform your MD simulation (next page!).
@@ -129,14 +129,13 @@ With this basic input file + the data file, you can perform your MD simulation (
 In the "advanced" mode, we show how to use LAMMPS not only to perform the MD simulation, but also to analyse it **_on the fly_**. The input will not work by just copy-pasting, and some editing will be necessary.
 Doing the analysis on the fly saves time optimising the simulation pipelines and makes allows automatization of the procedure. 
 
-First, we will include an automatic analysis of **Cl diffusion**. The `compute msd` produces a with the components MSDx, MSDy, MSDz, MSDtot. Note that we have a `type_Cl` group of atoms. This group must be defined after reading the data file, and before the `compute msd`. The values from the compute can be printed in the ouput calling them in a custom `thermo_style`
+First, we will include an automatic analysis of **Cl diffusion** (you do it for water!). The `compute msd` produces a with the components MSDx, MSDy, MSDz, MSDtot. Note that we have a `type_Cl` group of atoms. This group must be defined after reading the data file, and before the `compute msd`. The values from the compute can be printed in the ouput calling them in a custom `thermo_style`
 
 ```
 # --------- MSD & DIFFUSION COEFFICIENTS ----------
 # compute msd produce: [1]=MSDx, [2]=MSDy, [3]=MSDz, [4]=MSDtot  (en Å^2)
-group           Cl_atoms type Cl
+group           Cl_atoms type 3
 compute         msdCl Cl_atoms msd
-thermo_style    custom step temp c_msdCl_all[1] c_msdCl_all[2] c_msdCl_all[3] c_msdCl_all[4]
 ```
 
 From the slope of the msd vs time, the diffusión coefficient can be computed from the Einstein formula. You could do it in postprocessing.
@@ -146,17 +145,22 @@ D = \frac{1}{2d} \frac{\mathrm{d}}{\mathrm{d}t} \big\langle \lvert \mathbf{r}(t)
 = \frac{1}{2d} \frac{\mathrm{d}}{\mathrm{d}t} \big\langle \mathrm{MSD_d} \big\rangle\
 $$ 
 
-The second property will be the **density profile** of the ions in the slit pore. The density profile represents the density of secies in perpendicular to the C-S-H surfaces, and helps us to understand adsorption and the formation of electrical double layers. The `compute` command divides the simulation box along the z-axis into bins of width _dz_A_ (define before), starting from the lower boundary of the box. Each Cl atom (group defined before) is then assigned to a bin according to its z-coordinate. With this command we compute the density profile at each simulation step, but any physical observable must be obtained from the time average of the property over time. We do it with the next `fix` command, which generates the average number density profile along the z direction using the bins defined in `c_zbin`. Every 10 steps is samples c_bin, it takes 20 samples, and it writes the profile into density_z.dat every 10x20 = 200 steps. The _ave running_ instruction, implies that then we do cumulative averages over the entire simulation, rather than  take the short blocks generated every 200 steps.
+The second property will be the **density profile** of the Cl ions in the slit pore (you do it for water!). The density profile represents the density of secies in perpendicular to the C-S-H surfaces, and helps us to understand adsorption and the formation of electrical double layers. The `compute` command divides the simulation box along the z-axis into bins of width _dz_A_ (define before), starting from the lower boundary of the box. Each Cl atom (group defined before) is then assigned to a bin according to its z-coordinate. With this command we compute the density profile at each simulation step, but any physical observable must be obtained from the time average of the property over time. We do it with the next `fix` command, which generates the average number density profile along the z direction using the bins defined in `zbin`. Every 1000 steps is samples c_bin, it takes 100 samples, and it writes the profile into density_z.dat every 10000 steps. The _ave running_ instruction, implies that then we do cumulative averages over the entire simulation, rather than  take the short blocks generated every 200 steps.
 
 ```
 # --------- Density profile in z ----------
 variable        dz_A    equal 0.5
-
 # Chunks in z direction (from the simulation box lower limit)
 compute         zbin Cl_atoms chunk/atom bin/1d z lower ${dz_A} units box
-
 # Density (particles/Å^3). 
-fix             profA all ave/chunk 10 20 200 c_zbin density/number file density_z.dat ave running
+fix             profA Cl_atoms ave/chunk 1000 100 10000 zbin density/number file density_z.dat ave running
+```
+
+Remember that these analysis in the advanced mode should be placed in the correct place of the input file, not at the end. LAMMPS reads the input file in order!. To get the MSD use this new thermo:
+
+
+```
+thermo_style    custom step temp  time temp etotal c_msdCl[1] c_msdCl[2] c_msdCl[3] c_msdCl[4]
 ```
 
 
