@@ -11,4 +11,17 @@ The **left menu** controls the folders, files, and the navigation thorugh them. 
 
 **When the simulation finishes**, the lammps.log file with the simulation output pops out. There you have information about the properties defined by the `thermo` command in the input, as well as the simulation time and performance. By clicking on the `analyze notebook` option you will be able to plot automatically these thermodynamic properties in python. The lammps.log output file and the trajectory file are located in a folder with the **name** you used. You have to donwload them for a posteriory analysis. 
 
+```{Tip}
+You can add Atomify commands, starting with #/, to your input file. These commands are NOT part of the lammps input, only work in this environment. They allow you to set atomic species and camera details.
+
+# Move camera to a nice position
+#/camera position 7.0 8.0 23.0
+#/camera target 7.0 8.0 23.0
+
+# Set atom size and color
+#/atom 1 calcium
+#/atom 2 calcium
+...
+...
+```
 
