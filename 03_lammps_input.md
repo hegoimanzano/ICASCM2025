@@ -7,7 +7,7 @@ The LAMMPS **input file** contains, together with the **data file** that we buil
 
 > ✒️ **Advanced users** will have to follow the [Basic LAMMPS input file for C-S-H simulations](#basic-lammps-input-file-for-c-s-h-simulations) section, and add the information on the [Advanced LAMMPS input file for C-S-H simulations](#advanced-lammps-input-file-for-c-s-h-simulations) section to improve the LAMMPS input file. The simulation must equilibrate the system for 0.2 ns in NPT and perform a production run in NVT for 0.1 ns, with clayFF force field, dumping the trayectory every 1000 steps and printing the properties every 1000 steps. The simulation must print the MSD and the density profiles of Cl and water.
 
-
+---
 ### The structure of a LAMMPS input file
 ```{note}
 This is a basic explanation of LAMMPS input file structure. If you are a experienced user, you can skip this section
@@ -29,16 +29,15 @@ The options in LAMMPS are vast. The [LAMMPS Manual](https://docs.lammps.org/) mi
 - `thermo` and `thermo_style` = control which thermodynamics quantities and other paramaters appears in log output file and how oftern
 
 **4. Analysis** LAMMPS has compute and variable as analysis tools, and fix ave/time to average over time. (computes, variables, averages). The analysis commands are intermixed with layer 3, and they are not strictly necessary, as analysis can be done in a postprocessing stage
-- compute = generates per-atom or global quantities (MSD, stress, RDF, density profiles).
-- variable = algebra with computed quantities.
-- fix ave/time / fix ave/chunk = averages, profiles, histograms.
+- `compute` = generates per-atom or global quantities (MSD, stress, RDF, density profiles).
+- `variable` = algebra with computed quantities.
+- `fix ave/time` / `fix ave/chunk` = averages, profiles, histograms.
 
 Finally, you tell LAMMPS to run → length of the simulation (number of timesteps).
 
 ```{Caution}
 Note that LAMMPS interprets commands strictly **in the order** they appear in the input file. This means that the simulation environment is built step by step, and a command cannot use information that has not yet been defined. You must be carefull with the order of the commands.
 ```
-
 
 ---
 
@@ -156,8 +155,7 @@ compute         zbin Cl_atoms chunk/atom bin/1d z lower ${dz_A} units box
 fix             profA Cl_atoms ave/chunk 1000 100 10000 zbin density/number file density_z.dat ave running
 ```
 
-Remember that these analysis in the advanced mode should be placed in the correct place of the input file, not at the end. LAMMPS reads the input file in order!. To get the MSD use this new thermo:
-
+Remember: LAMMPS reads the input file in order! The input blocks for these analyses should be placed in the correct place of the input file, not at the end. Furthermore, to get the MSD you need to modify yout `thermo`:
 
 ```
 thermo_style    custom step temp  time temp etotal c_msdCl[1] c_msdCl[2] c_msdCl[3] c_msdCl[4]
