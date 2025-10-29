@@ -5,7 +5,11 @@ After a simulation is finished, all files are available in a jupyter notebook th
 
 > **All users** will have to run their simulations. You can play with the Atomify options to see the real time evolution of your simulation and try to understand and evaluate if the evolution of the physical quantities is the expected one.
 
-The **left menu** controls the folders, files, and the navigation thorugh them. To run the simulation, just click in `New simulation`, give a **name** to your project, and drag and drop the input anda data files.
+The **left menu** controls the folders, files, and the navigation thorugh them. To run the simulation, just click in `New simulation`, give a **name** to your project, and drag and drop the input anda data files. You are ready to run  your job.
+
+```{Note}
+**Your browser must be open and in foreground to run** Atomify runs LAMMPS through WebAssembly inside the browser, so the simulation only progresses while the tab is active and in the foreground. When the tab loses focus, most browsers throttle or pause background WebAssembly execution to save CPU resources.
+```
 
 **During the simulation** you can explore the options on the right menu, which shows all the simulation parameters and output properties. You can change atom and bond sizes, and cliking on the physical observables and defined variables you will see plots of their evolution in real time. Hidding the menu you will see aditional options to control for example the brightness.
 
@@ -14,11 +18,11 @@ The **left menu** controls the folders, files, and the navigation thorugh them. 
 ```{Tip}
 You can add Atomify commands, starting with #/, to your input file. These commands are NOT part of the lammps input, only work in this environment. They allow you to set atomic species and camera details.
 
- # Move camera to a nice position
+Move camera to a nice position
  #/camera position 7.0 8.0 23.0
  #/camera target 7.0 8.0 23.0
 
- # Set atom size and color
+Set atom size and color
  #/atom 1 calcium
  #/atom 2 calcium
  ...
