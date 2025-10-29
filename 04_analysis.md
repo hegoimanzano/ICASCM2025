@@ -67,28 +67,42 @@ Open the trajectory with **OVITO**. Drag and drop your trayectory file, or load 
 
 ### Analysis with TRAVIS
 
-[TRAVIS](https://www.travis-analyzer.de) (Trajectory Analyzer and Visualizer) is a free postprocessing program for MD data. It can calculate Mean Square Displacement (MSD), density profiles, radial distribution functions, vibrational spectra, and many more. TRAVIS is a very powerful tool, but it does not have a very comprehesive documentation. For novel users it is very practical because it is **verbose**, i.e. it will ask you questions step by step to perform your analysis. 
+[TRAVIS](https://www.travis-analyzer.de) (Trajectory Analyzer and Visualizer) is a free postprocessing program for MD data. It can calculate Mean Square Displacement (MSD), density profiles, radial distribution functions, vibrational spectra, and many more. TRAVIS is a very powerful tool, but it does not have a very comprehesive documentation. For novel users it is practical because it is **verbose**, i.e. it will ask you questions step by step to perform your analysis. 
 
 Download binaries from the TRAVIS website for your OS (no special dependencies are required), and place the executable in your working directory (same directory where the LAMMPS trajectory is). You can run TRAVIS by typing in you terminal:
 
 ```
-travis -p lammps.trj
+travis -p traj.lammpstrj
 ```
 
-This launches an interactive menu, and now you need to answer the questions as they appear on screen. Be patient and read carefully, you cannot go back and making a mistake implies starting again. There are several important things to consider
+This launches an interactive menu, and now you need to answer the questions as they appear on screen. Be patient and read carefully, you cannot go back and making a mistake implies starting again. There are several important things to consider:
 
-- **Mean Square Displacement**:  
-  Select atom types (e.g., Na⁺, Cl⁻, H₂O oxygen). TRAVIS will compute MSD(t) and diffusion coefficients.  
+- TRAVIS reads a specific trajectory format from LAMMPS `custom id element xu yu zu`. We use it in this example.
+- Do not use advanced mode, and use the **default** answers when possible, unless you understand what you are doing (experience!) TRAVIS will handle it for you.
+- TRAVIS is designed for molecules, not solids. We will work with Cl, Na, H2O. Therefore, do not consider Ca for bond recognition
+
+After the molecule recognition, TRAVIS will give you a list of the available properties to be computed. In this exercise we are interested on the Mean Square Displacement / Diffusion Coefficients `msd` and the Fixed Plane Density Profile `dprof`. 
+
+- **Mean Square Displacement**:
+Type `msd` and follow the instructions on the screen. EL TIEMPO You can select several atoms/molecules as separated "observations". If you did everything correctly, TRAVIS generates several files: 
+  - `msd_*.csv` where * is the name of your atom/molecule. These files can be plotted in spreeadsheet based software or do a bit of scripting in advanced tools like python.
+  - `travis.log` with all the information that you answered on the screen and the results of the analysis. In this file you can find the diffusion coefficient computed from the linear regresion of the MSD.
 
 - **Density Profiles**:  
-  Define the axis (typically z for slit pores). TRAVIS will output the density distribution of ions/water across the pore.  
+ Type `dprof` and follow the instructions on the screen. The default domain is smaller than your simulation box. Adjust the minimal/maximal distance of the density profile. If you did everything correctly, TRAVIS generates several files:
+  - `dprof_*.csv` where * is the name of your atom/molecule. These files can be plotted in spreeadsheet based software or do a bit of scripting in advanced tools like python.
+  - `dprof_*.agr` Same information but in a format ready to use in Grace (very old out of use software)
+  - `travis.log` with all the information that you answered on the screen and the results of the analysis.
 
-Results can be exported as text files or ready-to-plot graphics.
+
+```{Tip}
+Travis genera un input.txt que se puede leer `travis -p traj.lammpstrj -i input.txt`jasbvafngvo´sijrtb
+```
 
 ---
 ### Analysis with python (advanced)
 
-Actually, the analysis with python is easier than running TRAVIS, but you need the right expertise to understand what you need and prepare a LAMMPS input file to perform the analysis _on the fly_. If you did it correctly, you should have an MSD.txt and DP.txt datafiles with the mean square displacement and the density profile. Opend the files and make a plot with python. 
+Actually, the analysis of MSD and density profiles from LAMMPS with python should be easier than running TRAVIS, but you need the right expertise to understand your needs and prepare a LAMMPS input file to perform the analysis _on the fly_. If you did it correctly, you should have the datafiles with the mean square displacement and the density profiles. Opend the files and make a plot with python. 
 
 For comparison, do the same analysis with TRAVIS and check if both methods are giving you the same answer. The results should be equal, with minor differences due to the TRAVIS algorithms used to smooth data. Explore if you have time other options that TRAVIS gives you, like RDFs, autocorrelation plots, etc. Some of the properties cannot be computed with LAMMPS, and can be difficult to code. 
 
