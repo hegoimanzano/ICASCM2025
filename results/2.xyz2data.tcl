@@ -101,5 +101,5 @@ topo retypebonds
 topo guessangles
 mol reanalyze top
 
-topo writelammpsdata CSH_1.4-1.0-20_filled.data full
+topo writelammpsdata CSHmodel_final.data full
 exit
