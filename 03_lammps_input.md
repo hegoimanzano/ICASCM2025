@@ -93,10 +93,13 @@ Note that we define only the interactions between equal atoms (Ow-Ow, Hw-Hw). Th
 # ---------- FAST EQUILIBRATION ----------
 minimize        1.0e-6 1.0e-8 5000 10000
 min_style       cg
+
 velocity        all create 300.0 4928459 rot yes mom yes
 fix             nvt all nvt temp 300.0 300.0 100.0
 thermo          1000
 thermo_style    custom step time temp pe ke etotal enthalpy press density pxx pyy pzz
+
+timestep        1
 run             10000
 unfix           nvt
 ```
