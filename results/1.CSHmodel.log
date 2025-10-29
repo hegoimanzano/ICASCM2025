@@ -1,0 +1,41 @@
+Ca/Si ratio:    1.210526 
+SiOH/Si ratio:  0.289474 
+CaOH/Ca ratio:  0.152174 
+MCL:            3.800000 
+ 
+size:   2   2   2 
+ 
+Supecell Brick Code: 
+ Na  Nb  Nc  :   Brick Code 
+
+brick_code = { 
+(  0,   0,   0)  :   ['<L', 'SUo', 'oMUL', '<R', 'XD', 'CID', 'CIU', 'oDL', 'oUR', '>L', 'SDo', '>R'], 
+(  0,   0,   1)  :   ['<Lo', '<Ro', 'CIU', '>L', '>R'], 
+(  0,   1,   0)  :   ['<L', '<R', 'XD', '>L', '>Ro'], 
+(  0,   1,   1)  :   ['<L', 'CU', '<R', '>Lo', '>R'], 
+(  1,   0,   0)  :   ['<Lo', '<Ro', 'XU', 'CIU', '>L', 'SD', '>R'], 
+(  1,   0,   1)  :   ['<Lo', 'CU', '<R', 'XU', '>L', 'SD', 'oMDL', '>R'], 
+(  1,   1,   0)  :   ['<Lo', '<R', 'CII', 'XU', 'oUR', '>L', 'SD', '>R'], 
+(  1,   1,   1)  :   ['<L', 'SUo', '<R', 'XU', 'oXU', '>L', 'CD', 'oMDL', '>R'], 
+}
+
+water_code = { 
+(  0,   0,  0)  :   ['wIL', 'wXU', 'wXD', 'wMDL'], 
+(  0,   0,  1)  :   ['wMUL', 'wDR', 'wUL', 'wXD'], 
+(  0,   1,  0)  :   ['wMUL', 'wIR2', 'w14', 'wMDR'], 
+(  0,   1,  1)  :   ['wIR', 'wMUL', 'wMDR', 'wDR'], 
+(  1,   0,  0)  :   ['wIL', 'wMUR', 'wIR'], 
+(  1,   0,  1)  :   ['wIR2', 'w16', 'wXD'], 
+(  1,   1,  0)  :   ['wIL', 'wXD', 'wIR2'], 
+(  1,   1,  1)  :   ['w15', 'wIL', 'wIR'], 
+}
+ 
+Charge Distribution: 
+  0   0   0  :   1 
+  0   0   1  :   0 
+  0   1   0  :   -1 
+  0   1   1  :   -1 
+  1   0   0  :   2 
+  1   0   1  :   0 
+  1   1   0  :   0 
+  1   1   1  :   -1 
