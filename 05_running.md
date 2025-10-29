@@ -18,11 +18,13 @@ The **left menu** controls the folders, files, and the navigation thorugh them. 
 ```{Tip}
 You can add Atomify commands, starting with #/, to your input file. These commands are NOT part of the lammps input, only work in this environment. They allow you to set atomic species and camera details.
 
-Move camera to a nice position
+Move camera to a nicer position:
+
  #/camera position 7.0 8.0 23.0
  #/camera target 7.0 8.0 23.0
 
-Set atom size and color
+Set atom size and color by asigning their names:
+
  #/atom 1 calcium
  #/atom 2 calcium
  ...
