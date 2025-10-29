@@ -178,8 +178,9 @@ To avoid typing the same for each model you want to visualise, you can do it for
 
 > ✒️ **Next step for Advanced users** Move to the next section "Packing molecular systems with Packmol"
 
+---
 
-### Packing molecular systems with Packmol  (advanced users)
+### Packing molecules with Packmol (advanced users)
 
 Packmol is a program designed to create initial configurations for molecular dynamics simulations by packing molecules into defined regions of space according to user-specified geometric constraints. It takes as input one or more molecular structures and places them inside a simulation box or around predefined surfaces, ensuring that the molecules do not overlap and that a minimum distance between atoms is respected.
 
