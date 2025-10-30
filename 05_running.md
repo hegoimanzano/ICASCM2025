@@ -15,6 +15,9 @@ The **left menu** controls the folders, files, and the navigation thorugh them. 
 
 **When the simulation finishes**, the lammps.log file with the simulation output pops out. There you have information about the properties defined by the `thermo` command in the input, as well as the simulation time and performance. By clicking on the `analyze notebook` option you will be able to plot automatically these thermodynamic properties in python. The lammps.log output file and the trajectory file are located in a folder with the **name** you used. You have to donwload them for a posteriory analysis. 
 
+The simulation will run for about 20-30 minutes depending on your computer capabilities. You can check your perfomance, in our case `Performance: 18.886 ns/day, 1.271 hours/ns, 218.582 timesteps/s`. Nevertheless, if you experience memory problems, your browser freezes, etc. (quite common), you can reduce the simulation time by 1/10 to observe the process, and take the 200ps results from [github](https://github.com/hegoimanzano/ICASCM2025/tree/main/results) to continue the analysis.
+
+
 ```{Tip}
 You can add Atomify commands, starting with #/, to your input file. These commands are NOT part of the lammps input, only work in this environment. They allow you to set atomic species and camera details.
 
