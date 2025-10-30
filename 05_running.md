@@ -23,14 +23,14 @@ You can add Atomify commands, starting with #/, to your input file. These comman
 
 For example, to move the camera to a better position, use:
 
- #/camera position 7.0 8.0 23.0
- #/camera target 7.0 8.0 23.0
+   #/camera position 7.0 8.0 23.0
+   #/camera target 7.0 8.0 23.0
 
  Atom sizes and colors can be set by assigning their element names:
 
- #/atom 1 calcium
- #/atom 2 calcium
- ...
- ...
+   #/atom 1 calcium
+   #/atom 2 calcium
+   ...
+   ...
 ```
 
