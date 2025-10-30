@@ -1,21 +1,21 @@
 # Analysis (MSD & density)
 
-We will analyse the performed MD simulation. The objective is to understand the diffusion and the equilibrium state of Cl ions in the C-S-H slit-(nano)pore. Furthermore, it is always desiderable to check the basic thermodynamics properties and do a visual inspection of the trayectory. There are unphysical behaviours that can be observed on one or another. For example, the silicate chains can break, forming an amorphous material that does not represent C-S-H anymore, and yet, the thermodynamic properties can give reasonable energies, densities, etc. 
+We will analyse the performed MD simulation. The objective is to understand the diffusion and the equilibrium state of Cl ions in the C-S-H slit-(nano)pore. Furthermore, it is always desirable to check the basic thermodynamic properties and do a visual inspection of the trajectory. There are unphysical behaviours that can be observed on one or another. For example, the silicate chains can break, forming an amorphous material that no longer represents C-S-H, and yet, the thermodynamic properties can give reasonable energies, densities, etc. 
 
-> ✏️ **Novel users** will have to follow the instructions to analyse the data. **First** you have to produce plots to justify if the simulation has converged or not. **Second** you will have to save an image with a simulation snapshot from OVITO. **Third** you will have to use TRAVIS to plot the MSD and report the obtained diffusion coefficient. **Finally** you will have to use TRAVIS to plot and save an image with the density profile.
+> ✏️ **Novice users** will have to follow the instructions to analyse the data. **First** you have to produce plots to justify if the simulation has converged or not. **Second** you will have to save an image with a simulation snapshot from OVITO. **Third** you will have to use TRAVIS to plot the MSD and report the obtained diffusion coefficient. **Finally** you will have to use TRAVIS to plot and save an image with the density profile.
 
-> ✒️ **Advanced users** will have to do the same as novel users. In adittion, you will have to plot the MSD and density profile obtained directly from LAMMPS.
+> ✒️ **Advanced users** will have to do the same as novice users. In addition, you will have to plot the MSD and density profiles obtained directly from LAMMPS.
 
 ```{caution}
-Thermodynamic properties (energy, enthalpy...), structure (RDFs, Density profiles...), dynamic properties (viscosity, diffusion coefficients), and basically **any property** must not be computed unless the system is at equilibrium. The current example may no be converged due to time limitation of the course.
+Thermodynamic properties (energy, enthalpy...), structural features (RDFs, density profiles...), dynamic properties (viscosity, diffusion coefficients...), and basically **any property** must not be computed unless the system is at equilibrium. The current example may not be converged due to time limitation of the course.
 ```
 
 ---
-### Thermodynamic properties and trayectory
+### Thermodynamic properties and trajectory
 
-LAMMPS writes thermodynamic data (energy, pressure, density, etc.) into the `log.lammps` file (or into a user-defined text file if requested).  We can use this information to check whether the system has reached equilibrium. After the simulation, open the `log.lammps`, and plot **energy vs. time**, **density vs. time**, etc. Stable values indicate equilibration, and the average will give you the observable value of the property. If energy or density continues to drift, the system is not equilibrated. To do these plots you can copy-paste in spreeadsheet based software (_excel_, -libreoffice_, _kaleidagraph_,...) or do a bit of scripting in advanced tools (_matlab_, _mathematica_, _R_,...). Again, we recommend python-based plotting using a combination of tools like [matplotlib](https://matplotlib.org) and [lammps-logfile](https://pypi.org/project/lammps-logfile/), but use your preferred tool.
+LAMMPS writes thermodynamic data (energy, pressure, density, etc.) into the `log.lammps` file (or into a user-defined text file if requested).  We can use this information to check whether the system has reached equilibrium. After the simulation, open the `log.lammps` and plot **energy vs. time**, **density vs. time**, etc. Stable values indicate equilibration, and the average will give you the observable value of the property. If energy or density continues to drift, the system is not equilibrated. To do these plots you can copy-paste in spreadsheet-based software (_Excel_, _LibreOffice_, _Kaleidagraph_,...) or do a bit of scripting in advanced tools (_MATLAB_, _Mathematica_, _R_,...). Again, we recommend Python-based plotting using a combination of tools like [Matplotlib](https://matplotlib.org) and [lammps-logfile](https://pypi.org/project/lammps-logfile/), but use your preferred tool.
 
-If you decided to use python, you can simply run:
+If you decide to use Python, you can simply run:
 
 ```python
 import lammps_logfile
@@ -30,7 +30,7 @@ plt.plot(x, y)
 plt.show()
 ```
 
-and you have a fast plot, higly cusomizable by the miriad of matplotlib options. If you want all the plots at once, you can use:
+and you have a fast plot, highly customisable through the myriad of Matplotlib options. If you want all plots at once, you can use:
 
 ```python
 import lammps_logfile
@@ -48,61 +48,61 @@ for keyword in log.keywords:
 ```
 
 ```{Tip}
-This is just a tutorial, you don't need to go further. For real work, invest time in your plots. Do not use the defaults, do not copy others plot style. Your plots are like a presentation letter of the work, think about how to get the most information from them and how to make them readable. 
+This is just a tutorial, you do not need to go further. For real work, invest time in your plots. Do not use the defaults, and do not copy other people's plot styles. Your plots are like the visual presentation of your work; think about how to make them both informative and readable.
 ```
 
 ---
 
 ### Visualizing the Trajectory
 
-Numbers alone are not enough. Even if energy looks stable, the system structure might become unphysical. For example, uncorrect typing of the force field in the input file or a wrong asigment of the atoms might lead the system towards a unrealistic structure, breaking the silicate chains and losing the layered structure. But eventually the thermodynamic properties may converge. Visualization allows us to **_see_** the atomic arrangement and detect problems and trends.
+Numbers alone are not enough. Even if the energy appears stable, the system's structure might still become unphysical. For example, incorrect typing of the force field in the input file or a wrong assignment of the atoms might lead the system towards an unrealistic configuration, breaking the silicate chains and losing the layered structure, yet the thermodynamic properties may still appear to converge. Visualization allows us to **_see_** the atomic arrangement and detect problems and trends.
 
-Open the trajectory with **OVITO**. Drag and drop your trayectory file, or load your file from the menu bar. Visualise your simulation, play with the available visualization options, export a snaphsot of the trayectory, and check whether:
+Open the trajectory with **OVITO**. Drag and drop your trajectory file, or load your file from the menu bar. Visualise your simulation, play with the available visualisation options, export a snapshot of the trajectory, and check whether:
 
 - The pore remains open.  
 - Water molecules did not break.  
-- The silicate chains and the layer structure are mantained
+- The silicate chains and the layer structure are maintained.
 
 ---
 
 ### Analysis with TRAVIS
 
-[TRAVIS](https://www.travis-analyzer.de) (Trajectory Analyzer and Visualizer) is a free postprocessing program for MD data. It can calculate Mean Square Displacement (MSD), density profiles, radial distribution functions, vibrational spectra, and many more. TRAVIS is a very powerful tool, but it does not have a very comprehesive documentation. For novel users it is practical because it is **verbose**, i.e. it will ask you questions step by step to perform your analysis. 
+[TRAVIS](https://www.travis-analyzer.de) (Trajectory Analyzer and Visualizer) is a free post-processing program for MD data. It can calculate the mean square displacement (MSD), density profiles, radial distribution functions, vibrational spectra, and many more. TRAVIS is a very powerful tool, but it does not have a very comprehensive documentation. For novice users it is practical because it is **verbose**, i.e., it will ask you questions step-by-step to perform your analysis. 
 
-Download binaries from the TRAVIS website for your OS (no special dependencies are required), and place the executable in your working directory (same directory where the LAMMPS trajectory is). You can run TRAVIS by typing in you terminal:
+Download the binaries from the TRAVIS website for your OS (no special dependencies are required), and place the executable in your working directory (the same directory as the LAMMPS trajectory). You can run TRAVIS by typing in your terminal:
 
 ```
 travis -p traj.lammpstrj
 ```
 
-This launches an interactive menu, and now you need to answer the questions as they appear on screen. Be patient and read carefully, you cannot go back and making a mistake implies starting again. There are several important things to consider:
+This launches an interactive menu; answer the questions as they appear on-screen. Be patient and read carefully — **you cannot go back**, and making a mistake means starting again. There are several important things to consider:
 
-- TRAVIS reads a specific trajectory format from LAMMPS `custom id element xu yu zu`. We have used it in this example, so you will not face any problem.
-- Do not use advanced mode, and use the **default** answers when possible, unless you understand what you are doing (experience!). TRAVIS will handle it for you.
-- TRAVIS will do a molecule recognition to define the species in your system. Do not consider Ca or Na for bond recognition or Ca-water and Na-water will be consider as a molecule, instead of separated species.
+- TRAVIS expects a specific LAMMPS trajectory format, e.g. `custom id element xu yu zu`. Ensure your dump uses these arguments, as we did in this tutorial, so you will not face any problem.
+- Do not use advanced mode; use the **default** answers when possible, unless you understand exactly what you are doing (experience!). TRAVIS will handle it for you.
+- TRAVIS performs molecular recognition to define the species in your system. Do not consider Ca or Na for bond recognition or Ca-water and Na-water will be considered as single molecules, instead of separated species.
 
-After the molecule recognition, TRAVIS will give you a list of the available properties to be computed. In this exercise we are interested on the Mean Square Displacement / Diffusion Coefficients `msd` and the Fixed Plane Density Profile `dprof`. 
+After the molecule recognition, TRAVIS will give you a list of the available properties to be computed. In this exercise we are interested in the mean square displacement / diffusion coefficients (`msd`) and the fixed-plane density profile (`dprof`). 
 
 - **Mean Square Displacement**:
-Type `msd` and follow the instructions on the screen. You need to set the time between trajectory frames. This is, your `time_step` * `dump` frequency. You can select several atoms/molecules as separated "observations". If you did everything correctly, TRAVIS generates several files: 
-  - `msd_*.csv` where * is the name of your atom/molecule. These files can be plotted in spreeadsheet based software or do a bit of scripting in advanced tools like python.
-  - `travis.log` with all the information that you answered on the screen and the results of the analysis. In this file you can find the diffusion coefficient computed from the linear regresion of the MSD. You can also perform the linear regresion yourself from the `msd_*.csv` plot
+Type `msd` and follow the instructions on the screen. You need to set the time between trajectory frames. That is, your `timestep` * `dump` frequency. You can select several atoms/molecules as separated "observations". If you did everything correctly, TRAVIS generates several files: 
+  - `msd_*.csv` where * is the name of your atom/molecule. These files can be plotted in spreadsheet-based software or do a bit of scripting in advanced tools like Python.
+  - `travis.log` with all the information that you answered on the screen and the results of the analysis. In this file you can find the diffusion coefficient computed from the linear regression of the MSD. You can also perform the linear regression yourself from the `msd_*.csv` plot.
 
 - **Density Profiles**:  
- Type `dprof` and follow the instructions on the screen. The default domain is smaller than your simulation box. Adjust the minimal/maximal distance of the density profile to the **z** dimension. If you did everything correctly, TRAVIS generates several files:
-  - `dprof_*.csv` where * is the name of your atom/molecule. These files can be plotted in spreeadsheet based software or do a bit of scripting in advanced tools like python.
-  - `dprof_*.agr` Same information but in a format ready to use in Grace (very old out of use software)
-  - `travis.log` with all the information that you answered on the screen and the results of the analysis.
+ Type `dprof` and follow the instructions on the screen. The default domain is slightly smaller than the simulation box. Adjust the minimum/maximum distance of the density profile to the **z** dimension. If you did everything correctly, TRAVIS generates several files:
+  - `dprof_*.csv` where * is the name of your atom/molecule. These files can be plotted in spreadsheet-based software or do a bit of scripting in advanced tools like Python.
+  - `dprof_*.agr` Same information but in a format ready to use in Grace (an obsolete software package).
+  - `travis.log` with all the information provided on-screen and the results of the analysis.
 
 
 ```{Tip}
-TRAVIS generates also a `input.txt`file that can be readed when the code is called `travis -p traj.lammpstrj -i input.txt`. This is useful for automatization purposes, as it allows scrpting.
+TRAVIS also generates an `input.txt` file that can be read when calling TRAVIS with `travis -p traj.lammpstrj -i input.txt`. This is useful for automation purposes, as it allows scripting.
 ```
 
 ---
-### Analysis with python (advanced)
+### Analysis with Python (advanced)
 
-Actually, the analysis of MSD and density profiles from LAMMPS with python should be easier than running TRAVIS, but you need the right expertise to understand your needs and prepare a LAMMPS input file to perform the analysis _on the fly_. If you did it correctly, you should have the datafiles with the mean square displacement and the density profiles. Opend the files and make a plot with python. 
+Analysing the MSD and density profiles from LAMMPS with Python should be easier than running TRAVIS, but you need sufficient expertise to understand your needs and prepare a LAMMPS input file capable of performing the analysis _on the fly_. If you did it correctly, you should have the data files with the mean square displacement and the density profiles. Open the files and plot them with Python. 
 
-For comparison, do the same analysis with TRAVIS and check if both methods are giving you the same answer. The results should be equal, with minor differences due to the TRAVIS algorithms used to smooth data. Explore if you have time other options that TRAVIS gives you, like RDFs, autocorrelation plots, etc. Some of the properties cannot be computed with LAMMPS, and can be difficult to code. 
+For comparison, perform the same analysis with TRAVIS and check whether both methods yield the same result. The results should be equivalent, with only minor differences arising from the smoothing algorithms used by TRAVIS. If you have time, explore other options available in TRAVIS, such as RDFs, autocorrelation plots, etc. Some of these properties cannot be computed directly with LAMMPS and may be difficult to code. 
 
