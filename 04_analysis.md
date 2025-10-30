@@ -77,26 +77,26 @@ travis -p traj.lammpstrj
 
 This launches an interactive menu, and now you need to answer the questions as they appear on screen. Be patient and read carefully, you cannot go back and making a mistake implies starting again. There are several important things to consider:
 
-- TRAVIS reads a specific trajectory format from LAMMPS `custom id element xu yu zu`. We use it in this example.
-- Do not use advanced mode, and use the **default** answers when possible, unless you understand what you are doing (experience!) TRAVIS will handle it for you.
-- TRAVIS is designed for molecules, not solids. We will work with Cl, Na, H2O. Therefore, do not consider Ca for bond recognition
+- TRAVIS reads a specific trajectory format from LAMMPS `custom id element xu yu zu`. We have used it in this example, so you will not face any problem.
+- Do not use advanced mode, and use the **default** answers when possible, unless you understand what you are doing (experience!). TRAVIS will handle it for you.
+- TRAVIS will do a molecule recognition to define the species in your system. Do not consider Ca or Na for bond recognition or Ca-water and Na-water will be consider as a molecule, instead of separated species.
 
 After the molecule recognition, TRAVIS will give you a list of the available properties to be computed. In this exercise we are interested on the Mean Square Displacement / Diffusion Coefficients `msd` and the Fixed Plane Density Profile `dprof`. 
 
 - **Mean Square Displacement**:
-Type `msd` and follow the instructions on the screen. EL TIEMPO You can select several atoms/molecules as separated "observations". If you did everything correctly, TRAVIS generates several files: 
+Type `msd` and follow the instructions on the screen. You need to set the time between trajectory frames. This is, your `time_step` * `dump` frequency. You can select several atoms/molecules as separated "observations". If you did everything correctly, TRAVIS generates several files: 
   - `msd_*.csv` where * is the name of your atom/molecule. These files can be plotted in spreeadsheet based software or do a bit of scripting in advanced tools like python.
-  - `travis.log` with all the information that you answered on the screen and the results of the analysis. In this file you can find the diffusion coefficient computed from the linear regresion of the MSD.
+  - `travis.log` with all the information that you answered on the screen and the results of the analysis. In this file you can find the diffusion coefficient computed from the linear regresion of the MSD. You can also perform the linear regresion yourself from the `msd_*.csv` plot
 
 - **Density Profiles**:  
- Type `dprof` and follow the instructions on the screen. The default domain is smaller than your simulation box. Adjust the minimal/maximal distance of the density profile. If you did everything correctly, TRAVIS generates several files:
+ Type `dprof` and follow the instructions on the screen. The default domain is smaller than your simulation box. Adjust the minimal/maximal distance of the density profile to the **z** dimension. If you did everything correctly, TRAVIS generates several files:
   - `dprof_*.csv` where * is the name of your atom/molecule. These files can be plotted in spreeadsheet based software or do a bit of scripting in advanced tools like python.
   - `dprof_*.agr` Same information but in a format ready to use in Grace (very old out of use software)
   - `travis.log` with all the information that you answered on the screen and the results of the analysis.
 
 
 ```{Tip}
-Travis genera un input.txt que se puede leer `travis -p traj.lammpstrj -i input.txt`jasbvafngvo´sijrtb
+TRAVIS generates also a `input.txt`file that can be readed when the code is called `travis -p traj.lammpstrj -i input.txt`. This is useful for automatization purposes, as it allows scrpting.
 ```
 
 ---
