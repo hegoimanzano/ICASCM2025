@@ -184,11 +184,11 @@ To avoid typing the same for each model you want to visualise, you can do it for
 
 Packmol is a program designed to create initial configurations for molecular dynamics simulations by packing molecules into defined regions of space according to user-specified geometric constraints. It takes as input one or more molecular structures and places them inside a simulation box or around predefined surfaces, ensuring that the molecules do not overlap and that a minimum distance between atoms is respected.
 
-pyCSH allows to insert water molecules and certain ions within the slit pore in very simple cases. Packmol offers much greater flexibility: it allows you to pack any kind of molecule, such as solvents, organic additives, surfactants, or any other chemical compound species, into complex geometries, interfaces, or pores. This makes it extremely useful when constructing more heterogeneous systems. 
+pyCSH allows the insertion of water molecules and certain ions within the slit pore in very simple cases. Packmol offers much greater flexibility: it allows you to pack any kind of molecule, such as solvents, organic additives, surfactants, or any other chemical compound species, into complex geometries, interfaces, or pores. This makes it extremely useful when constructing more heterogeneous systems. 
 
 **1. Installing Packmol**
 
-Packmol is available on Linux, macOS and Windows, and can be downloaded it from its [official website](https://github.com/m3g/packmol/releases/tag/v21.1.1).
+Packmol is available on Linux, macOS and Windows, and can be downloaded from its [official website](https://github.com/m3g/packmol/releases/tag/v21.1.1).
 
 **2. Creating a Packmol input file**
 
@@ -202,7 +202,7 @@ output CSHmodel_filled.xyz
 structure name.xyz
 number 1
 center
-fixed 10.0 10.0 10.0 0.0 0.0 0.0 # input your simulation box parameters
+fixed 10.0 10.0 10.0 0.0 0.0 0.0
 end structure
 
 structure Na.xyz
@@ -216,16 +216,16 @@ end structure
 
 In this input file:
 - **`tolerance`** defines the minimum allowed distance (in Å) between atoms belonging to different molecules to avoid overlaps.  
-- **`filetype`** indicates the format of the output file, .pdb or .xyz
+- **`filetype`** indicates the format of the output file, .pdb or .xyz.
 - **`output`** is the name of the resulting packed system that will be created.  
 - The **`structure ... end structure`** blocks define the molecules to be included and how they are positioned:
-  - **`number`** indicates the number of molecules/systems to be inserted (you need to do the calculations to match the expected density (water =1g/cc))
-  - **`structure`** loads the atomic coordinates from the corresponding molecule/system defined in a separated file.
-  - **`inside box 0.5 0.5 0.5 19.5 19.5 19.5`** defines a three-dimensional region inside which Packmol will randomly place the predefined number of molecules. The six numerical values correspond to the lower and upper limits of the box along the three Cartesian coordinates (x_min, y_min, z_min and x_max, y_max, z_max).
-  - **`center`** tells Packmol to center the coordinates of that structure with respect to the defined box
-  - **`fixed`** indicates that the (center of the) structure should be place exactly at that position (10.0 10.0 10.0) and prevents it from moving during packing. The last three zeros correspond to allowed translation tolerances (here all set to zero, meaning the structure remains completely fixed).
+  - **`number`** indicates how many molecules/systems will be inserted (for water you need to calculate this number to match the desired density, e.g. water = 1 g/cm³).
+  - **`structure`** loads the atomic coordinates from the corresponding molecule/system file.
+  - **`inside box`** defines a three-dimensional region inside which Packmol will randomly place the predefined number of molecules. The six numerical values correspond to the lower and upper limits of the box along the three Cartesian coordinates (x_min, y_min, z_min and x_max, y_max, z_max).
+  - **`center`** tells Packmol to center the coordinates of that structure with respect to the defined box.
+  - **`fixed`** indicates that the (center of the) structure should be placed exactly at the given coordinates (i.e., 10.0 10.0 10.0) and prevents it from moving during packing. The last three zeros correspond to allowed translation tolerances (here all set to zero, meaning the structure remains completely fixed). Note that to ensure that the structure is positioned right at the geometric center of the simulation cell, the specified coordinates here must be half of each box dimension. For example, if the box length is 20 Å in each direction, the center will be at (10.0, 10.0, 10.0).
  
- Note that you need to prepare your Na.xyz, Cl.xyz and H20.xyz files independently in a text file with a xyz format:
+ Note that you need to prepare your `Na.xyz`, `Cl.xyz` and `H20.xyz` files independently in a text file with a xyz format:
  
 ```
 <number of atoms>
@@ -237,20 +237,20 @@ comment line or blank
  
  
 ```{Warning}
-When using periodic boundary conditions (PBC), atoms located exactly at the edges of the simulation box are periodically replicated on the opposite side. If Packmol places molecules too close to the box boundaries, this replication can cause overlaps between periodic images, leading to unrealistic atomic contacts or large forces during energy minimization. To prevent this, it is recommended to leave a small safety margin* between the packing region and the box limits — typically 0.5 Å on each side. This ensures that no atom lies exactly on the boundary, avoiding artificial overlaps when the system is replicated under PBC and improving the stability of the subsequent molecular dynamics simulation.
+When using periodic boundary conditions (PBC), atoms located exactly at the edges of the simulation box are periodically replicated on the opposite side. If Packmol places molecules too close to the box boundaries, this replication can cause overlaps between periodic images, leading to unrealistic atomic contacts or large forces during energy minimization. To prevent this, it is recommended to leave a small **safety margin** between the packing region and the box limits — typically 0.5 Å on each side. This ensures that no atom lies exactly on the boundary, avoiding artificial overlaps when the system is replicated under PBC and improving the stability of the subsequent molecular dynamics simulation.
 ```
 
 **3. Running Packmol**
 
-Once the input file (for example `Packing.inp`) is ready and all the molecular structure files (`.pdb` files) are in the same directory, Packmol can be runned directly from the terminal. To do so, navigate to the folder containing your input file and execute:
+Once the input file (for example `Packing.inp`) is ready and all the molecular structure files (`.pdb` files) are in the same directory, Packmol can be run directly from the terminal. To do so, navigate to the folder containing your input file and execute:
 
 ```
 ./packmol < Packing.inp
 ```
 
-When using this command, Packmol reads all the packing instructions, load the molecular coordinates from the `.xyz` files, and place N copies of each molecule inside the specified regions while ensuring that no overlaps occur according to the defined tolerance. During execution, Packmol prints progress information in the terminal (such as iteration steps and molecule placement). When it finishes, a new file (in this example `CSHmodel_filled.xyz`) will be created in the same directory. This file can be opened in VMD or another molecular visualization program to inspect the result before generating the corresponding LAMMPS data file.
+When using this command, Packmol reads all the packing instructions, loads the molecular coordinates from the `.xyz` files, and places N copies of each molecule inside the specified regions while ensuring that no overlaps occur according to the defined tolerance. During execution, Packmol prints progress information in the terminal (such as iteration steps and molecule placement). When it finishes, a new file (in this example `CSHmodel_filled.xyz`) will be created in the same directory. This file can be opened in VMD or another molecular visualization program to inspect the result before generating the corresponding LAMMPS data file.
 
 ```{Tip}
-**Packing the pore region directly in LAMMPS**. The approach shown here uses Packmol to fill the pore of a C–S–H model with water and ions by explicitly packing them in the pore space. However, LAMMPS offers an interesting alternative for automatization. Tt allows to merge multiple systems by reading several `.data` files in sequence. This can be useful for constructing hybrid systems such as a C–S–H matrix with an empty pore, and a separate box containing pre-packed water and ions to fill the empty C-S-H pore. In this way, by keeping a single structural framework (for example, the same C–S–H slab) and replacing only the pore box `.data` file, a set of simulations with different compositions — varying water content, ion concentration, or even alternative pore chemistries — can be easily created without rebuilding the solid phase each time. The process is straightforward and implies loading one of the structures using `read_data CSH.data` and adding the new atoms from the other data file without replacing the existing ones with `read_data Pore_box.data add append shift 0 0 0`. **`shift`** can be used to move the entire *pore_box* block into the desired region (for example, inside the pore). It is essential that both data files use the same `atom_style`, units, and consistent atom-type numbering. If the second data file defines overlapping atom types (same atom-type number), they should be renumbered to avoid conflicts.
+**Packing the pore region directly in LAMMPS**. The approach shown here uses Packmol to fill the pore of a C–S–H model with water and ions by explicitly packing them in the pore space. However, LAMMPS offers an interesting alternative for automation. It allows to merge multiple systems by reading several `.data` files in sequence. This can be useful for constructing hybrid systems such as a C–S–H matrix with an empty pore, and a separate box containing pre-packed water and ions to fill the empty C-S-H pore. In this way, by keeping a single structural framework (for example, the same C–S–H slab) and replacing only the pore box `.data` file, a set of simulations with different compositions — varying water content, ion concentration, or even alternative pore chemistries — can be easily created without rebuilding the solid phase each time. The process is straightforward and implies loading one of the structures using `read_data CSH.data`, and adding the new atoms from the other data file without replacing the existing ones with `read_data Pore_box.data add append shift 0 0 0`. **`shift`** can be used to move the entire *pore_box* block into the desired region (for example, inside the pore). It is essential that both data files use the same `atom_style`, units, and consistent atom-type numbering. If the second data file defines overlapping atom types (same atom-type number), they should be renumbered to avoid conflicts.
 ```
 
