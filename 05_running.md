@@ -1,32 +1,32 @@
 # Running the simulation
 
-We have created an input file and a data file, all the necessary files are ready! We will use Atomify, [Atomify](https://andeplane.github.io/atomify/), a web editor running LAMMPS with real time visualization, access to real time plotting of physical quantities and much more. 
-After a simulation is finished, all files are available in a jupyter notebook that also runs in the browser. With Atomify, we can run LAMMPS examples in the browser. It runs with about 50% of the speed of natively compiled LAMMPS (single threaded), so this is good for testing and teaching purposes, not for real production.
+So far, we have created both the input and data file – all the necessary files are ready! We will use [Atomify](https://andeplane.github.io/atomify/), a web editor running LAMMPS that provides real-time visualization, access to real-time plotting of physical quantities and much more. 
 
-> **All users** will have to run their simulations. You can play with the Atomify options to see the real time evolution of your simulation and try to understand and evaluate if the evolution of the physical quantities is the expected one.
+After the simulation finishes, all output files are available in a Jupyter notebook that runs directly in the browser. With Atomify, we can run LAMMPS examples entirely online. It runs at roughly 50% of the speed of a natively compiled LAMMPS (single-threaded), so it is suitable for testing and teaching purposes, but not for production runs.
 
-The **left menu** controls the folders, files, and the navigation thorugh them. To run the simulation, just click in `New simulation`, give a **name** to your project, and drag and drop the input anda data files. You are ready to run  your job.
+> **All users** will have to run their simulations. You can explore Atomify's options to see the real-time evolution of your simulation and try to understand and evaluate whether the behavior of the physical quantities is as expected.
+
+The **left menu** controls the folders, files, and navigation through them. To run the simulation, just click on `New simulation`, give a **name** to your project, and drag and drop the input and data files. You are now ready to run your job.
 
 ```{Note}
-**Your browser must be open in foreground and your system awake** Atomify runs LAMMPS through WebAssembly inside the browser, so the simulation only progresses while the tab is active and in the foreground. When the tab loses focus, most browsers throttle or pause background WebAssembly execution to save CPU resources. Your system must be awake, so you need to configure it. There are apps like caffeine (windows) or anphetamine (macOS), or native commands (check internet for the option that suits you better). We tested the simulations in GoogleChrome. 
+**Your browser must remain in the foreground and your system awake.** Atomify runs LAMMPS through WebAssembly inside the browser, so the simulation only progresses while the tab is active and in the foreground. When the tab loses focus, most browsers throttle or pause background WebAssembly execution to save CPU resources. Your system must be awake, so you need to configure it accordingly. To do so, you can use apps like Caffeine (Windows) or Amphetamine (macOS), or native commands (check online for the option that suits you best). Simulations were tested using Google Chrome. 
 ```
 
-**During the simulation** you can explore the options on the right menu, which shows all the simulation parameters and output properties. You can change atom and bond sizes, and cliking on the physical observables and defined variables you will see plots of their evolution in real time. Hidding the menu you will see aditional options to control for example the brightness.
+**During the simulation**, you can explore the options in the right-hand menu, which displays all simulation parameters and output properties. You can change atom and bond sizes, and by clicking on the physical observables or defined variables, you will see plots of their evolution in real time. Hiding the menu reveals additional display controls, such as brightness.
 
-**When the simulation finishes**, the lammps.log file with the simulation output pops out. There you have information about the properties defined by the `thermo` command in the input, as well as the simulation time and performance. By clicking on the `analyze notebook` option you will be able to plot automatically these thermodynamic properties in python. The lammps.log output file and the trajectory file are located in a folder with the **name** you used. You have to donwload them for a posteriory analysis. 
+**When the simulation finishes**, the `lammps.log file with the simulation output is generated. It contains the properties defined by the `thermo` command in the input file, as well as the simulation time and performance. By clicking on the `Analyze notebook` option, you can automatically plot these thermodynamic properties in Python. The `lammps.log` file and the trajectory file are located in a folder with the name you defined earlier. You have to download them for later post-processing analysis. 
 
-The simulation will run for about 20-30 minutes depending on your computer capabilities. You can check your perfomance, in our case `Performance: 18.886 ns/day, 1.271 hours/ns, 218.582 timesteps/s`. Nevertheless, if you experience memory problems, your browser freezes, etc. (quite common), you can reduce the simulation time by 1/10 to observe the process, and take the 200ps results from [github](https://github.com/hegoimanzano/ICASCM2025/tree/main/results) to continue the analysis.
-
+The simulation will run for about 20–30 minutes depending on your computer's capabilities. You can check the performance – in our case: `Performance: 18.886 ns/day, 1.271 hours/ns, 218.582 timesteps/s`. If you experience memory issues or your browser freezes (which is quite common), you can reduce the simulation time by a factor of 10 to observe the process, and use the 200 ps results from [GitHub](https://github.com/hegoimanzano/ICASCM2025/tree/main/results) to continue the analysis.
 
 ```{Tip}
-You can add Atomify commands, starting with #/, to your input file. These commands are NOT part of the lammps input, only work in this environment. They allow you to set atomic species and camera details.
+You can add Atomify commands, starting with #/, to your input file. These commands are **NOT** part of the LAMMPS input, they only work in this environment. They allow you to set atomic species and camera details.
 
-Move camera to a nicer position:
+For example, to move the camera to a better position, use:
 
  #/camera position 7.0 8.0 23.0
  #/camera target 7.0 8.0 23.0
 
-Set atom size and color by asigning their names:
+ Atom sizes and colors can be set by assigning their element names:
 
  #/atom 1 calcium
  #/atom 2 calcium
