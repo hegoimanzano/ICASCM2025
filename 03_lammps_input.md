@@ -91,7 +91,7 @@ Note that we define only the interactions between equal atoms (Ow-Ow, Hw-Hw). Th
 ```
 # ---------- FAST EQUILIBRATION ----------
 min_style       cg
-minimize        1.0e-6 1.0e-8 5000 10000
+minimize        1.0e-3 1.0e-4 500 1000
 
 velocity        all create 298.0 4928459 rot yes mom yes
 fix             npt all npt temp 298.0 298.0 100.0 aniso 1 1 1000
@@ -99,7 +99,7 @@ thermo          1000
 thermo_style    custom step time temp pe ke etotal press density lx ly lz
 
 timestep        1
-run             200000
+run             100000
 unfix           npt
 ```
 
@@ -132,9 +132,8 @@ First, we will include an automatic analysis of **Cl diffusion** (you do it for 
 
 ```
 # --------- MSD & DIFFUSION COEFFICIENTS ----------
-# compute msd produce: [1]=MSDx, [2]=MSDy, [3]=MSDz, [4]=MSDtot  (en Å^2)
 group           Cl_atoms type 3
-compute         msdCl Cl_atoms msd
+compute         msdCl Cl_atoms msd           # compute msd produce: [1]=MSDx, [2]=MSDy, [3]=MSDz, [4]=MSDtot  (en Å^2)
 ```
 
 From the slope of the msd vs time, the diffusión coefficient can be computed from the Einstein formula. You could do it in postprocessing.
@@ -149,10 +148,9 @@ The second property will be the **density profile** of the Cl ions in the slit p
 ```
 # --------- Density profile in z ----------
 variable        dz_A    equal 0.5
-# Chunks in z direction (from the simulation box lower limit)
-compute         zbin Cl_atoms chunk/atom bin/1d z lower ${dz_A} units box
-# Density (particles/Å^3). 
-fix             profA Cl_atoms ave/chunk 1000 100 10000 zbin density/number file density_z.dat ave running
+
+compute         zbin Cl_atoms chunk/atom bin/1d z lower ${dz_A} units box                  # Chunks in z direction (from the simulation box lower limit)
+fix             profA Cl_atoms ave/chunk 200 20 4000 zbin density/number file density_z.dat ave running       # Density (particles/Å^3). 
 ```
 
 Remember: LAMMPS reads the input file in order! The input blocks for these analyses should be placed in the correct place of the input file, not at the end. Furthermore, to get the MSD you need to modify yout `thermo`:
