@@ -46,7 +46,8 @@ No access to a supercomputer is required, since the tutorial is based on a **bas
 
 - **Postprocessing and Analysis**: Postprocessing will be done with Python and [TRAVIS](https://www.travis-analyzer.de) (Trajectory Analyzer and Visualizer). TRAVIS is a free program that can process MD trajectories to compute properties such as mean square displacement (MSD) and diffusion coefficients, density and radial distribution profiles, vibrational spectra, velocity autocorrelation functions, and more. TRAVIS is available for Windows, Linux, and macOS.
 
-
 ```{Tip}
 There are many more [codes and tools](https://www.lammps.org/prepost.html#lunar) that can be helpful for performing MD simulations. We always strongly advocate the use of open-source and freely available software, as it ensures transparency, reproducibility, and accessibility for the entire scientific community.
 ```
+
+If you get stucked during the course, you can find all the files that you should use as input and all the files that will be generated as intermidiate and final results in this [github folder](https://github.com/hegoimanzano/ICASCM2025/tree/main/results). Use them if necessary.
