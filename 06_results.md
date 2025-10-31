@@ -2,7 +2,15 @@
 
 ### Interpretation of the Results
 
-![system](/images/ovito.mp4)
+![system](/images/traj.png)
+
+First, we visualy check the structure. This is the last snapshot of the simulation, with the box replicated for a better view. The C-S-H layers are preserved, the pore space has closed, and overall we can observe that the structure is physically sound
+
+---
+
+![equil](/images/equil.png)
+
+Then we analyse several parameters to check convergency. The total energy decreases very fast after the initial relaxation of the atomic positions. It seems that the system has converged, but we recommend to zoom in to guarantee convergence. Same interpretation could be done with the pressure. Regarding lattice parameters, the **x** dimension presents a strong fluctuaction in the very beggining, but the system recovers the initial value after 20ps. The changes in the **z** dimension is much more pronounced as the pore decreases its size to equilibrate the water density inside the pore. 
 
 
 ---
