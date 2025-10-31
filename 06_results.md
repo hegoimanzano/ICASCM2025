@@ -2,7 +2,60 @@
 
 ### Interpretation of the Results
 
-Ponemos las gráficas y vemos qué sale.
+![MSD](/images/MSD.png)
+
+Differences between MSD calculated in LAMMPS and TRAVIS
+
+Although both LAMMPS and TRAVIS compute the Mean Square Displacement (MSD), their algorithms are fundamentally different, which often leads to numerically distinct results.
+
+🔹 MSD definition
+
+The general definition is:
+
+$$
+\mathrm{MSD}(\Delta t) = \langle |\mathbf{r}_i(t+\Delta t) - \mathbf{r}i(t)|^2 \rangle{i,t}
+$$
+
+where the average is taken over all atoms i and all possible time origins t.
+
+🔹 In LAMMPS
+
+LAMMPS computes the MSD on-the-fly during the simulation with:
+
+compute msd all msd
+
+In this case, the displacement is always measured with respect to the initial configuration:
+
+$$
+\mathrm{MSD}_{\text{LAMMPS}}(t) = \langle |\mathbf{r}_i(t) - \mathbf{r}_i(0)|^2 \rangle_i
+$$
+	•	Only one time origin (t₀ = 0) is used.
+	•	No temporal averaging is performed.
+	•	The result is faster to obtain, but it can be noisier and less converged.
+
+
+TRAVIS calculates the MSD in post-processing from the full trajectory, averaging over many time origins:
+
+$$
+\mathrm{MSD}_{\text{TRAVIS}}(\Delta t) = \langle |\mathbf{r}_i(t+\Delta t) - \mathbf{r}i(t)|^2 \rangle{i,t}
+$$
+	•	The program uses all possible starting points t, up to a defined correlation depth.
+	•	This multi-time averaging provides smoother and more statistically reliable results.
+	•	However, it requires saving and processing the full trajectory.
+
+
+
+Feature	LAMMPS	TRAVIS
+Type of calculation	On-the-fly (during simulation)	Post-processing (after simulation)
+Time origins used	Only the initial frame	All possible frames (multi-time average)
+Statistical convergence	Moderate	Excellent
+Computational cost	Very low	Higher
+Requires full trajectory	❌ No	✅ Yes
+Typical result	Noisier curve	Smooth, well-converged curve
+
+
+LAMMPS provides a quick estimate of diffusion and displacement behavior, while TRAVIS offers a more accurate and statistically averaged MSD, better suited for extracting reliable diffusion coefficients.
+
 
 ---
 
