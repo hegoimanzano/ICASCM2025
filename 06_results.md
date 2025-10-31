@@ -2,13 +2,15 @@
 
 ### Interpretation of the Results
 
-
+![system](/images/ovito.mp4)
 
 
 ---
-The MSD of Cl ions in the pore looks like this:
+The density profile of Cl ions and water in your system should look like this:
 
 ![MSD](/images/dprof.png)
+
+The results for Cl computed from LAMMPS and TRAVIS are equal, with th only difference of the bin resolution, 0.5 in LAMMPS and $\aprox$ 0.13 in TRAVIS depending on your settings. The water dprof shows 2 peaks of well structured water close to the surfaces (more clear in the bottom) followed by "bulk"  water in the center of the pore. Cl ions are located preferentlially at the surfaces. In the botton surface, the structure is more clear, with Cl ion(s) in a fixed site just after the 2nd water layer. 
 
 --- 
 
@@ -17,7 +19,7 @@ The MSD of Cl ions in the pore looks like this:
 ![MSD](/images/MSD.png)
 
 
-In this case, the results from TRAVIS and LAMMPS do not match perfectly because the used algorithms are different. LAMMPS computes the MSD on-the-fly during the simulation with the displacement is always measured with respect to the initial configuration:
+In this case, the results from TRAVIS and LAMMPS **do not match perfectly**, just because the used algorithms are different. LAMMPS computes the MSD on-the-fly during the simulation with the displacement always measured with respect to the initial configuration:
 
 $$
 \mathrm{MSD}_{\text{LAMMPS}}(t) = \langle |\mathbf{r}_i(t) - \mathbf{r}_i(0)|^2 \rangle_i
@@ -29,7 +31,7 @@ $$
 \mathrm{MSD}_{\text{TRAVIS}}(\Delta t) = \langle |\mathbf{r}_i(t+\Delta t) - \mathbf{r}i(t)|^2 \rangle{i,t}
 $$
 
-The program uses all possible starting points t, up to a defined correlation depth. This multi-time averaging provides smoother and more statistically reliable results. However, it requires saving and processing the full trajectory. Therefore, LAMMPS provides a quick estimate of diffusion and displacement behavior, while TRAVIS offers a more accurate and statistically averaged MSD, better suited for extracting reliable diffusion coefficients.
+The program uses all possible starting points times up to a defined correlation depth. This multi-time averaging provides smoother and **more statistically reliable results**. However, it requires saving and processing the full trajectory. Therefore, LAMMPS provides a quick estimate of diffusion and displacement behavior, while TRAVIS offers a more accurate and statistically averaged MSD, better suited for extracting reliable diffusion coefficients.
 
 
 ---
