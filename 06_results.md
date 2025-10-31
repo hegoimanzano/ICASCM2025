@@ -3,6 +3,15 @@
 ### Interpretation of the Results
 
 
+
+
+---
+The MSD of Cl ions in the pore looks like this:
+
+![MSD](/images/dprof.png)
+
+--- 
+
 The MSD of Cl ions in the pore looks like this:
 
 ![MSD](/images/MSD.png)
