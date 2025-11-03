@@ -127,7 +127,7 @@ If True, handmade brick code will be used to create a model. The brick code shou
 
 
 
-**3. Run pyCSH.** In a terminal inside the folder (or VScode) run simply:
+**3. Run pyCSH.** In a terminal inside the folder (or using VScode) run simply:
 
 ```
 python3 main_brick_Y.py
