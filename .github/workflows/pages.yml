@@ -52,7 +52,6 @@ jobs:
       # (Si ya lo tienes, perfecto.)
       - name: Build Jupyter Book (HTML)
         run: |
-          set -euxo pipefail
           jupyter-book build . --keep-going --verbose
         # Si el build falla, este paso devuelve exit code != 0 y el job se detiene
 
