@@ -33,8 +33,6 @@ jobs:
 
       - name: Build Jupyter Book
         run: |
-          rm ./_build/html
-          mkdir -p ./_build/html
           jupyter-book build ./
 
       - name: Upload artifact
