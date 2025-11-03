@@ -67,7 +67,7 @@ jobs:
 
       # SUBIR SOLO SI EXISTE _build/html (evita el error del tar)
       - name: Upload artifact for GitHub Pages
-        if: ${{ hashFiles('_build/html/**') != '' }}
+       # if: ${{ hashFiles('_build/html/**') != '' }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: _build/html
