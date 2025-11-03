@@ -52,7 +52,7 @@ jobs:
       # (Si ya lo tienes, perfecto.)
       - name: Build Jupyter Book (HTML)
         run: |
-          jupyter-book build . --keep-going --verbose
+          jupyter-book build .
         # Si el build falla, este paso devuelve exit code != 0 y el job se detiene
 
       - name: List build outputs
