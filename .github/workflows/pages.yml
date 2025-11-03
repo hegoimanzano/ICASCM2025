@@ -37,8 +37,7 @@ jobs:
           echo "📘 Listing build output:"
           ls -R _build || echo "⚠️ No _build directory found"
 
-      - name: Upload artifact
-        if: ${{ success() && hashFiles('_build/html/index.html') != '' }}
+      - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: _build/html
