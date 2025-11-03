@@ -2,7 +2,7 @@ name: Build and Deploy Jupyter Book (Official Pages)
 
 on:
   push:
-    branches: [ main ]
+    branches: [ feature/test_compilacion ]
   workflow_dispatch:
 
 permissions:
