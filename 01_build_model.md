@@ -16,7 +16,7 @@ The general procedure for building a slit pore in a calcium–silicate–hydrate
 
 ---
 
-### Construction of C–S–H model using pyCSH.
+### Construction of C–S–H model using pyCSH
 
 PyCSH is an Open Access code developed originally by UPV/EHU and EPFL teams for the automated generation of realistic bulk calcium silicate hydrate (C–S–H) structures. Specifying the desired chemistry and system size, the code generates automatically hundreds of structures. 
 
