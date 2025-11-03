@@ -29,7 +29,6 @@ jobs:
 
       - name: Install deps
         run: |
-          set -euxo pipefail
           python -m pip install --upgrade pip
           # Usa tus requisitos; solo asegúrate de que incluyen jupyter-book
           pip install -r requirements.txt
@@ -54,7 +53,7 @@ jobs:
       - name: Build Jupyter Book (HTML)
         run: |
           set -euxo pipefail
-          jupyter-book build . --builder html --keep-going --verbose
+          jupyter-book build . --keep-going --verbose
         # Si el build falla, este paso devuelve exit code != 0 y el job se detiene
 
       - name: List build outputs
