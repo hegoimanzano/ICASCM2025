@@ -1,0 +1,17 @@
+version: 1
+project:
+  title: Atomistic Simulation of C–S–H — Course Manual
+  authors:
+    - name: Hegoi Manzano
+  toc:
+    - file: intro.md
+    - file: 01_build_model.md
+    - file: 02_bond_angle.md
+    - file: 03_lammps_input.md
+    - file: 05_running.md
+    - file: 04_analysis.md
+    - file: 06_results.md
+site:
+  options:
+    folders: true
+  template: book-theme

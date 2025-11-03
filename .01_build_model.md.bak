@@ -20,7 +20,7 @@ The general procedure for building a slit pore in a calcium–silicate–hydrate
 
 PyCSH is an Open Access code developed originally by UPV/EHU and EPFL teams for the automated generation of realistic bulk calcium silicate hydrate (C–S–H) structures. Specifying the desired chemistry and system size, the code generates automatically hundreds of structures. 
 
-```{warning}
+```{Warning}
 You will use today a beta version of pyCSH v2.0 still under development. We have tested the specific examples that you will use in this tutorial, but we (strongly) do not advise to use it for scientific production until the code is officially released (tentative date January 2026).
 ```
 
@@ -170,7 +170,7 @@ Check the plots and files. Open the `.data` and visualize them with OVITO. Selec
 
 
 
-```{tip}
+```{Tip}
 To avoid typing the same for each model you want to visualize, you can do it once and save `.OVITO` session states with all the parameters and modifications. Load the session state before a new model, and all the options will automatically load for the new atomic structures.
 ```
 
@@ -235,7 +235,7 @@ comment line or blank
 ```
  
  
-```{warning}
+```{Warning}
 When using periodic boundary conditions (PBC), atoms located exactly at the edges of the simulation box are periodically replicated on the opposite side. If Packmol places molecules too close to the box boundaries, this replication can cause overlaps between periodic images, leading to unrealistic atomic contacts or large forces during energy minimization. To prevent this, it is recommended to leave a small **safety margin** between the packing region and the box limits — typically 0.5 Å on each side. This ensures that no atom lies exactly on the boundary, avoiding artificial overlaps when the system is replicated under PBC and improving the stability of the subsequent molecular dynamics simulation.
 ```
 
@@ -249,7 +249,7 @@ Once the input file (for example `Packing.inp`) is ready and all the molecular s
 
 When using this command, Packmol reads all the packing instructions, loads the molecular coordinates from the `.xyz` files, and places N copies of each molecule inside the specified regions while ensuring that no overlaps occur according to the defined tolerance. During execution, Packmol prints progress information in the terminal (such as iteration steps and molecule placement). When it finishes, a new file (in this example `CSHmodel_filled.xyz`) will be created in the same directory. This file can be opened in VMD or another molecular visualization program to inspect the result before generating the corresponding LAMMPS data file.
 
-```{tip}
+```{Tip}
 **Packing the pore region directly in LAMMPS**. The approach shown here uses Packmol to fill the pore of a C–S–H model with water and ions by explicitly packing them in the pore space. However, LAMMPS offers an interesting alternative for automation. It allows you to merge multiple systems by reading several `.data` files in sequence. This can be useful for constructing hybrid systems such as a C–S–H matrix with an empty pore, and a separate box containing pre-packed water and ions to fill the empty C–S–H pore. In this way, by keeping a single structural framework (for example, the same C–S–H slab) and replacing only the pore box `.data` file, a set of simulations with different compositions — varying water content, ion concentration, or even alternative pore chemistries — can be easily created without rebuilding the solid phase each time. The process is straightforward and implies loading one of the structures using `read_data CSH.data`, and adding the new atoms from the other data file without replacing the existing ones with `read_data Pore_box.data add append shift 0 0 0`. **`shift`** can be used to move the entire *pore_box* block into the desired region (for example, inside the pore). It is essential that both data files use the same `atom_style`, units, and consistent atom-type numbering. If the second data file defines overlapping atom types (same atom-type number), they should be renumbered to avoid conflicts.
 ```
 

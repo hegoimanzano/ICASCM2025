@@ -8,7 +8,7 @@ After the simulation finishes, all output files are available in a Jupyter noteb
 
 The **left menu** controls the folders, files, and navigation through them. To run the simulation, just click on `New simulation`, **name** your project, and drag and drop your input and data files. You are now ready to run your job.
 
-```{note}
+```{Note}
 **Your browser must remain in the foreground, and your system awake.** Atomify runs LAMMPS through WebAssembly inside the browser, so the simulation only progresses while the tab is active and in the foreground. When the tab loses focus, most browsers throttle or pause background WebAssembly execution to save CPU resources. Your system must be awake, so you need to configure it accordingly. To do so, you can use apps like Caffeine (Windows) or Amphetamine (macOS), or native commands (check online for the option that suits you best). Simulations were tested using Google Chrome. 
 ```
 
@@ -18,7 +18,7 @@ The **left menu** controls the folders, files, and navigation through them. To r
 
 The simulations should take about 20–30 minutes, depending on your computer's capabilities. You can check the performance – in our case: `Performance: 18.886 ns/day, 1.271 hours/ns, 218.582 timesteps/s`. If you experience memory issues or your browser freezes (which is quite common), you can reduce the simulation time by a factor of 10 to observe the process, and use the 200 ps results from [GitHub](https://github.com/hegoimanzano/ICASCM2025/tree/main/results) to continue the analysis.
 
-```{tip}
+```{Tip}
 You can add Atomify commands, starting with #/, to your input file. These commands are **NOT** part of the LAMMPS input, they only work in this environment. They allow you to set atomic species, camera parameters, and other visualization settings.
 
 For example, you can move the camera to a better position and change atom sizes and colors by assigning their element names:

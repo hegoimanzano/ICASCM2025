@@ -35,7 +35,7 @@ LAMMPS provides `compute` and `variable` as analysis tools, and `fix ave/time` t
 
 Finally, you tell LAMMPS to `run`, specifying the length of the simulation (number of timesteps).
 
-```{caution}
+```{Caution}
 Note that LAMMPS interprets commands strictly **in the order** they appear in the input file. This means that the simulation environment is built step by step, and a command cannot use information that has not yet been defined. You must be careful with the order of commands.
 ```
 

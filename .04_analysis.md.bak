@@ -47,7 +47,7 @@ for keyword in log.keywords:
     plt.show()
 ```
 
-```{tip}
+```{Tip}
 This is just a tutorial, you do not need to go further. For real work, invest time in your plots. Do not use the defaults, and do not copy other people's plot styles. Your plots are like the visual presentation of your work; think about how to make them both informative and readable.
 ```
 
@@ -95,7 +95,7 @@ Type `msd` and follow the instructions on the screen. You need to set the time b
   - `travis.log` with all the information provided on-screen and the results of the analysis.
 
 
-```{tip}
+```{Tip}
 TRAVIS also generates an `input.txt` file that can be read when calling TRAVIS with `travis -p traj.lammpstrj -i input.txt`. This is useful for automation purposes, as it allows scripting.
 ```
 

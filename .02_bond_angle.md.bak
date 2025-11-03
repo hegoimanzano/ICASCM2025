@@ -6,13 +6,13 @@ Constructing this file correctly is often the most tedious part of a simulation.
 
 > ✒️ Both **advanced** and **novice users** will build the LAMMPS data file with the full topological information using VMD from the terminal with scripts. 
 
-```{note}
+```{Note}
 There are alternative ways to generate topology files, from automated tools such as LigParGen or Moltemplate to custom scripts using Python and ASE. Each method offers different levels of flexibility and complexity.
 ```
 ---
 ### LAMMPS topology file
 
-```{note}
+```{Note}
 Users with experience with force fields that require topology (ClayFF, CSHFF, CHARMM, OPLS, etc.) can skip this section.
 ```
 
@@ -60,7 +60,7 @@ Angles # angle-ID angle-type atom1 atom2 atom3
 1 1 2 1 3  # H_w – O_w – H_w (water angle) 
 ```
 
-```{note}
+```{Note}
 **Atom styles and force fields** The structure of a LAMMPS data file partly depends on the force field being used, as each force field requires a specific `atom_style`. For instance, classical force fields such as CHARMM, AMBER, or ClayFF use the `full` style. This format explicitly lists all topological terms (bonds, angles, dihedrals, and impropers) together with atom types, masses, charges, and coordinates. In contrast, ReaxFF does not rely on predefined connectivity and the data files should use the `charge` style, which only specifies atom IDs, types, charges, masses, and coordinates.  
 
 Regardless of the force field, the **data file must be consistent with the `atom_style` defined in the input script**, otherwise the simulation will fail to read it correctly. You can find a complete description of all available atom styles and their required fields in the [LAMMPS documentation](https://docs.lammps.org/atom_style.html).
@@ -89,7 +89,7 @@ ClayFF defines a limited set of atom types, each with specific Lennard–Jones p
 | Aqueous chloride ion                         | Cl           | Cl          | -1.0000    | 0.1001        | 4.4000    |
 
 
-```{caution}
+```{Caution}
 Clays are phyllosilicates, whereas tobermorite minerals and C–S–H are inosilicates, so applying ClayFF’s standard partial charges to these systems often produces a non-neutral configuration. Maintaining electroneutrality is crucial to obtain stable and physically meaningful simulations. It is **essential** to ensure that your system is **neutral**, i.e., that the sum of both formal and partial charges equals zero. For that, the partial charges can be slightly adjusted.
 
 **Important**: the same issue applies to any force field that uses partial charges, such as CSHFF or OPLS, when "defects" are introduced.
@@ -154,7 +154,7 @@ $Osi set charge XX
 $Osi set mass XX
 ```
 
-```{warning}
+```{Warning}
 **Avoiding unwanted bonds and angles in ClayFF systems.** When using TopoTools to guess bonds and angles, it automatically generates all possible connections based on interatomic distances. However, in ClayFF only hydroxyl and water molecules should contain explicit bonds and angles. If you keep the default settings, VMD will create unnecessary bonds and angles such as *Ca–O_w* or *Si–O_br–Si*. To avoid this, you can **assign a radius of zero to atoms that should not form bonds** before recalculating connectivity (`mol reanalyze top`).
 
 Be careful if atoms are too close to each other in your original structure. This may happen, for example, if packmol has to break the desired distance tolerance to meet all the geometrical requirements of your system. In such cases, VMD can detect unphysical bonds, and create new bonds, angles, or dihedrals that you would not expect otherwise. It is therefore recommended to check the VMD output visually and, if necessary, slightly adjust the radii for the hydrogen and oxygen atoms in water and hydroxyl groups. For example, reducing the radius to about 0.8 Å for Ow and 0.9 Å for Oh has been found to eliminate spurious angles and improve simulation stability.
@@ -193,7 +193,7 @@ vmd -dispdev text -e xyz2data.tcl
 
 This starts VMD without opening the graphical interface, automatically loads the `.xyz` file, applies all the steps in the script, and writes the output file `.data` in the current working directory.
 
-```{tip}
+```{Tip}
 If your terminal does not recognise the `vmd` command, use the full path to the executable (e.g. on macOS: `"/Applications/VMD 1.9.4a51.app/Contents/vmd/vmd_MACOSXX86_64" -dispdev text -e xyz2data.tcl` and Windows `C:\Program Files\University of Illinois\VMD2\`).  
 ```
 

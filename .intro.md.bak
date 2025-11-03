@@ -40,13 +40,13 @@ To follow the tutorial, participants will need to prepare a **few tools in advan
 
 - **Simulation code**: We will use [LAMMPS](https://docs.lammps.org) (Large-scale Atomic/Molecular Massively Parallel Simulator). LAMMPS is an open-source classical molecular dynamics simulation code focusing on materials modelling, originally developed at the Sandia National Laboratories. Usually, LAMMPS is installed and run on HPC systems, but here we will use [Atomify](https://andeplane.github.io/atomify/), a lightweight graphical front-end for LAMMPS. Atomify allows you to build, run, and visualise molecular dynamics simulations in real time through an interactive interface.  
 
-```{note}
+```{Note}
 No access to a supercomputer is required, since the tutorial is based on a **basic but representative example** designed to be executable on a personal computer.  
 ```
 
 - **Postprocessing and Analysis**: Postprocessing will be done with Python and [TRAVIS](https://www.travis-analyzer.de) (Trajectory Analyzer and Visualizer). TRAVIS is a free program that can process MD trajectories to compute properties such as mean square displacement (MSD) and diffusion coefficients, density and radial distribution profiles, vibrational spectra, velocity autocorrelation functions, and more. TRAVIS is available for Windows, Linux, and macOS.
 
-```{tip}
+```{Tip}
 There are many more [codes and tools](https://www.lammps.org/prepost.html#lunar) that can be helpful for performing MD simulations. We always strongly advocate the use of open-source and freely available software, as it ensures transparency, reproducibility, and accessibility for the entire scientific community.
 ```
 
