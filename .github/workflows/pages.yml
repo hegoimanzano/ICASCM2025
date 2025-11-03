@@ -2,7 +2,7 @@ name: Build and Deploy Jupyter Book (Official Pages)
 
 on:
   push:
-    branches: [ main ]
+    branches: [ old-version-from-1b2b4a2 ]
   workflow_dispatch:
 
 permissions:
