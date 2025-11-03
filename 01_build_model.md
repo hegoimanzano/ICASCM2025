@@ -211,7 +211,6 @@ inside box 0.5 0.5 0.5 19.5 19.5 19.5
 end structure
 
 ...
-...
 ```
 
 In this input file:
@@ -231,7 +230,6 @@ In this input file:
 <number of atoms>
 comment line or blank 
 <element> <X> <Y> <Z>
-...
 ...
 ```
  
