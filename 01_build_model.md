@@ -64,10 +64,10 @@ Number of structures to be generated.
 Width of the gaussian used for sampling the Ca/Si ratio of each of the unit cells that compose the total supercell. Smaller values (e.g. 0.01) will  lead to ratios closer to the target, but the code might not be able to find a solution.
 
 - `width_SiOH`: **Optional**. Default: 0.08.
-Width of the gaussian used for sampling the Si-OH/Si ratio. Same as before.
+Width of the gaussian used for sampling the Si-OH/Si ratio. Same as `width_Ca_Si`.
 
 - `width_CaOH`: **Optional**. Default: 0.04.
-Width of the gaussian used for sampling the Ca-OH/Ca ratio. Same as before.
+Width of the gaussian used for sampling the Ca-OH/Ca ratio. Same as `width_Ca_Si`.
 
 
 
@@ -103,11 +103,11 @@ An array that shows the substituted Ca, the substituting element, the %, and the
 Controls if the pore opened is saturated with water or not. If True, the amount of water is controlled by the next line. 
 
 - `grid` = np.array([5, 5, 10, "Cl", 1, "Na", 1], dtype = object).
-Water is introduced in a grid of positions. The first 3 numbers of the array determine how many water molecules are introduced in x y and z respectively. Then, the requested number of Cl and Na ions are introduced by replacing water molecules in the grid.
+Water is introduced in a grid of positions. The first 3 numbers of the array determine how many water molecules are introduced in x y and z respectively. Then, the requested number of Cl and Na ions are introduced by replacing randomly water molecules in the grid.
 
 
  
-- `write_lammps`: **Optional**. Default: False.
+- `write_lammps`: **Optional**. Default: True.
 Write a `.data` LAMMPS data file for each of the structures. 
 
 - `write_lammps_erica`: **Optional**. Default: False.
@@ -140,16 +140,16 @@ That’s it! in a few seconds you will have your structures. The script will rea
 pyCSH creates automatic plots with the characteristics of the **bulk** C–S–H. Note that the Ca/Si or w/Si ratio of the simulation box with the pore opened does not make sense. The generated plots are:
 
 - **distributions.pdf**: The generated models have a slightly variable chemistry around the desired value. The distributions are shown in this file.
-- **X-OH.pdf**: the ratio of Ca-OH/Ca and Si-OH/Si of the generated models as a function of the Ca/Si ratio, and  compared with the experimental data.
-- **MCL.pdf**: the mean chain lengths of the generated models as a function of the Ca/Si ratio, and compared with the experimental data.
-- **water.pdf**: the water content of the generated models, normalized by the silicate content, and compared with the experimental data.
+- **X-OH.pdf**: The ratio of Ca-OH/Ca and Si-OH/Si of the generated models as a function of the Ca/Si ratio, and  compared with the experimental data.
+- **MCL.pdf**: The mean chain lengths of the generated models as a function of the Ca/Si ratio, and compared with the experimental data.
+- **water.pdf**: The water content of the generated models, normalized by the silicate content, and compared with the experimental data.
 
 pyCSH also generates an **output** folder where you will find several files (# denotes structure number):
 
 - **prefix_#.log**: Files contain the information about the specific model (composition, size, etc), the "fingerprint" of the model (all the blocks used in the construction and their position in the supercell) and the charge distribution (not all the blocks are neutral, but the final structure is always neutral).
-- **prefix_#.data/vasp/siesta...**: Files containing the atomic structure in the required format.
+- **prefix_#.data/vasp/siesta...**: Files containing the atomic structure in the requested format.
 
-Check the plots and files. Open the `.data` and visualize them with OVITO. Select one of the generated models to continue. Rename your particle types according to the table below (right menu), change colors and sizes to improve visualization (typically smaller), and create bonds (`Add modification` menu). Export it from OVITO as `CSHmodel_filled.xyz` in xyz format. When exporting, include only the particle types and the atomic coordinates (x, y, z) so that the file can be read by VMD.
+Check the plots and files. Open the `.data` and visualize them with OVITO. Select one of the generated models to continue. Rename your particle types according to the pyCSH labels that appears in table below using the right panel in OVITO, change colors and sizes to improve visualization (typically smaller), and create bonds (`Add modification` menu). Export it from OVITO as `CSHmodel_filled.xyz` in xyz format. When exporting, include only the particle types and the atomic coordinates (x, y, z) so that the file can be read by VMD.
 
 
 | Type | pyCSH Label | ClayFF Label | Mass (u) | Radius (Å) |
@@ -218,8 +218,9 @@ In this input file:
 - **`filetype`** indicates the format of the output file, .pdb or .xyz.
 - **`output`** is the name of the resulting packed system that will be created.  
 - The **`structure ... end structure`** blocks define the molecules to be included and how they are positioned:
+  - **`structure`** loads the atomic coordinates from the corresponding molecule/system file (`.xyz`).
   - **`number`** indicates how many molecules/systems will be inserted (for water you need to calculate this number to match the desired density, e.g. water = 1 g/cm³).
-  - **`structure`** loads the atomic coordinates from the corresponding molecule/system file.
+  Subsequent lines in the structure block define the region where the molecules will be packed, such as in a fixed position, inside/outside a box/cilinder/sphere, above/below planes, etc.
   - **`inside box`** defines a three-dimensional region inside which Packmol will randomly place the predefined number of molecules. The six numerical values correspond to the lower and upper limits of the box along the three Cartesian coordinates (x_min, y_min, z_min and x_max, y_max, z_max).
   - **`center`** tells Packmol to center the coordinates of that structure with respect to the defined box.
   - **`fixed`** indicates that the (center of the) structure should be placed exactly at the given coordinates (i.e., 10.0 10.0 10.0) and prevents it from moving during packing. The last three zeros correspond to allowed translation tolerances (here all set to zero, meaning the structure remains completely fixed). Note that to ensure that the structure is positioned right at the geometric center of the simulation cell, the specified coordinates here must be half of each box dimension. For example, if the box length is 20 Å in each direction, the center will be at (10.0, 10.0, 10.0).
