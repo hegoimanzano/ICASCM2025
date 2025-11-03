@@ -138,10 +138,7 @@ compute         msdCl Cl_atoms msd        # compute msd produce: [1]=MSDx, [2]=M
 
 From the slope of the MSD vs time, the diffusion coefficient can be computed from the Einstein formula. You could do it in post-processing.
 
-$$
-D = \frac{1}{2d} \frac{\mathrm{d}}{\mathrm{d}t} \big\langle \lvert \mathbf{r}(t)-\mathbf{r}(0)\rvert^2 \big\rangle\Big|_{t\to\infty}
-= \frac{1}{2d} \frac{\mathrm{d}}{\mathrm{d}t} \big\langle \mathrm{MSD_d} \big\rangle\
-$$ 
+
 
 where _r(t)_ is the position of the atom at time _t_, and _d_ is the dimensionality of the system (_d=3_ for our three-dimensional system).
 

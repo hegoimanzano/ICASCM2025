@@ -56,7 +56,7 @@ Despite these limitations, the course provides an illustrative case study that d
 
 ### Future courses
 
-The material from this course[^1] will remain permanently available. If you use it, you can cite it as [doi](10.5281/zenodo.17514573). New material will be created for future ICASCM courses, tentatively scheduled for 2027. In addition, the UPV/EHU will offer a 25-hour course on atomistic simulation of cementitious materials in October 2026. The course will be hybrid (online and in-person), with theory and hands-on exercises. Seats are limited, you can send your expression of interest by mail to [eduardo.duque@ehu.eus](eduardo.duque@ehu.eus).
+The material from this course[^1] will remain permanently available. If you use it, you can cite it as doi 10.5281/zenodo.17514573. New material will be created for future ICASCM courses, tentatively scheduled for 2027. In addition, the UPV/EHU will offer a 25-hour course on atomistic simulation of cementitious materials in October 2026. The course will be hybrid (online and in-person), with theory and hands-on exercises. Seats are limited, you can send your expression of interest by mail to [eduardo.duque@ehu.eus](eduardo.duque@ehu.eus).
 
 
 [^1]: This tutorial was prepared by **Hegoi Manzano** and **Eduardo Duque-Redondo**. We thank Yerai Folio for the express development of the pyCSH version 2.0, and our beta-testers (Jon Otegi, Yerai Folio, Aden Rana, Batoul Assi, and Joni Suopaki). The work was supported by the “Departamento de Educación, Política Lingüística y Cultura del Gobierno Vasco” (Grant No.  IT1458-22), the European Union’s Horizon Europe research and innovation programme under the Marie Skłodowska-Curie grant agreement No 101119715 (CONTRABASS-DN).
