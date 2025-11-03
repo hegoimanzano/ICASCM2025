@@ -130,7 +130,7 @@ If True, handmade brick code will be used to create a model. The brick code shou
 **3. Run pyCSH.** In a terminal inside the folder (or VScode) run simply:
 
 ```
-python3 main_brick.py
+python3 main_brick_Y.py
 ```
 
 That’s it! in a few seconds you will have your structures. The script will read your parameters.py, build the required C–S–H models, save structure files, and produce some plots.  
