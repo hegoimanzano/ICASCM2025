@@ -2,7 +2,7 @@ name: Build and Deploy Jupyter Book (Official Pages)
 
 on:
   push:
-    branches: [ main ]
+    branches: [ feautre/version_clasica ]
   workflow_dispatch:
 
 permissions:
