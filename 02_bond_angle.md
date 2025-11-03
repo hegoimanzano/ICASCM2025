@@ -68,7 +68,7 @@ Regardless of the force field, the **data file must be consistent with the `atom
 ---
 ### ClayFF atom types 
 
-[ClayFF](https://doi.org/10.1021/jp0363287) was originally developed to describe clays and layered silicates, but has become common for modelling calcium silicate hydrate (C–S–H) and related phases. Its key advantage lies in its simplicity: ClayFF is essentially a non-bonded force field in which most atoms interact only through Lennard–Jones and Coulombic terms. The only exceptions are hydroxyl and water molecules, where explicit O–H bonds and H–O–H angles are included to preserve molecular geometry. The assigned charges are fractional (e.g., O ≈ –1.05 e and Si ≈ +2.1 e instead their formal charges -2 and +4) and were originally parameterised for clay minerals (see the **Caution** note).
+[ClayFF](https://doi.org/10.1021/jp0363287) was originally developed to describe clays and layered silicates, but has become common for modelling calcium silicate hydrate (C–S–H) and related phases. Its key advantage lies in its simplicity: ClayFF is essentially a non-bonded force field in which most atoms interact only through Lennard–Jones and Coulombic terms (see Table 1). The only exceptions are hydroxyl and water molecules, where explicit O–H bonds and H–O–H angles are included to preserve molecular geometry (see Table 2). The assigned charges are fractional (e.g., O ≈ –1.05 e and Si ≈ +2.1 e instead their formal charges -2 and +4) and were originally parameterised for clay minerals (see the **Caution** note).
 
 ClayFF defines a limited set of atom types, each with specific Lennard–Jones parameters and partial charges. pyCSH writes a detailed label for each atom type, and you need to understand their correspondence:
 
@@ -119,16 +119,16 @@ In this section, we will learn how to create a LAMMPS data file from the structu
 - it ensures the process is reproducible and less prone to manual errors.
 - it allows batch processing, i.e., generating data files for many structures in sequence reusing the Tcl script.
 
-**1. Building the Tcl script**
+**1. Building the Tcl script.**
 
 Open a text editor and create a new file, for instance `xyz2data.tcl`. This script will content all the commands that VMD needs to read the structure of our model and export it to a format compatible with LAMMPS. Below is the general structure you should follow to obtain an appropriate LAMMPS data file:
 
-**1.1. Loading the structure**
+**1.1. Loading the structure.**
 We should first include in the script a line to load our structure `CSHmodel_filled.xyz`. Using the command `mol new`, VMD opens the .xyz structure and reads the coordinates.
 ```
 mol new CSHmodel_filled.xyz type xyz
 ```
-**1.2. Loading the plugins**
+**1.2. Loading the plugins.**
 To manipulate the molecular topology and define the simulation cell, VMD uses two plugins:
 - *TopoTools* provides a set of commands to manipulate molecular topologies and export them to formats compatible with LAMMPS.
 - *PBCtools* allows handling and visualising periodic boundary conditions (PBC).
@@ -138,14 +138,14 @@ package require topotools
 package require pbctools
 ```
 
-**1.3. Defining the simulation box** 
+**1.3. Defining the simulation box.** 
 Next, we have set the periodic boundary conditions (PBC) for our system using the `pbc set`command. The first three numbers correspond to the box dimensions along *x*, *y*, and *z* (in Å), and the last three specify the angles between the box edges. Make sure these values **match those** of the actual model (check them in the `.xyz` file or in OVITO).
 ```
 pbc set {20.0 20.0 20.0 90.0 90.0 90.0}
 pbc box
 ```
 
-**1.4. Assigning masses, charges, and radius**
+**1.4. Assigning masses, charges, and radius.**
 By default, VMD does not assign atomic charges and must therefore be entered manually following the parameters defined in ClayFF (Table 1). However, VMD automatically assigns atomic masses and radii based on the detected chemical element. To do so, VMD reads the first one or two characters of the atom name to guess the element type, which can lead to misinterpretations when using custom atom labels. For example, an atom named Osi will be read as Os (osmium) instead of O (oxygen). For that reason, it is advisable to reassign the correct mass and radius values for each atom type (see the **Warning** below before setting the radii). To set the correct physical properties for **each** atom type use:
 
 ```
@@ -158,10 +158,11 @@ $Osi set mass XX
 ```{Warning}
 **Avoiding unwanted bonds and angles in ClayFF systems.** When using TopoTools to guess bonds and angles, it automatically generates all possible connections based on interatomic distances. However, in ClayFF only hydroxyl and water molecules should contain explicit bonds and angles. If you keep the default settings, VMD will create unnecessary bonds and angles such as *Ca–O_w* or *Si–O_br–Si*. To avoid this, you can **assign a radius of zero to atoms that should not form bonds** before recalculating connectivity (`mol reanalyze top`). 
 ```
-**1.5. Rebuilding the topology**
+**1.5. Rebuilding the topology.**
 After assigning all atomic properties, VMD can reconstruct the molecular connectivity (bonds and angles) using the following commands:
 ```
 mol bondsrecalc top
+topo retypebonds
 topo guessangles
 ```
 
@@ -170,7 +171,7 @@ Once all this is done, reanalyse the molecule to ensure that the topology is ful
 mol reanalyze top
 ```
 
-**1.6. Exporting the LAMMPS data file**
+**1.6. Exporting the LAMMPS data file.**
 Finally, write the topology into a LAMMPS-compatible format using:
 ```
 topo writelammpsdata atoms.data full
@@ -179,7 +180,7 @@ exit
 This command creates the file `atoms.data` in the `full` style, which includes all atom, bond, and angle information required by LAMMPS. You can open it in any text editor to check its structure — you should see sections such as *Masses*, *Atoms*, *Bonds*, and *Angles*. This file is now ready to be combined with the force-field parameters in your LAMMPS input script.
 
 
-**2. Running VMD with a Tcl script**
+**2. Running VMD with a Tcl script.**
 
 Once your Tcl script (e.g. `xyz2data.tcl`) is ready, the next step is to run it directly from the terminal. To do this, we should call the VMD executable and use the option `-dispdev text` to execute the Tcl script specified after `-e`. Note that both the `.xyz` file and the `.tcl` script must be located in the same directory, and you should execute VMD from that directory.
 ```
