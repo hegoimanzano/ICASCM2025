@@ -32,7 +32,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Build Jupyter Book
-        run: jupyter-book build .
+        run: jupyter-book build
 
       - name: Check build output
         run: |
