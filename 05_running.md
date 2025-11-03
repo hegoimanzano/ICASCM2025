@@ -21,15 +21,16 @@ The simulations should take about 20–30 minutes, depending on your computer's 
 ```{Tip}
 You can add Atomify commands, starting with #/, to your input file. These commands are **NOT** part of the LAMMPS input, they only work in this environment. They allow you to set atomic species, camera parameters, and other visualization settings.
 
-For example, to move the camera to a better position, use:
+For example, you can move the camera to a better position and change atom sizes and colors by assigning their element names:
    
    #/camera position 7.0 8.0 23.0
+
    #/camera target 7.0 8.0 0.0
-   
- Atom sizes and colors can be set by assigning their element names:
-   
+
    #/atom 1 calcium
+
    #/atom 2 calcium
+
    ...
 ```
 
