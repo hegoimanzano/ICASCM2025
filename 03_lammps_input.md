@@ -69,7 +69,7 @@ neigh_modify    delay 10 every 1
 # ---- Non bonded interactions  ----
 pair_style      lj/cut/coul/long 10.0 10.0     # lennard-jones and coulomb cut offs
 kspace_style    pppm 1.0e-4                    # coulomb long range solver and accuracy
-pair_coeff    1 1 0.1554164124 3.1655200879    # atom1 + the ClayFF parameters of the atoms ($\epsilon$ and $\sigma$ in table 1). Check which is your atom 1 in the data file!
+pair_coeff    1 1 0.0000000000 0.0000000000    # atom1 + the ClayFF parameters of the atoms ($\epsilon$ and $\sigma$ in table 1). Check which is your atom 1 in the data file!
 pair_coeff    2 2 0.0000000000 0.0000000000    # atom2 + the ClayFF parameters of the atoms ($\epsilon$ and $\sigma$ in table 1).  Check which is your atom 2 in the data file!
 ...
 ...
