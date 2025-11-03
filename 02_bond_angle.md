@@ -94,7 +94,6 @@ Clays are phyllosilicates, whereas tobermorite minerals and C–S–H are inosil
 
 **Important**: the same issue applies to any force field that uses partial charges, such as CSHFF or OPLS, when "defects" are introduced.
 
-
 To solve the charge problem, count the number of atoms of each element (M), multiply it by its partial charge ($q_j$), and sum over all the elements (N). The sum (Q) must be zero. If it is not, distribute the excess charge evenly among all oxygen atoms of the C-S-H (O, Osi, Oca):
 
 $$
@@ -158,7 +157,7 @@ $Osi set mass XX
 ```{Warning}
 **Avoiding unwanted bonds and angles in ClayFF systems.** When using TopoTools to guess bonds and angles, it automatically generates all possible connections based on interatomic distances. However, in ClayFF only hydroxyl and water molecules should contain explicit bonds and angles. If you keep the default settings, VMD will create unnecessary bonds and angles such as *Ca–O_w* or *Si–O_br–Si*. To avoid this, you can **assign a radius of zero to atoms that should not form bonds** before recalculating connectivity (`mol reanalyze top`).
 
-Be careful if atoms are too close to each other in your original structure. This may happen, for example, if packmol has to break the desired distance tolerance to meet all the geometrical requirements of your system. In such cases, VMD can detect bonds that should not be defined for your force field, and create new bonds, angles, or dihedrals that you would not expect otherwise. It is therefore recommended to check the VMD output visually and, if necessary, slightly adjust the radii for the hydrogen and oxygen atoms in water and hydroxyl groups. For example, reducing the radius to about 0.8 Å for Ow and 0.9 Å for Oh has been found to eliminate spurious angles and improve simulation stability.
+Be careful if atoms are too close to each other in your original structure. This may happen, for example, if packmol has to break the desired distance tolerance to meet all the geometrical requirements of your system. In such cases, VMD can detect unphysical bonds, and create new bonds, angles, or dihedrals that you would not expect otherwise. It is therefore recommended to check the VMD output visually and, if necessary, slightly adjust the radii for the hydrogen and oxygen atoms in water and hydroxyl groups. For example, reducing the radius to about 0.8 Å for Ow and 0.9 Å for Oh has been found to eliminate spurious angles and improve simulation stability.
 
 ```
 **1.5. Rebuilding the topology.**
