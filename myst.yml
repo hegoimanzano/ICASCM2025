@@ -12,6 +12,5 @@ project:
     - file: 04_analysis.md
     - file: 06_results.md
 site:
-  options:
-    folders: true
+  title: ICASCM2025
   template: book-theme
