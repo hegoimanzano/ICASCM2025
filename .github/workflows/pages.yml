@@ -32,7 +32,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Build Jupyter Book
-        run: jupyter-book build .
+        run: |
+          rm _build/html
+          mkdir -p _build/html
+          jupyter-book build .
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
