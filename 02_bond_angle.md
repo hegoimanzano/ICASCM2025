@@ -192,6 +192,6 @@ vmd -dispdev text -e xyz2data.tcl
 This starts VMD without opening the graphical interface, automatically loads the `.xyz` file, applies all the steps in the script, and writes the output file `.data` in the current working directory.
 
 ```{Tip}
-If your terminal does not recognise the `vmd` command, use the full path to the executable (e.g. on macOS: `"/Applications/VMD 1.9.4a51.app/Contents/vmd/vmd_MACOSXX86_64" -dispdev text -e xyz2data.tcl`).  
+If your terminal does not recognise the `vmd` command, use the full path to the executable (e.g. on macOS: `"/Applications/VMD 1.9.4a51.app/Contents/vmd/vmd_MACOSXX86_64" -dispdev text -e xyz2data.tcl` and Windows `C:\Program Files\University of Illinois\VMD2\`).  
 ```
 
