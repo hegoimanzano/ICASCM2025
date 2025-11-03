@@ -36,16 +36,16 @@ LAMMPS provides `compute` and `variable` as analysis tools, and `fix ave/time` t
 Finally, you tell LAMMPS to `run`, specifying the length of the simulation (number of timesteps).
 
 ```{Caution}
-Note that LAMMPS interprets commands strictly **in the order** they appear in the input file. This means that the simulation environment is built step by step, and a command cannot use information that has not yet been defined. You must be carefull with the order of commands.
+Note that LAMMPS interprets commands strictly **in the order** they appear in the input file. This means that the simulation environment is built step by step, and a command cannot use information that has not yet been defined. You must be careful with the order of commands.
 ```
 
 ---
 
 ### Basic LAMMPS input file for C-S-H simulations
 
-Open a text file and build your input following the next steps. You can save it with any extension (`.inp`, `.input`, `.in`, `.txt`...).
+Open a text file and build your input following the steps below. You can save it with any extension (`.inp`, `.input`, `.in`, `.txt`...).
 
-**1. Header / Global Settings.** We are going to simulate a C-S-H box with periodic boundary conditions in x y z. There are different unit systems that must be consistent with your force field and all the input parameters. Note that all results will also be printed in these units. The `atom_style` defines what information is stored for each atom. The choice depends on the physics of your system and the force field you plan to use. In our case, ClayFF requires `full` atom style, which includes information about atom_id, atom_type, coordinates, charge, molecule-ID, bonds, angles, etc. 
+**1. Header / Global Settings.** We will simulate a C-S-H box with periodic boundary conditions in x y z. There are different unit systems that must be consistent with your force field and all the input parameters. Note that all results will also be printed in these units. The `atom_style` defines what information is stored for each atom. The choice depends on the physics of your system and the force field you plan to use. In our case, ClayFF requires `full` atom style, which includes information about atom_id, atom_type, coordinates, charge, molecule-ID, bonds, angles, etc. 
 The `neighbor`-related options refer to how LAMMPS builds the pairwise neighbor lists to compute forces between atoms. They affect the efficiency and sometimes may induce errors, but it is safe to use the standard values. For more information, see [neighbor lists](https://docs.lammps.org/Developer_par_neigh.html).
 
 ```
@@ -54,23 +54,23 @@ units           real
 atom_style      full
 boundary        p p p
 
-read_data       CSHmodel_final.data     # write the name of your data file
+read_data       CSHmodel_final.data     # specify the name of your data file
 
 neighbor        2.0 bin
 neigh_modify    delay 10 every 1
 ```
 
 **2. Force Field Definition.** Here you specify interatomic potentials and their parameters.
-- `pair_style` + `pair_coeff` = how nonbonded atoms interact. You have to input the parameters are given in the **Topology** section (Table 1) in the correct order.
-- `bond_style`, `angle_style` = for bonded terms. You have to input the parameters are given in the **Topology** section (Table 1) in the correct order.
+- `pair_style` + `pair_coeff` = how nonbonded atoms interact. You have to input the parameters that are given in the **Topology** section (Table 1) in the correct order for all atoms.
+- `bond_style`, `angle_style` = for bonded terms. You have to input the parameters that are given in the **Topology** section (Table 1) in the correct order for all bonds and angles in the data file.
 - `kspace_style` = how long-range electrostatics are computed. Long range interactions are difficult to compute because they decay slowly with distance. Thus, special algorithms such as Ewald summation or `pppm`(particle-particle particle-mesh) are required.
 
 ```
 # ---- Non bonded interactions  ----
 pair_style      lj/cut/coul/long 10.0 10.0     # lennard-jones and coulomb cut offs
 kspace_style    pppm 1.0e-4                    # coulomb long range solver and accuracy
-pair_coeff    1 1 0.1554164124 3.1655200879    # atom1 + the ClayFF parametes of the atoms ($\epsilon$ and $\sigma$ in table S1). Check which is your atom 1 in the data file!
-pair_coeff    2 2 0.0000000000 0.0000000000    # atom2 + the ClayFF parametes of the atoms ($\epsilon$ and $\sigma$ in table S1).  Check which is your atom 2 in the data file!
+pair_coeff    1 1 0.1554164124 3.1655200879    # atom1 + the ClayFF parameters of the atoms ($\epsilon$ and $\sigma$ in table 1). Check which is your atom 1 in the data file!
+pair_coeff    2 2 0.0000000000 0.0000000000    # atom2 + the ClayFF parameters of the atoms ($\epsilon$ and $\sigma$ in table 1).  Check which is your atom 2 in the data file!
 ...
 ...
 
@@ -86,7 +86,7 @@ angle_coeff     1  55.0  109.47      # SPC model: Hw–Ow–Hw angle
 Note that we define only the interactions between equal atoms (Ow-Ow, Hw-Hw). The cross terms (Ow-Hw) are computed automatically from arithmetic [mixing rules](https://en.wikipedia.org/wiki/Combining_rules)
 
 
-**3. Simulation Control and Execution.** Now we start the simulation. In any MD simulation there are at least two stpes. First, an **equilibration period**, in which our system adapts to the desired thermodynamic conditions. First, we do an energy minimization (`minimize`) to relax the atomic positions. Second, we assign random `velocity` to the particles according to a Boltzmann distribution at 300 K. Then, we perform a MD equilibration in the canonical ensemble `fix nvt`, at an initial and final temperature of 300 K, applying a thermostat every 100 steps to maintain the target temperature. We record selected `thermo` properties in the output every 1000 steps. Finally, we need to `unfix` the fix that was defined for this phase to prepare the system for the next stage.
+**3. Simulation Control and Execution.** Now we start the simulation. In any MD simulation there are at least two steps. First, an **equilibration period**, in which our system adapts to the desired thermodynamic conditions. First, we do an energy minimization (`minimize`) to relax the atomic positions. Second, we assign random `velocity` to the particles according to a Boltzmann distribution at 300 K. Then, we perform a MD equilibration in the canonical ensemble `fix npt`, at an initial and final temperature and pressure of 300 K and 1 atm, applying a thermostat and a barostat every 100 and 1000 steps, respectively, to maintain the target temperature and pressure. We record selected `thermo` properties in the output every 1000 steps. Finally, we need to `unfix` the fix that was defined for this phase to prepare the system for the next stage.
 
 ```
 # ---------- FAST EQUILIBRATION ----------
@@ -103,25 +103,25 @@ run             100000
 unfix           npt
 ```
 
-**How long should an equilibration phase last?** The simple answer is that it should last as long as necessary; the exact duration is system-specific and depends on your initial simulation protocol, how you build your simulation box, the force field, the final thermodynamic conditions, etc. It is essential to confirm that equilibrium has truly been reached by monitoring the energy, system density, atomic mobility, and structural properties. 
+**How long should an equilibration phase last?** The short answer is that it should last as long as necessary; the exact duration is system-specific and depends on your initial simulation protocol, how you build your simulation box, the force field, the final thermodynamic conditions, etc. It is essential to confirm that equilibrium has truly been reached by monitoring the energy, system density, atomic mobility, and structural properties. 
 
 ```{caution}
-The energy can be misleading: if the initial configuration is very far from equeilibrium, the first energy values will often be very high, and the subsequent rapid decrease may create the false impression of convergence.
+The energy can be misleading: if the initial configuration is very far from equilibrium, the first energy values will often be very high, and the subsequent rapid decrease may give a false impression of convergence.
 ```
 
-Second, we enter the **production phase**. In this stage, thermodynamic quantities are collected, and snapshots of the trajectory are stored to compute the properties of interest. The production run must be sufficiently long to ensure that the observables under study have converged. The required length strongly depends on the property we wish to calculate. For instance, if the goal is to obtain an infrared spectrum, relatively short trajectories are sufficient, since molecular vibrations take place on the timescale of a few picoseconds. If instead we are interested in diffusivity, the simulation must extend to the hundreds of nanoseconds, because that is the timescale for water molecules to diffuse ($D_{\text{H₂O}} = 2.3 \text{nm}^2/\text{ns}$). In this course, due to time limitations, we will restrict ourselves to production runs of about 10 picoseconds, which is sufficient for demonstration purposes. Keep in mind, however, that **reliable mean square displacement calculations, typically require simulations extending 100 ns or more**. Here we also add a `dump` to save the trajectory in a file called `traj.lammpstrj`.
+Second, we enter the **production phase**. In this stage, thermodynamic quantities are collected, and snapshots of the trajectory are stored to compute the properties of interest. The production run must be sufficiently long to ensure that the observables under study have converged. The required length strongly depends on the property we wish to calculate. For instance, if the goal is to obtain an infrared spectrum, relatively short trajectories are sufficient, since molecular vibrations take place on the timescale of a few picoseconds. If instead we are interested in diffusivity, the simulation must extend to the hundreds of nanoseconds, because that is the timescale for water molecules to diffuse ($D_{\text{H₂O}} = 2.3 \text{nm}^2/\text{ns}$). In this course, due to time limitations, we will restrict ourselves to production runs of about 10 ps, which is sufficient for demonstration purposes. Keep in mind, however, that **reliable mean square displacement calculations, typically require simulations extending 100 ns or more**. Here we also add a `dump` to save the trajectory in a file called `traj.lammpstrj`.
 
 ```
 # ---------- PRODUCTION ----------
 fix             nvt all nvt temp 298.0 298.0 100.0
 dump            trj all custom 1000 traj.lammpstrj id element xu yu zu 
-dump_modify     trj element Ca Ca Cl H H Na O O O O O Si Si
+dump_modify     trj element Ca Ca Cl H H Na O O O O O Si Si         # Check which is your element order in the data file!
 thermo_style    custom step time temp etotal 
 thermo          1000
 run             100000
 ```
 
-With this basic input file + the data file, you can perform your MD simulation (next page!).
+With this basic input file and the data file, you can perform your MD simulation (next page!).
 
 ---
 
