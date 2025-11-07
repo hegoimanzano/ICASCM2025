@@ -76,9 +76,9 @@ ClayFF defines a limited set of atom types, each with specific Lennard–Jones p
 
 | Species                                      | ClayFF label | pyCSH label | charge (e) | ε (kcal/mol)  | σ (Å)     |
 |----------------------------------------------|--------------|-------------|------------|---------------|-----------|
-| SPC water hydrogen                           | h*           | Hw          | 0.4100     | 0.1554        | 3.1655    |
+| SPC water hydrogen                           | h*           | Hw          | 0.4100     | 0.0000        | 0.0000    |
 | SPC water oxygen                             | o*           | Ow          | -0.8200    | 0.1554        | 3.1655    |
-| Hydroxyl hydrogen                            | ho           | H           | 0.4250     | 0.1554        | 3.1655    |
+| Hydroxyl hydrogen                            | ho           | H           | 0.4250     | 0.0000        | 0.0000    |
 | Hydroxyl oxygen                              | oh           | Oh          | -0.9500    | 0.1554        | 3.1655    |
 | Bridging oxygen                              | ob           | Osi         | -1.0500    | 0.1554        | 3.1655    |
 | Bridging oxygen with octahedral substitution | obos         | Oca & O     | -1.1808    | 0.1554        | 3.1655    |
