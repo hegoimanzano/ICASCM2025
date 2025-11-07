@@ -79,7 +79,7 @@ compute         msdCl Cl_atoms msd   # compute msd produce: [1]=MSDx, [2]=MSDy, 
 # --------- Density profile in z ----------
 variable        dz_A    equal 0.5
 compute         zbin Cl_atoms chunk/atom bin/1d z lower ${dz_A} units box    # Chunks in z direction (from the simulation box lower limit)
-fix             profA Cl_atoms ave/chunk 1000 100 10000 zbin density/number file density_z.dat ave running     # Density (particles/Å^3). 
+fix             profA Cl_atoms ave/chunk 100 100 10000 zbin density/number file density_z.dat ave running     # Density (particles/Å^3). 
 
 
 # ---------- PRODUCTION ----------
@@ -88,7 +88,7 @@ dump            trj all custom 1000 traj.lammpstrj id element xu yu zu
 dump_modify     trj element Ca Ca Cl H H Na O O O O O Si Si
 thermo_style    custom step time temp etotal c_msdCl[1] c_msdCl[2] c_msdCl[3] c_msdCl[4]
 thermo          1000
-run             100000
+run             200000
 
 
 
